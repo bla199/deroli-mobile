@@ -1,3 +1,5 @@
+import 'package:deroli_mobile/screens/Amount/AmountPage.dart';
+import 'package:deroli_mobile/screens/Request-Money/request_money.dart';
 import 'package:deroli_mobile/screens/home/activities.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +14,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Activities(),
+      home: AmountPage(),
     );
   }
 }
