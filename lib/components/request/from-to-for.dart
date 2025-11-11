@@ -45,7 +45,10 @@ class FromToFor extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(
                               horizontal: 20.0,
                             ),
-                            child: CircleAvatar(child: Icon(icon)),
+                            child: CircleAvatar(
+                              child: Icon(icon),
+                              backgroundColor: Color(0xFFF4F2FF),
+                            ),
                           ),
 
                           Column(

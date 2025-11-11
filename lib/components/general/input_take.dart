@@ -34,7 +34,7 @@ class _InputTakeState extends State<InputTake> {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
-              color: Colors.grey[200],
+              color: Colors.white,
             ),
             child: Row(
               mainAxisAlignment:
@@ -42,7 +42,10 @@ class _InputTakeState extends State<InputTake> {
               children: [
                 Row(
                   children: [
-                    Icon(widget.icon, color: Colors.blue),
+                    CircleAvatar(
+                      child: Icon(widget.icon, color: Colors.deepPurpleAccent),
+                      backgroundColor: Color(0xFFF4F2FF),
+                    ),
                     const SizedBox(width: 8),
                     Text(widget.label),
                   ],

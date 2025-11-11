@@ -1,7 +1,6 @@
 import 'package:deroli_mobile/screens/home/activities.dart';
 import 'package:flutter/material.dart';
-import '../../components/general/page_title.dart';
-import '../../components/general/input_take.dart';
+import '../../components/main.dart';
 
 class RequestMoney extends StatefulWidget {
   const RequestMoney({super.key});
@@ -77,9 +76,13 @@ class _RequestMoneyState extends State<RequestMoney> {
         child: FilledButton(
           onPressed: () {},
           style: FilledButton.styleFrom(
+            backgroundColor: Color(0xFF312684),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           ),
-          child: const Text("Next"),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: const Text("Next"),
+          ),
         ),
       ),
     );
