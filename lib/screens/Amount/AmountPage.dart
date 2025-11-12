@@ -9,163 +9,161 @@ class AmountPage extends StatefulWidget {
 }
 
 class _AmountPageState extends State<AmountPage> {
+  final FocusNode _focusNode = FocusNode();
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFF9F9F9),
-        leading: IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back)),
+        backgroundColor: const Color(0xFFF9F9F9),
+        leading: IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.arrow_back),
+        ),
         centerTitle: true,
-        title: PageTitle(text: "Request Money"),
+        title: const PageTitle(text: "Request Money"),
       ),
-
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(20.0),
+      resizeToAvoidBottomInset: true,
+      body: SafeArea(
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () {
+            FocusScope.of(context).requestFocus(_focusNode);
+          },
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 0.0,
-                    vertical: 10,
-                  ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Color(0xFFFFFFFF),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15.0),
-                      child: Column(
-                        children: [
-                          FromToFor(
-                            title: "Mix By Yas 3D Mockups- June..",
-                            directions: "From",
-                            details: "Project Number ****1829010",
-                            icon: Icons.abc,
-                          ),
-                          SizedBox(height: 10),
-                          Column(
-                            children: [AppBorder(color: Color(0xFFEFEFEF))],
-                          ),
-                          SizedBox(height: 10),
-
-                          FromToFor(
-                            title: "Jengo Company Limited",
-                            directions: "To",
-                            details: "CRDB|025C8433337739",
-                            icon: Icons.wallet,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 18.0),
-                      child: Column(
-                        children: [
-                          FromToFor(
-                            title: "Transport",
-                            directions: "For",
-                            details: "Admin Fees",
-                            icon: Icons.description,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Flexible(
-                        child: Column(
-                          children: [
-                            Row(children: [Text("Amount")]),
-                            Text.rich(
-                              TextSpan(
-                                children: [
-                                  WidgetSpan(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                        bottom: 8.0,
-                                      ),
-                                      child: Text(
-                                        "TZS ",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ),
-                                    alignment:
-                                        PlaceholderAlignment.aboveBaseline,
-                                    baseline: TextBaseline.alphabetic,
-                                  ),
-                                  TextSpan(
-                                    text: "0",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 30,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-
+                // From / To Section
                 Container(
-                  width: double.infinity,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: FilledButton(
-                      style: ButtonStyle(
-                        padding: MaterialStateProperty.all<EdgeInsets>(
-                          EdgeInsets.symmetric(vertical: 15.0),
-                        ),
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                          Color(0xFF312684),
-                        ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: const EdgeInsets.all(15),
+                  child: Column(
+                    children: const [
+                      FromToFor(
+                        title: "Mix By Yas 3D Mockups- June..",
+                        directions: "From",
+                        details: "Project Number ****1829010",
+                        icon: Icons.abc,
                       ),
-                      onPressed: () {},
-                      child: Text(
-                        "Request Money",
-                        style: TextStyle(fontSize: 12),
+                      SizedBox(height: 10),
+                      AppBorder(color: Color(0xFFEFEFEF)),
+                      SizedBox(height: 10),
+                      FromToFor(
+                        title: "Jengo Company Limited",
+                        directions: "To",
+                        details: "CRDB|025C8433337739",
+                        icon: Icons.wallet,
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                // For Section
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: const EdgeInsets.all(15),
+                  child: const FromToFor(
+                    title: "Transport",
+                    directions: "For",
+                    details: "Admin Fees",
+                    icon: Icons.description,
+                  ),
+                ),
+
+                const SizedBox(height: 30),
+
+                const Padding(
+                  padding: EdgeInsets.only(left: 5),
+                  child: Text("Amount", style: TextStyle(fontSize: 12)),
+                ),
+
+                const SizedBox(height: 10),
+
+                Center(
+                  child: SizedBox(
+                    width: 250,
+                    child: TextField(
+                      controller: _controller,
+                      focusNode: _focusNode,
+                      autofocus: true,
+                      keyboardType: TextInputType.number,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w900,
+                        color: Color(0xFFA4A4A4),
+                      ),
+                      decoration: InputDecoration(
+                        prefix: Transform.translate(
+                          offset: const Offset(0, -15),
+                          child: const Text(
+                            "TZS",
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFFA4A4A4),
+                            ),
+                          ),
+                        ),
+                        hintText: '0',
+                        hintStyle: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          color: Colors.black38,
+                          fontSize: 40,
+                        ),
+                        isDense: true,
+                        border: InputBorder.none,
                       ),
                     ),
                   ),
                 ),
+
+                const SizedBox(height: 10),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: FilledButton(
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all(
+                        const EdgeInsets.symmetric(vertical: 18),
+                      ),
+                      backgroundColor: MaterialStateProperty.all(
+                        const Color(0xFF312684),
+                      ),
+                    ),
+                    onPressed: () {
+                      // Handle request money logic
+                    },
+                    child: const Text(
+                      "Request Money",
+                      style: TextStyle(fontSize: 12),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 20),
               ],
             ),
           ),
-          Container(
-            height: 306,
-            decoration: BoxDecoration(
-              color: Color(0xFFCCCEDC).withOpacity(0.76),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(children: [NumberKeyboard()]),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

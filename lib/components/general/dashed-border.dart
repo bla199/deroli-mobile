@@ -11,14 +11,14 @@ class DashedBorder extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
         child: DottedBorder(
-          dashPattern: [4, 2],
+          dashPattern: [2, 3],
           customPath: (size) {
             // Draw only the bottom border
             return Path()
               ..moveTo(0, size.height)
               ..lineTo(size.width, size.height);
           },
-          color: Colors.black26,
+          color: Color(0xFFE7E7E7),
           child: Row(),
         ),
       ),

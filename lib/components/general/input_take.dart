@@ -71,7 +71,14 @@ class _InputTakeState extends State<InputTake> {
                     ),
                   ],
                 ),
-                const Icon(Icons.arrow_drop_down), //  stays at row end
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Image.asset(
+                    'assets/icons/ARC.png',
+                    width: 25,
+                    height: 25,
+                  ),
+                ), //  stays at row end
               ],
             ),
           ),

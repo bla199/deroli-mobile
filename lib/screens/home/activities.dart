@@ -24,22 +24,40 @@ class _ActivitiesState extends State<Activities> {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-        leading: const Padding(
-          padding: EdgeInsets.all(20.0),
-          child: IconButton(
-            onPressed: null,
-            icon: Icon(Icons.person, size: 30),
+        // actionsPadding: EdgeInsets.only(right: 20),
+        backgroundColor: Color(0xFFF9F9F9),
+        title: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(Color(0xFFFFFFFF)),
+                ),
+                onPressed: null,
+                icon: Image.asset(
+                  'assets/icons/Person.png',
+                  width: 25,
+                  height: 25,
+                ),
+              ),
+
+              IconButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(Color(0xFFFFFFFF)),
+                ),
+                onPressed: null,
+                icon: (Image.asset(
+                  'assets/icons/Notification.png',
+                  width: 25,
+                  height: 25,
+                )),
+              ),
+            ],
           ),
         ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.all(20.0),
-            child: IconButton(
-              onPressed: null,
-              icon: Icon(Icons.notifications, size: 30),
-            ),
-          ),
-        ],
+        actions: const [],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -51,7 +69,7 @@ class _ActivitiesState extends State<Activities> {
                 child: FilledButton(
                   onPressed: () {},
                   style: FilledButton.styleFrom(
-                    backgroundColor: Colors.white,
+                    backgroundColor: Color(0xFFFFFFFF),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16,
                       vertical: 12,
@@ -61,20 +79,28 @@ class _ActivitiesState extends State<Activities> {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      Icon(
-                        Icons.apps_outlined,
-                        color: Color.fromARGB(255, 29, 74, 108),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Image.asset(
+                          'assets/icons/Activities.png',
+                          width: 15,
+                        ),
                       ),
-                      SizedBox(width: 10),
-                      Text(
+
+                      const SizedBox(width: 10),
+                      const Text(
                         "All Projects",
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: Colors.black, fontSize: 12),
                       ),
-                      SizedBox(width: 6),
-                      Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.black,
+                      const SizedBox(width: 6),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Image.asset(
+                          'assets/icons/Arrow_Down.png',
+                          width: 14,
+                          height: 14,
+                        ),
                       ), // plain Icon -> no extra padding
                     ],
                   ),
@@ -84,7 +110,7 @@ class _ActivitiesState extends State<Activities> {
 
             // Pending request block
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              padding: const EdgeInsets.symmetric(horizontal: 40.0),
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.lightBlueAccent,
@@ -107,7 +133,7 @@ class _ActivitiesState extends State<Activities> {
                               TextSpan(
                                 children: [
                                   WidgetSpan(
-                                    child: const Text(
+                                    child: Text(
                                       "TZS",
                                       style: TextStyle(fontSize: 12),
                                     ),
@@ -115,10 +141,11 @@ class _ActivitiesState extends State<Activities> {
                                         PlaceholderAlignment.aboveBaseline,
                                     baseline: TextBaseline.alphabetic,
                                   ),
-                                  const WidgetSpan(child: SizedBox(width: 8)),
-                                  const TextSpan(
+                                  WidgetSpan(child: SizedBox(width: 8)),
+                                  TextSpan(
                                     text: "200,000",
                                     style: TextStyle(
+                                      fontFamily: 'Fredoka',
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
                                     ),
@@ -130,14 +157,28 @@ class _ActivitiesState extends State<Activities> {
                             Padding(
                               padding: const EdgeInsets.only(top: 40),
                               child: FilledButton(
-                                style: ButtonStyle(),
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStatePropertyAll(
+                                    Color(0xFF312684),
+                                  ),
+                                ),
                                 onPressed: () {},
                                 child: Row(
                                   spacing: 10,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Icon(Icons.send),
-                                    Text("Request Money"),
+                                    Image.asset(
+                                      'assets/icons/Send_2.png',
+                                      width: 18,
+                                    ),
+                                    Text(
+                                      "Request Money",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xFFD8D6FF),
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -159,79 +200,98 @@ class _ActivitiesState extends State<Activities> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Quick Actions"),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(40),
-                        ),
+                      Text("Quick Actions", style: TextStyle(fontSize: 14)),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(45),
+                          ),
 
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20.0,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(Icons.send, size: 18),
-                                      style: IconButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            20,
+                            padding: const EdgeInsets.all(10.0),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20.0,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: [
+                                      IconButton(
+                                        color: Color(0xFFEAE7FF),
+                                        onPressed: () {},
+                                        icon: Image.asset(
+                                          'assets/icons/Upload.png',
+                                          width: 40,
+                                        ),
+                                        iconSize: 10,
+                                        style: IconButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              20,
+                                            ),
                                           ),
-                                          side: BorderSide(color: Colors.grey),
                                         ),
                                       ),
-                                    ),
-                                    Text("Retire"),
-                                  ],
-                                ),
+                                      Text(
+                                        "Retire",
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
 
-                                Column(
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(
-                                        Icons.document_scanner,
-                                        size: 18,
-                                      ),
-                                      style: IconButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            20,
+                                  Column(
+                                    children: [
+                                      IconButton(
+                                        color: Color(0xFFEAE7FF),
+                                        onPressed: () {},
+                                        icon: Image.asset(
+                                          'assets/icons/Paper.png',
+                                          width: 40,
+                                        ),
+                                        iconSize: 10,
+                                        style: IconButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              20,
+                                            ),
                                           ),
-                                          side: BorderSide(color: Colors.grey),
                                         ),
                                       ),
-                                    ),
-                                    Text("Invoice"),
-                                  ],
-                                ),
-
-                                Column(
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(Icons.send, size: 18),
-                                      style: IconButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            20,
+                                      Text(
+                                        "Invoice",
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {},
+                                        icon: Image.asset(
+                                          'assets/icons/Send_1.png',
+                                          width: 40,
+                                        ),
+                                        style: IconButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              20,
+                                            ),
                                           ),
-                                          side: BorderSide(color: Colors.grey),
                                         ),
                                       ),
-                                    ),
-                                    Text("Request"),
-                                  ],
-                                ),
-                              ],
+                                      Text(
+                                        "Requested",
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -243,7 +303,7 @@ class _ActivitiesState extends State<Activities> {
             ),
 
             Padding(
-              padding: const EdgeInsets.all(30.0),
+              padding: const EdgeInsets.all(25.0),
               child: Container(
                 child: Column(
                   children: [
@@ -253,7 +313,10 @@ class _ActivitiesState extends State<Activities> {
                         Text("Recent Activities"),
                         IconButton(
                           onPressed: () {},
-                          icon: Icon(Icons.golf_course),
+                          icon: Image.asset(
+                            'assets/icons/circle_duotone.png',
+                            width: 35,
+                          ),
                         ),
                       ],
                     ),
@@ -272,14 +335,24 @@ class _ActivitiesState extends State<Activities> {
                           DashedBorder(),
                           ActivityNotification(),
                           DashedBorder(),
+                          ActivityNotification(),
+                          DashedBorder(),
                           Padding(
                             padding: const EdgeInsets.all(30.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("View all activities"),
-                                Icon(Icons.arrow_right),
-                              ],
+                            child: InkWell(
+                              onTap: () {},
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("View all activities"),
+                                  SizedBox(width: 5),
+                                  Image.asset(
+                                    'assets/icons/Arrow_Right.png',
+                                    width: 13,
+                                    height: 13,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -289,6 +362,7 @@ class _ActivitiesState extends State<Activities> {
                 ),
               ),
             ),
+            Row(children: [Container(height: 60)]),
           ],
         ),
       ),
@@ -302,9 +376,11 @@ class _ActivitiesState extends State<Activities> {
           unselectedFontSize: 12,
           backgroundColor: Colors.white.withOpacity(0.65),
           selectedItemColor: const Color(0xFF312684),
+
           unselectedItemColor: Colors.black38,
           iconSize: 28,
           elevation: 2,
+
           currentIndex: _selectedIndex,
           onTap: (value) {
             _onItemTapped(value);

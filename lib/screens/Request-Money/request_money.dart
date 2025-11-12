@@ -52,26 +52,30 @@ class _RequestMoneyState extends State<RequestMoney> {
                 GestureDetector(
                   child: DottedBorder(
                     borderType: BorderType.RRect,
-                    radius: Radius.circular(12),
+                    radius: Radius.circular(8),
                     color: Colors.black26,
                     dashPattern: [4, 2],
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.black12,
-                        borderRadius: BorderRadius.all(Radius.circular(11)),
+                        color: Color(0xFFF1F1F1),
+                        borderRadius: BorderRadius.all(Radius.circular(7)),
                       ),
 
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 100.0,
-                          vertical: 30,
+                          vertical: 10,
                         ),
                         child: Column(
                           children: [
-                            Icon(Icons.image, color: Colors.black38),
+                            Image.asset(
+                              'assets/icons/image.png',
+                              width: 45,
+                              height: 45,
+                            ),
                             Text(
                               "Add an image of pdf file",
-                              style: TextStyle(color: Colors.black45),
+                              style: TextStyle(color: Color(0xFF6D6D6D)),
                             ),
                           ],
                         ),

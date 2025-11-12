@@ -35,14 +35,20 @@ class _ReceiptState extends State<Receipt> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    topRight: Radius.circular(12),
+                    topLeft: Radius.circular(25),
+                    topRight: Radius.circular(25),
                   ),
                 ),
 
                 child: Stack(
                   children: [
                     Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
+                        ),
+                      ),
                       child: Column(children: [Background(), Background()]),
                     ),
 
@@ -68,8 +74,14 @@ class _ReceiptState extends State<Receipt> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Image.asset('assets/images/image1.png'),
-                                    SizedBox(height: 30),
+                                    SizedBox(
+                                      height: 250,
+                                      width: 250,
+                                      child: Image.asset(
+                                        'assets/images/image1.png',
+                                      ),
+                                    ),
+                                    SizedBox(height: 10),
                                     SizedBox(
                                       width: double.infinity,
                                       child: Center(
@@ -131,6 +143,7 @@ class _ReceiptState extends State<Receipt> {
                                                       "Requested",
                                                       style: TextStyle(
                                                         color: Colors.black38,
+                                                        fontSize: 12,
                                                       ),
                                                     ),
                                                     Row(
@@ -139,17 +152,21 @@ class _ReceiptState extends State<Receipt> {
                                                           TextSpan(
                                                             children: [
                                                               TextSpan(
-                                                                text: "40,000",
+                                                                text: "40,000 ",
                                                                 style: TextStyle(
+                                                                  fontFamily:
+                                                                      'Fredoka',
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w800,
+                                                                  fontSize: 12,
                                                                 ),
                                                               ),
                                                               TextSpan(
                                                                 text: "TZS",
                                                                 style: TextStyle(
                                                                   fontSize: 8,
+
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w200,
@@ -172,9 +189,15 @@ class _ReceiptState extends State<Receipt> {
                                                       "Project",
                                                       style: TextStyle(
                                                         color: Colors.black38,
+                                                        fontSize: 12,
                                                       ),
                                                     ),
-                                                    Text("Ndondo cup"),
+                                                    Text(
+                                                      "Ndondo cup",
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                      ),
+                                                    ),
                                                   ],
                                                 ),
                                                 Row(
@@ -186,6 +209,7 @@ class _ReceiptState extends State<Receipt> {
                                                       "Category",
                                                       style: TextStyle(
                                                         color: Colors.black38,
+                                                        fontSize: 12,
                                                       ),
                                                     ),
                                                     Text("Transport"),
@@ -200,6 +224,7 @@ class _ReceiptState extends State<Receipt> {
                                                       "Sub-category",
                                                       style: TextStyle(
                                                         color: Colors.black38,
+                                                        fontSize: 12,
                                                       ),
                                                     ),
                                                     Text("Admin Fees"),
@@ -214,10 +239,14 @@ class _ReceiptState extends State<Receipt> {
                                                       "Requested time",
                                                       style: TextStyle(
                                                         color: Colors.black38,
+                                                        fontSize: 12,
                                                       ),
                                                     ),
                                                     Text(
                                                       "Jan 12, 2025 04:25 PM",
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
@@ -243,6 +272,9 @@ class _ReceiptState extends State<Receipt> {
                                                   children: [
                                                     Text(
                                                       "You will be notified once proccessed",
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                      ),
                                                     ),
                                                   ],
                                                 ),

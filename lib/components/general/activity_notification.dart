@@ -22,15 +22,13 @@ class _ActivityNotificationState extends State<ActivityNotification> {
             padding: const EdgeInsets.symmetric(horizontal: 13.0),
             child: Row(
               children: [
-                CircleAvatar(
-                  child: Icon(Icons.document_scanner, size: 17),
-                  maxRadius: 16,
-                ),
+                Image.asset('assets/icons/Not_doc.png', width: 35, height: 35),
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0),
                   child: Container(
                     width: 280,
                     child: Column(
+                      spacing: 1,
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -53,7 +51,7 @@ class _ActivityNotificationState extends State<ActivityNotification> {
                                       "TZS",
                                       style: TextStyle(
                                         fontSize: 12,
-                                        color: Colors.black26,
+                                        color: Colors.black38,
                                       ),
                                     ),
                                     baseline: TextBaseline.alphabetic,
@@ -63,7 +61,8 @@ class _ActivityNotificationState extends State<ActivityNotification> {
                                   const TextSpan(
                                     text: "200,000",
                                     style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'FredokaBold',
+                                      // fontWeight: FontWeight.w600,
                                       fontSize: 12,
                                     ),
                                   ),
@@ -85,7 +84,7 @@ class _ActivityNotificationState extends State<ActivityNotification> {
                         Row(
                           children: [
                             Text(
-                              "overdue",
+                              "Overdue",
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.redAccent,

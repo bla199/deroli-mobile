@@ -24,8 +24,8 @@ class FromToFor extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 20.0),
-              child: Text(directions),
+              padding: const EdgeInsets.only(left: 6.0),
+              child: Text(directions, style: TextStyle(fontSize: 12)),
             ),
 
             Container(
@@ -43,7 +43,7 @@ class FromToFor extends StatelessWidget {
                         children: [
                           Padding(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0,
+                              horizontal: 1.0,
                             ),
                             child: CircleAvatar(
                               child: Icon(icon),
@@ -51,21 +51,30 @@ class FromToFor extends StatelessWidget {
                             ),
                           ),
 
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(width: 230, child: Text(title)),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 2.0),
-                                child: Text(
-                                  details,
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    color: Colors.grey,
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  width: 200,
+                                  child: Text(
+                                    title,
+                                    style: TextStyle(fontSize: 12),
                                   ),
                                 ),
-                              ),
-                            ],
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 2.0),
+                                  child: Text(
+                                    details,
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),

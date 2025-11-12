@@ -10,11 +10,7 @@ class PageTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: TextStyle(
-        fontSize: 18,
-        fontFamily: 'Trap',
-        fontWeight: FontWeight.bold,
-      ),
+      style: TextStyle(fontSize: 18, fontFamily: 'FredokaBold'),
     );
   }
 }

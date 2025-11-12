@@ -14,9 +14,12 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(scaffoldBackgroundColor: Color(0xFFF9F9F9)),
       debugShowCheckedModeBanner: false,
-      home: Activities(),
+      theme: ThemeData(
+        fontFamily: 'IBMPlexSans',
+        scaffoldBackgroundColor: Color(0xFFF9F9F9),
+      ),
+      home: RequestMoney(),
     );
   }
 }
