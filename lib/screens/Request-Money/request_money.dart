@@ -1,6 +1,7 @@
 import 'package:deroli_mobile/screens/home/activities.dart';
 import 'package:flutter/material.dart';
 import '../../components/main.dart';
+import 'package:dotted_border/dotted_border.dart';
 
 class RequestMoney extends StatefulWidget {
   const RequestMoney({super.key});
@@ -14,6 +15,7 @@ class _RequestMoneyState extends State<RequestMoney> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFFF9F9F9),
         centerTitle: true,
         title: PageTitle(text: "Request Money"),
         leading: IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back)),
@@ -22,6 +24,7 @@ class _RequestMoneyState extends State<RequestMoney> {
       body: Column(
         children: [
           InputTake(
+            descrp: "Project number ****1829010",
             icon: Icons.folder,
             title: "From - Project",
             label: "Mixx By Yas 3D Mockups - june",
@@ -34,6 +37,7 @@ class _RequestMoneyState extends State<RequestMoney> {
           ),
 
           InputTake(
+            // placeholder: "Select category and sub-category",
             icon: Icons.attach_money,
             title: "Category",
             label: "Select category and sub-category",
@@ -46,22 +50,31 @@ class _RequestMoneyState extends State<RequestMoney> {
                 Row(children: [Text("Payment Purpose")]),
                 SizedBox(height: 8),
                 GestureDetector(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white30,
-                      border: Border.all(color: Colors.grey.shade400),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 90.0,
-                        vertical: 40,
+                  child: DottedBorder(
+                    borderType: BorderType.RRect,
+                    radius: Radius.circular(12),
+                    color: Colors.black26,
+                    dashPattern: [4, 2],
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black12,
+                        borderRadius: BorderRadius.all(Radius.circular(11)),
                       ),
-                      child: Column(
-                        children: [
-                          Icon(Icons.image),
-                          Text("Add an image of pdf file"),
-                        ],
+
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 100.0,
+                          vertical: 30,
+                        ),
+                        child: Column(
+                          children: [
+                            Icon(Icons.image, color: Colors.black38),
+                            Text(
+                              "Add an image of pdf file",
+                              style: TextStyle(color: Colors.black45),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -80,7 +93,7 @@ class _RequestMoneyState extends State<RequestMoney> {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(4.0),
             child: const Text("Next"),
           ),
         ),

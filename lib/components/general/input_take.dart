@@ -5,10 +5,13 @@ class InputTake extends StatefulWidget {
   const InputTake({
     super.key,
     required this.title,
-    required this.label,
+    this.label = "",
     required this.icon,
+    this.descrp = "",
+    this.placeholder = "",
   });
-
+  final String placeholder;
+  final String descrp;
   final String title;
   final String label;
   final IconData icon;
@@ -31,7 +34,7 @@ class _InputTakeState extends State<InputTake> {
 
           // Input Row
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               color: Colors.white,
@@ -43,11 +46,29 @@ class _InputTakeState extends State<InputTake> {
                 Row(
                   children: [
                     CircleAvatar(
-                      child: Icon(widget.icon, color: Colors.deepPurpleAccent),
+                      child: Icon(
+                        widget.icon,
+                        color: Colors.deepPurpleAccent,
+                        size: 15,
+                      ),
                       backgroundColor: Color(0xFFF4F2FF),
+                      maxRadius: 16,
                     ),
                     const SizedBox(width: 8),
-                    Text(widget.label),
+
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.label,
+                          style: TextStyle(color: Colors.black, fontSize: 13),
+                        ),
+                        Text(
+                          widget.descrp,
+                          style: TextStyle(color: Colors.black26, fontSize: 10),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
                 const Icon(Icons.arrow_drop_down), //  stays at row end

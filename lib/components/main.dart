@@ -4,4 +4,5 @@ export 'general/input_take.dart';
 export 'request/from-to-for.dart';
 export 'general/border.dart';
 export 'request/NumberKeyboard.dart';
-export 'request/NumberKeyboard.dart';
+export 'receipt/background.dart';
+export 'general/dashed-border.dart';

@@ -13,6 +13,7 @@ class _AmountPageState extends State<AmountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFFF9F9F9),
         leading: IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back)),
         centerTitle: true,
         title: PageTitle(text: "Request Money"),
@@ -39,13 +40,15 @@ class _AmountPageState extends State<AmountPage> {
                       child: Column(
                         children: [
                           FromToFor(
-                            title: "From",
+                            title: "Mix By Yas 3D Mockups- June..",
                             directions: "From",
                             details: "Project Number ****1829010",
                             icon: Icons.abc,
                           ),
                           SizedBox(height: 10),
-                          Column(children: [AppBorder()]),
+                          Column(
+                            children: [AppBorder(color: Color(0xFFEFEFEF))],
+                          ),
                           SizedBox(height: 10),
 
                           FromToFor(
@@ -67,7 +70,7 @@ class _AmountPageState extends State<AmountPage> {
                       color: Colors.white,
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      padding: const EdgeInsets.symmetric(vertical: 18.0),
                       child: Column(
                         children: [
                           FromToFor(
@@ -142,7 +145,10 @@ class _AmountPageState extends State<AmountPage> {
                         ),
                       ),
                       onPressed: () {},
-                      child: Text("Request Money"),
+                      child: Text(
+                        "Request Money",
+                        style: TextStyle(fontSize: 12),
+                      ),
                     ),
                   ),
                 ),
@@ -150,8 +156,10 @@ class _AmountPageState extends State<AmountPage> {
             ),
           ),
           Container(
-            height: 300,
-            decoration: BoxDecoration(color: Colors.black12),
+            height: 306,
+            decoration: BoxDecoration(
+              color: Color(0xFFCCCEDC).withOpacity(0.76),
+            ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(children: [NumberKeyboard()]),

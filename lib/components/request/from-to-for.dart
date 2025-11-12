@@ -43,7 +43,7 @@ class FromToFor extends StatelessWidget {
                         children: [
                           Padding(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 20.0,
+                              horizontal: 16.0,
                             ),
                             child: CircleAvatar(
                               child: Icon(icon),
@@ -52,14 +52,15 @@ class FromToFor extends StatelessWidget {
                           ),
 
                           Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(title),
+                              SizedBox(width: 230, child: Text(title)),
                               Padding(
                                 padding: const EdgeInsets.only(top: 2.0),
                                 child: Text(
                                   details,
                                   style: TextStyle(
-                                    fontSize: 12,
+                                    fontSize: 11,
                                     color: Colors.grey,
                                   ),
                                 ),
