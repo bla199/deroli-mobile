@@ -1,10 +1,27 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../components/main.dart';
-import 'package:dotted_border/dotted_border.dart';
 
 class Receipt extends StatefulWidget {
-  const Receipt({super.key});
+  final String projectLabel;
+  final String projectDescription;
+  final String vendorLabel;
+  final String vendorDescription;
+  final String categoryLabel;
+  final String categoryDescription;
+  final String amount;
+
+  const Receipt({
+    super.key,
+    this.projectLabel = '',
+    this.projectDescription = '',
+    this.vendorLabel = '',
+    this.vendorDescription = '',
+    this.categoryLabel = '',
+    this.categoryDescription = '',
+    this.amount = '0',
+  });
 
   @override
   State<Receipt> createState() => _ReceiptState();
@@ -19,6 +36,33 @@ class _ReceiptState extends State<Receipt> {
     final screenWidth = MediaQuery.of(context).size.width;
     final totalWidth = circleRadius * 2 + spacing;
     return (screenWidth / totalWidth).floor();
+  }
+
+  // Format DateTime to readable string
+  String _formatDateTime(DateTime dateTime) {
+    final months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    final month = months[dateTime.month - 1];
+    final day = dateTime.day.toString().padLeft(2, '0');
+    final year = dateTime.year;
+    final hour = dateTime.hour > 12
+        ? dateTime.hour - 12
+        : (dateTime.hour == 0 ? 12 : dateTime.hour);
+    final minute = dateTime.minute.toString().padLeft(2, '0');
+    final period = dateTime.hour >= 12 ? 'PM' : 'AM';
+    return '$month $day, $year $hour:$minute $period';
   }
 
   @override
@@ -152,7 +196,12 @@ class _ReceiptState extends State<Receipt> {
                                                           TextSpan(
                                                             children: [
                                                               TextSpan(
-                                                                text: "40,000 ",
+                                                                text:
+                                                                    widget
+                                                                        .amount
+                                                                        .isNotEmpty
+                                                                    ? "${widget.amount} "
+                                                                    : "0 ",
                                                                 style: TextStyle(
                                                                   fontFamily:
                                                                       'Fredoka',
@@ -193,7 +242,7 @@ class _ReceiptState extends State<Receipt> {
                                                       ),
                                                     ),
                                                     Text(
-                                                      "Ndondo cup",
+                                                      widget.projectLabel,
                                                       style: TextStyle(
                                                         fontSize: 12,
                                                       ),
@@ -212,7 +261,13 @@ class _ReceiptState extends State<Receipt> {
                                                         fontSize: 12,
                                                       ),
                                                     ),
-                                                    Text("Transport"),
+                                                    Text(
+                                                      widget
+                                                              .categoryLabel
+                                                              .isNotEmpty
+                                                          ? widget.categoryLabel
+                                                          : "Category",
+                                                    ),
                                                   ],
                                                 ),
                                                 Row(
@@ -221,13 +276,19 @@ class _ReceiptState extends State<Receipt> {
                                                           .spaceBetween,
                                                   children: [
                                                     Text(
-                                                      "Sub-category",
+                                                      "Vendor",
                                                       style: TextStyle(
                                                         color: Colors.black38,
                                                         fontSize: 12,
                                                       ),
                                                     ),
-                                                    Text("Admin Fees"),
+                                                    Text(
+                                                      widget
+                                                              .vendorLabel
+                                                              .isNotEmpty
+                                                          ? widget.vendorLabel
+                                                          : "Vendor",
+                                                    ),
                                                   ],
                                                 ),
                                                 Row(
@@ -243,7 +304,9 @@ class _ReceiptState extends State<Receipt> {
                                                       ),
                                                     ),
                                                     Text(
-                                                      "Jan 12, 2025 04:25 PM",
+                                                      _formatDateTime(
+                                                        DateTime.now(),
+                                                      ),
                                                       style: TextStyle(
                                                         fontSize: 12,
                                                       ),
@@ -331,7 +394,9 @@ class _ReceiptState extends State<Receipt> {
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Color(0xFF312684)),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  context.go("/activities");
+                },
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Text("Go back home"),

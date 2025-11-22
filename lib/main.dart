@@ -1,10 +1,4 @@
-import 'package:deroli_mobile/screens/Amount/AmountPage.dart';
-import 'package:deroli_mobile/screens/Request-Money/request_money.dart';
-import 'package:deroli_mobile/screens/home/activities.dart';
-import 'package:deroli_mobile/screens/receipt/receipt.dart';
-import 'package:deroli_mobile/screens/requested/full_request_details.dart';
-import 'package:deroli_mobile/screens/requested/requested.dart';
-
+import 'package:deroli_mobile/navigation/route.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,13 +10,13 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'IBMPlexSans',
         scaffoldBackgroundColor: Color(0xFFF9F9F9),
       ),
-      home: Activities(),
+      routerConfig: AppRouter().router,
     );
   }
 }

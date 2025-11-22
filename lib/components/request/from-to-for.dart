@@ -6,12 +6,12 @@ class FromToFor extends StatelessWidget {
     super.key,
     required this.directions,
     required this.title,
-    required this.icon,
+
     required this.details,
   });
   final String directions;
   final String title;
-  final IconData icon;
+
   final String details;
 
   @override
@@ -46,7 +46,11 @@ class FromToFor extends StatelessWidget {
                               horizontal: 1.0,
                             ),
                             child: CircleAvatar(
-                              child: Icon(icon),
+                              child: Image.asset(
+                                'assets/icons/project.png',
+                                width: 15,
+                                height: 15,
+                              ),
                               backgroundColor: Color(0xFFF4F2FF),
                             ),
                           ),

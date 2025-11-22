@@ -1,7 +1,7 @@
 import 'package:deroli_mobile/components/main.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import '../../components/general/activities/activity_notification.dart';
+import 'package:go_router/go_router.dart';
 import 'dart:ui';
 
 class Activities extends StatefulWidget {
@@ -78,403 +78,425 @@ class _ActivitiesState extends State<Activities> {
                           builder: (context, setState) {
                             return Stack(
                               children: [
-                                BackdropFilter(
-                                  filter: ImageFilter.blur(
-                                    sigmaX: 5,
-                                    sigmaY: 5,
-                                  ),
-                                  child: Container(
-                                    color: Colors.white.withOpacity(0.1),
+                                // Backdrop that dismisses on tap
+                                Positioned.fill(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: BackdropFilter(
+                                      filter: ImageFilter.blur(
+                                        sigmaX: 5,
+                                        sigmaY: 5,
+                                      ),
+                                      child: Container(
+                                        color: Colors.white.withOpacity(0.1),
+                                      ),
+                                    ),
                                   ),
                                 ),
 
+                                // Dialog content
                                 Transform.translate(
                                   offset: Offset(0, 140),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 20.0,
                                     ),
-                                    child: Dialog(
-                                      backgroundColor: Color(0XFFFFFFFF),
-                                      insetPadding: EdgeInsets.zero,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadiusGeometry.all(
-                                          Radius.circular(40),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        // Prevent dismissal when tapping on the dialog itself
+                                      },
+                                      child: Dialog(
+                                        backgroundColor: Color(0XFFFFFFFF),
+                                        insetPadding: EdgeInsets.zero,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadiusGeometry.all(
+                                                Radius.circular(40),
+                                              ),
                                         ),
-                                      ),
-                                      child: Container(
-                                        height: 350,
-                                        width: MediaQuery.of(
-                                          context,
-                                        ).size.width,
-                                        child: Column(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.all(
-                                                25.0,
-                                              ),
-                                              child: Column(
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Text(
-                                                        'Select to explore',
-                                                        style: TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          // color: Color(0XFF000000),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-
-                                            AppBorder(color: Color(0xFFEBEBEB)),
-
-                                            Column(
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+                                        child: Container(
+                                          height: 350,
+                                          width: MediaQuery.of(
+                                            context,
+                                          ).size.width,
+                                          child: Column(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.all(
+                                                  25.0,
+                                                ),
+                                                child: Column(
                                                   children: [
-                                                    Column(
+                                                    Row(
                                                       children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets.symmetric(
-                                                                horizontal:
-                                                                    20.0,
-                                                                vertical: 25,
-                                                              ),
-                                                          child: Row(
-                                                            children: [
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets.only(
-                                                                      right:
-                                                                          30.0,
-                                                                    ),
-                                                                child: Container(
-                                                                  width: 35,
-                                                                  height: 35,
-                                                                  decoration: BoxDecoration(
-                                                                    color: Color(
-                                                                      0xFFF3F3F3,
-                                                                    ),
-                                                                    borderRadius:
-                                                                        BorderRadius.all(
-                                                                          Radius.circular(
-                                                                            20,
-                                                                          ),
-                                                                        ),
-                                                                  ),
-                                                                  child: Padding(
-                                                                    padding:
-                                                                        const EdgeInsets.all(
-                                                                          8.0,
-                                                                        ),
-                                                                    child: Image.asset(
-                                                                      'assets/icons/Activities.png',
-                                                                      width: 20,
-                                                                      height:
-                                                                          20,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              Text(
-                                                                "All Projects",
-                                                              ),
-                                                            ],
+                                                        Text(
+                                                          'Select to explore',
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            // color: Color(0XFF000000),
                                                           ),
                                                         ),
                                                       ],
                                                     ),
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          selectedValue =
-                                                              "option 1";
-                                                        });
-                                                      },
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets.only(
-                                                              right: 20.0,
-                                                            ),
-                                                        child: Container(
-                                                          width: 22,
-                                                          height: 22,
-                                                          decoration: BoxDecoration(
-                                                            shape:
-                                                                BoxShape.circle,
-                                                            border: Border.all(
-                                                              color:
-                                                                  selectedValue ==
-                                                                      "option 1"
-                                                                  ? Color(
-                                                                      0xFFE8E8E8,
-                                                                    )
-                                                                  : Color(
-                                                                      0xFFE8E8E8,
-                                                                    ),
-                                                              width: 3,
-                                                            ),
-                                                          ),
-                                                          child:
-                                                              selectedValue ==
-                                                                  "option 1"
-                                                              ? Center(
+                                                  ],
+                                                ),
+                                              ),
+
+                                              AppBorder(
+                                                color: Color(0xFFEBEBEB),
+                                              ),
+
+                                              Column(
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Column(
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets.symmetric(
+                                                                  horizontal:
+                                                                      20.0,
+                                                                  vertical: 25,
+                                                                ),
+                                                            child: Row(
+                                                              children: [
+                                                                Padding(
+                                                                  padding:
+                                                                      const EdgeInsets.only(
+                                                                        right:
+                                                                            30.0,
+                                                                      ),
                                                                   child: Container(
-                                                                    width: 9,
-                                                                    height: 9,
+                                                                    width: 35,
+                                                                    height: 35,
                                                                     decoration: BoxDecoration(
-                                                                      shape: BoxShape
-                                                                          .circle,
                                                                       color: Color(
-                                                                        0xFF3F2FBB, // inner dot
+                                                                        0xFFF3F3F3,
+                                                                      ),
+                                                                      borderRadius:
+                                                                          BorderRadius.all(
+                                                                            Radius.circular(
+                                                                              20,
+                                                                            ),
+                                                                          ),
+                                                                    ),
+                                                                    child: Padding(
+                                                                      padding:
+                                                                          const EdgeInsets.all(
+                                                                            8.0,
+                                                                          ),
+                                                                      child: Image.asset(
+                                                                        'assets/icons/Activities.png',
+                                                                        width:
+                                                                            20,
+                                                                        height:
+                                                                            20,
                                                                       ),
                                                                     ),
                                                                   ),
-                                                                )
-                                                              : null,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-
-                                                AppBorder(
-                                                  color: Color(0xFFEBEBEB),
-                                                ),
-                                              ],
-                                            ),
-
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.symmetric(
-                                                            horizontal: 20.0,
-                                                            vertical: 25,
-                                                          ),
-                                                      child: Row(
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets.only(
-                                                                  right: 30.0,
                                                                 ),
-                                                            child: Container(
-                                                              width: 35,
-                                                              height: 35,
-                                                              decoration: BoxDecoration(
-                                                                color: Color(
-                                                                  0xFFF3F3F3,
+                                                                Text(
+                                                                  "All Projects",
                                                                 ),
-                                                                borderRadius:
-                                                                    BorderRadius.all(
-                                                                      Radius.circular(
-                                                                        20,
-                                                                      ),
-                                                                    ),
-                                                              ),
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets.all(
-                                                                      8.0,
-                                                                    ),
-                                                                child: Image.asset(
-                                                                  'assets/icons/Fire@3x.png',
-                                                                  width: 20,
-                                                                  height: 20,
-                                                                ),
-                                                              ),
+                                                              ],
                                                             ),
-                                                          ),
-                                                          Text(
-                                                            "Ndondo Cup Project 2025",
                                                           ),
                                                         ],
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    setState(() {
-                                                      selectedValue =
-                                                          "option 2";
-                                                    });
-                                                  },
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                          right: 20.0,
-                                                        ),
-                                                    child: Container(
-                                                      width: 22,
-                                                      height: 22,
-                                                      decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        border: Border.all(
-                                                          color:
-                                                              selectedValue ==
-                                                                  "option 2"
-                                                              ? Color(
-                                                                  0xFFE8E8E8,
-                                                                )
-                                                              : Color(
-                                                                  0xFFE8E8E8,
-                                                                ),
-                                                          width: 3,
-                                                        ),
-                                                      ),
-                                                      child:
-                                                          selectedValue ==
-                                                              "option 2"
-                                                          ? Center(
-                                                              child: Container(
-                                                                width: 9,
-                                                                height: 9,
-                                                                decoration: BoxDecoration(
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                  color: Color(
-                                                                    0xFF3F2FBB, // inner dot
-                                                                  ),
-                                                                ),
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          setState(() {
+                                                            selectedValue =
+                                                                "option 1";
+                                                          });
+                                                        },
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets.only(
+                                                                right: 20.0,
                                                               ),
-                                                            )
-                                                          : null,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-
-                                            AppBorder(color: Color(0xFFEBEBEB)),
-
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Column(
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.symmetric(
-                                                            horizontal: 20.0,
-                                                            vertical: 25,
-                                                          ),
-                                                      child: Row(
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets.only(
-                                                                  right: 30.0,
-                                                                ),
-                                                            child: Container(
-                                                              width: 35,
-                                                              height: 35,
-                                                              decoration: BoxDecoration(
-                                                                color: Color(
-                                                                  0xFFF3F3F3,
-                                                                ),
-                                                                borderRadius:
-                                                                    BorderRadius.all(
-                                                                      Radius.circular(
-                                                                        20,
+                                                          child: Container(
+                                                            width: 22,
+                                                            height: 22,
+                                                            decoration: BoxDecoration(
+                                                              shape: BoxShape
+                                                                  .circle,
+                                                              border: Border.all(
+                                                                color:
+                                                                    selectedValue ==
+                                                                        "option 1"
+                                                                    ? Color(
+                                                                        0xFFE8E8E8,
+                                                                      )
+                                                                    : Color(
+                                                                        0xFFE8E8E8,
+                                                                      ),
+                                                                width: 3,
+                                                              ),
+                                                            ),
+                                                            child:
+                                                                selectedValue ==
+                                                                    "option 1"
+                                                                ? Center(
+                                                                    child: Container(
+                                                                      width: 9,
+                                                                      height: 9,
+                                                                      decoration: BoxDecoration(
+                                                                        shape: BoxShape
+                                                                            .circle,
+                                                                        color: Color(
+                                                                          0xFF3F2FBB, // inner dot
+                                                                        ),
                                                                       ),
                                                                     ),
-                                                              ),
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets.all(
-                                                                      8.0,
-                                                                    ),
-                                                                child: Image.asset(
-                                                                  'assets/icons/Compass_fill@3x.png',
-                                                                  width: 20,
-                                                                  height: 20,
+                                                                  )
+                                                                : null,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+
+                                                  AppBorder(
+                                                    color: Color(0xFFEBEBEB),
+                                                  ),
+                                                ],
+                                              ),
+
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets.symmetric(
+                                                              horizontal: 20.0,
+                                                              vertical: 25,
+                                                            ),
+                                                        child: Row(
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets.only(
+                                                                    right: 30.0,
+                                                                  ),
+                                                              child: Container(
+                                                                width: 35,
+                                                                height: 35,
+                                                                decoration: BoxDecoration(
+                                                                  color: Color(
+                                                                    0xFFF3F3F3,
+                                                                  ),
+                                                                  borderRadius:
+                                                                      BorderRadius.all(
+                                                                        Radius.circular(
+                                                                          20,
+                                                                        ),
+                                                                      ),
+                                                                ),
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets.all(
+                                                                        8.0,
+                                                                      ),
+                                                                  child: Image.asset(
+                                                                    'assets/icons/Fire@3x.png',
+                                                                    width: 20,
+                                                                    height: 20,
+                                                                  ),
                                                                 ),
                                                               ),
                                                             ),
+                                                            Text(
+                                                              "Ndondo Cup Project 2025",
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        selectedValue =
+                                                            "option 2";
+                                                      });
+                                                    },
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                            right: 20.0,
                                                           ),
-                                                          Text(
-                                                            "Mix By Yas re-branding",
+                                                      child: Container(
+                                                        width: 22,
+                                                        height: 22,
+                                                        decoration: BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          border: Border.all(
+                                                            color:
+                                                                selectedValue ==
+                                                                    "option 2"
+                                                                ? Color(
+                                                                    0xFFE8E8E8,
+                                                                  )
+                                                                : Color(
+                                                                    0xFFE8E8E8,
+                                                                  ),
+                                                            width: 3,
                                                           ),
-                                                        ],
+                                                        ),
+                                                        child:
+                                                            selectedValue ==
+                                                                "option 2"
+                                                            ? Center(
+                                                                child: Container(
+                                                                  width: 9,
+                                                                  height: 9,
+                                                                  decoration: BoxDecoration(
+                                                                    shape: BoxShape
+                                                                        .circle,
+                                                                    color: Color(
+                                                                      0xFF3F2FBB, // inner dot
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            : null,
                                                       ),
                                                     ),
-                                                  ],
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    setState(() {
-                                                      selectedValue =
-                                                          "option 3";
-                                                    });
-                                                  },
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                          right: 20.0,
-                                                        ),
-                                                    child: Container(
-                                                      width: 22,
-                                                      height: 22,
-                                                      decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        border: Border.all(
-                                                          color:
-                                                              selectedValue ==
-                                                                  "option 3"
-                                                              ? Color(
-                                                                  0xFFE8E8E8,
-                                                                )
-                                                              : Color(
-                                                                  0xFFE8E8E8,
-                                                                ),
-                                                          width: 3,
-                                                        ),
-                                                      ),
-                                                      child:
-                                                          selectedValue ==
-                                                              "option 3"
-                                                          ? Center(
+                                                  ),
+                                                ],
+                                              ),
+
+                                              AppBorder(
+                                                color: Color(0xFFEBEBEB),
+                                              ),
+
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Column(
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets.symmetric(
+                                                              horizontal: 20.0,
+                                                              vertical: 25,
+                                                            ),
+                                                        child: Row(
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets.only(
+                                                                    right: 30.0,
+                                                                  ),
                                                               child: Container(
-                                                                width: 9,
-                                                                height: 9,
+                                                                width: 35,
+                                                                height: 35,
                                                                 decoration: BoxDecoration(
-                                                                  shape: BoxShape
-                                                                      .circle,
                                                                   color: Color(
-                                                                    0xFF3F2FBB, // inner dot
+                                                                    0xFFF3F3F3,
+                                                                  ),
+                                                                  borderRadius:
+                                                                      BorderRadius.all(
+                                                                        Radius.circular(
+                                                                          20,
+                                                                        ),
+                                                                      ),
+                                                                ),
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets.all(
+                                                                        8.0,
+                                                                      ),
+                                                                  child: Image.asset(
+                                                                    'assets/icons/Compass_fill@3x.png',
+                                                                    width: 20,
+                                                                    height: 20,
                                                                   ),
                                                                 ),
                                                               ),
-                                                            )
-                                                          : null,
+                                                            ),
+                                                            Text(
+                                                              "Mix By Yas re-branding",
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        selectedValue =
+                                                            "option 3";
+                                                      });
+                                                    },
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                            right: 20.0,
+                                                          ),
+                                                      child: Container(
+                                                        width: 22,
+                                                        height: 22,
+                                                        decoration: BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          border: Border.all(
+                                                            color:
+                                                                selectedValue ==
+                                                                    "option 3"
+                                                                ? Color(
+                                                                    0xFFE8E8E8,
+                                                                  )
+                                                                : Color(
+                                                                    0xFFE8E8E8,
+                                                                  ),
+                                                            width: 3,
+                                                          ),
+                                                        ),
+                                                        child:
+                                                            selectedValue ==
+                                                                "option 3"
+                                                            ? Center(
+                                                                child: Container(
+                                                                  width: 9,
+                                                                  height: 9,
+                                                                  decoration: BoxDecoration(
+                                                                    shape: BoxShape
+                                                                        .circle,
+                                                                    color: Color(
+                                                                      0xFF3F2FBB, // inner dot
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            : null,
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                                                ],
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -506,7 +528,6 @@ class _ActivitiesState extends State<Activities> {
                           width: 15,
                         ),
                       ),
-
                       const SizedBox(width: 10),
                       const Text(
                         "All Projects",
@@ -581,7 +602,9 @@ class _ActivitiesState extends State<Activities> {
                                     Color(0xFF312684),
                                   ),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  context.go("/request_money");
+                                },
                                 child: Row(
                                   spacing: 10,
                                   mainAxisSize: MainAxisSize.min,
@@ -667,7 +690,9 @@ class _ActivitiesState extends State<Activities> {
                                     children: [
                                       IconButton(
                                         color: Color(0xFFEAE7FF),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          context.goNamed("invoice");
+                                        },
                                         icon: Image.asset(
                                           'assets/icons/Paper.png',
                                           width: 40,
@@ -690,7 +715,9 @@ class _ActivitiesState extends State<Activities> {
                                   Column(
                                     children: [
                                       IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          context.goNamed("requested");
+                                        },
                                         icon: Image.asset(
                                           'assets/icons/Send_1.png',
                                           width: 40,

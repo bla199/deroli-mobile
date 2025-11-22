@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../components/main.dart';
 
-class Requested extends StatefulWidget {
-  const Requested({super.key});
+class Invoices extends StatefulWidget {
+  const Invoices({super.key});
 
   @override
-  State<Requested> createState() => _RequestedState();
+  State<Invoices> createState() => _InvoicesState();
 }
 
 final SearchTextController = TextEditingController();
 
-class _RequestedState extends State<Requested> {
+class _InvoicesState extends State<Invoices> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,7 +63,7 @@ class _RequestedState extends State<Requested> {
                 Row(
                   children: [
                     Text(
-                      'Requested',
+                      'Invoices',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w900,
@@ -95,28 +95,18 @@ class _RequestedState extends State<Requested> {
           // SizedBox(height: 30),
           Column(
             children: [
-              InkWell(
-                onTap: () {
-                  context.goNamed("full_request_details");
-                },
-                child: RequestedNotification(
-                  avatarColor: Color(0xFFF0FFEA),
-                  firstLetter: "F",
-                  state: 'Pending',
-                  stateColor: Color(0xFFE3B644),
-                ),
+              RequestedNotification(
+                avatarColor: Color(0xFFF0FFEA),
+                firstLetter: "F",
+                state: 'Pending',
+                stateColor: Color(0xFFE3B644),
               ),
 
-              InkWell(
-                onTap: () {
-                  context.goNamed("full_request_details");
-                },
-                child: RequestedNotification(
-                  avatarColor: Color(0xFFF0FFEA),
-                  firstLetter: "D",
-                  state: 'Declined',
-                  stateColor: Color(0xFFE14345),
-                ),
+              RequestedNotification(
+                avatarColor: Color(0xFFF0FFEA),
+                firstLetter: "D",
+                state: 'Declined',
+                stateColor: Color(0xFFE14345),
               ),
             ],
           ),

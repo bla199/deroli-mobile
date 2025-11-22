@@ -1,8 +1,25 @@
+import 'package:deroli_mobile/network/services/moneyRequest.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../components/main.dart';
 
 class AmountPage extends StatefulWidget {
-  const AmountPage({super.key});
+  final String projectLabel;
+  final String projectDescription;
+  final String vendorLabel;
+  final String vendorDescription;
+  final String categoryLabel;
+  final String categoryDescription;
+
+  const AmountPage({
+    super.key,
+    this.projectLabel = '',
+    this.projectDescription = '',
+    this.vendorLabel = '',
+    this.vendorDescription = '',
+    this.categoryLabel = '',
+    this.categoryDescription = '',
+  });
 
   @override
   State<AmountPage> createState() => _AmountPageState();
@@ -25,7 +42,9 @@ class _AmountPageState extends State<AmountPage> {
       appBar: AppBar(
         backgroundColor: const Color(0xFFF9F9F9),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            context.go("/request_money");
+          },
           icon: const Icon(Icons.arrow_back),
         ),
         centerTitle: true,
@@ -51,21 +70,27 @@ class _AmountPageState extends State<AmountPage> {
                   ),
                   padding: const EdgeInsets.all(15),
                   child: Column(
-                    children: const [
+                    children: [
                       FromToFor(
-                        title: "Mix By Yas 3D Mockups- June..",
+                        title: widget.projectDescription.isNotEmpty
+                            ? widget.projectDescription
+                            : "Select a project",
                         directions: "From",
-                        details: "Project Number ****1829010",
-                        icon: Icons.abc,
+                        details: widget.projectLabel.isNotEmpty
+                            ? "Project ${widget.projectLabel}"
+                            : "Project Number",
                       ),
                       SizedBox(height: 10),
                       AppBorder(color: Color(0xFFEFEFEF)),
                       SizedBox(height: 10),
                       FromToFor(
-                        title: "Jengo Company Limited",
+                        title: widget.vendorLabel.isNotEmpty
+                            ? widget.vendorLabel
+                            : "Select a vendor",
                         directions: "To",
-                        details: "CRDB|025C8433337739",
-                        icon: Icons.wallet,
+                        details: widget.vendorDescription.isNotEmpty
+                            ? widget.vendorDescription
+                            : "Vendor details",
                       ),
                     ],
                   ),
@@ -80,11 +105,14 @@ class _AmountPageState extends State<AmountPage> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   padding: const EdgeInsets.all(15),
-                  child: const FromToFor(
-                    title: "Transport",
+                  child: FromToFor(
+                    title: widget.categoryLabel.isNotEmpty
+                        ? widget.categoryLabel
+                        : "Select a category",
                     directions: "For",
-                    details: "Admin Fees",
-                    icon: Icons.description,
+                    details: widget.categoryDescription.isNotEmpty
+                        ? widget.categoryDescription
+                        : "Category details",
                   ),
                 ),
 
@@ -150,7 +178,23 @@ class _AmountPageState extends State<AmountPage> {
                       ),
                     ),
                     onPressed: () {
-                      // Handle request money logic
+                      // Get the amount from the text field
+                      String amount = _controller.text.trim();
+                      projectPayment();
+
+                      // Pass all details to receipt page
+                      context.push(
+                        "/receipt",
+                        extra: {
+                          'projectLabel': widget.projectLabel,
+                          'projectDescription': widget.projectDescription,
+                          'vendorLabel': widget.vendorLabel,
+                          'vendorDescription': widget.vendorDescription,
+                          'categoryLabel': widget.categoryLabel,
+                          'categoryDescription': widget.categoryDescription,
+                          'amount': amount,
+                        },
+                      );
                     },
                     child: const Text(
                       "Request Money",

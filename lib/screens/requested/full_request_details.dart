@@ -1,6 +1,7 @@
 import 'package:deroli_mobile/components/general/dashed-border.dart';
 import 'package:deroli_mobile/components/main.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class FullRequestDetails extends StatefulWidget {
   const FullRequestDetails({super.key});
@@ -15,7 +16,12 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFFFFFF),
-        leading: Icon(Icons.arrow_back),
+        leading: IconButton(
+          onPressed: () {
+            context.goNamed("requested");
+          },
+          icon: Icon(Icons.arrow_back),
+        ),
         actions: [Image.asset('assets/icons/Chat.png', width: 30, height: 30)],
         actionsPadding: EdgeInsets.only(right: 30),
       ),
@@ -375,18 +381,12 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                       Radius.circular(20),
                                     ),
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 14.0,
-                                      vertical: 2,
-                                    ),
-                                    child: Text(
-                                      '0146362662',
-                                      style: TextStyle(
-                                        fontSize: 14,
+                                  child: Text(
+                                    '0146362662',
+                                    style: TextStyle(
+                                      fontSize: 14,
 
-                                        // fontWeight: FontWeight.w000,
-                                      ),
+                                      // fontWeight: FontWeight.w000,
                                     ),
                                   ),
                                 ),
@@ -411,18 +411,12 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                       Radius.circular(20),
                                     ),
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 14.0,
-                                      vertical: 2,
-                                    ),
-                                    child: Text(
-                                      'Fen Company Limited',
-                                      style: TextStyle(
-                                        fontSize: 14,
+                                  child: Text(
+                                    'Fen Company Limited',
+                                    style: TextStyle(
+                                      fontSize: 14,
 
-                                        // fontWeight: FontWeight.w000,
-                                      ),
+                                      // fontWeight: FontWeight.w000,
                                     ),
                                   ),
                                 ),
@@ -577,18 +571,12 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                       Radius.circular(20),
                                     ),
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 14.0,
-                                      vertical: 2,
-                                    ),
-                                    child: Text(
-                                      'Fuel fees for proc and dessy',
-                                      style: TextStyle(
-                                        fontSize: 14,
+                                  child: Text(
+                                    'Fuel fees for proc and dessy',
+                                    style: TextStyle(
+                                      fontSize: 14,
 
-                                        // fontWeight: FontWeight.w000,
-                                      ),
+                                      // fontWeight: FontWeight.w000,
                                     ),
                                   ),
                                 ),
