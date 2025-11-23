@@ -20,18 +20,18 @@ class Vendors {
   String get accountNumber => paymentAccount?.accountNumber ?? '';
 
   Vendors({
-    required this.vendorId,
-    required this.name,
-    required this.email,
-    required this.phone,
-    required this.region,
-    required this.street,
-    required this.address,
-    required this.active,
-    required this.tinNumber,
-    required this.vrnNumber,
-    required this.vatNumber,
-    required this.organization,
+    this.vendorId = '',
+    this.name = '',
+    this.email = '',
+    this.phone = '',
+    this.region = '',
+    this.street = '',
+    this.address = '',
+    this.active = true,
+    this.tinNumber = '',
+    this.vrnNumber = '',
+    this.vatNumber = '',
+    this.organization = '',
     this.paymentAccount,
   });
 

@@ -19,6 +19,8 @@ class HeaderAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double? titleFontSize;
   final bool? isBold;
   final Color backgroundColor;
+  final FontWeight titleFontWeight;
+  final String titleFontFamily;
   HeaderAppBar({
     super.key,
     this.title,
@@ -32,6 +34,8 @@ class HeaderAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.titleFontSize,
     this.isBold,
     this.backgroundColor = Colors.transparent,
+    this.titleFontWeight = FontWeight.w600,
+    this.titleFontFamily = 'IBMPlexSans',
   });
 
   @override
@@ -59,8 +63,9 @@ class HeaderAppBar extends StatelessWidget implements PreferredSizeWidget {
                 )
               : Styles.normalText(context).copyWith(
                   fontSize: Layout.getHeight(context, titleFontSize ?? 14),
-                  fontWeight: FontWeight.w600,
+                  fontWeight: titleFontWeight,
                   color: Colors.black,
+                  fontFamily: titleFontFamily,
                 ),
         ),
         centerTitle: isCentered ?? false,

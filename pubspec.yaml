@@ -19,6 +19,7 @@ dependencies:
   gap: ^3.0.1
   provider: ^6.1.5+1
   drops: ^0.0.5
+  icons_plus: ^5.0.0
 
 dev_dependencies:
   flutter_test:

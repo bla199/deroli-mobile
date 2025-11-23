@@ -1,13 +1,16 @@
-import 'package:deroli_mobile/services/getCategories.dart';
+import 'package:deroli_mobile/components/general/app_bar.dart';
+import 'package:deroli_mobile/components/general/back_arrow.dart';
 import 'package:deroli_mobile/services/getVendor.dart';
+import 'package:deroli_mobile/controller/index.dart';
+import 'package:deroli_mobile/components/general/input_take.dart';
+import 'package:deroli_mobile/components/general/category_modal.dart';
+import 'package:deroli_mobile/components/general/modal.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../components/main.dart';
 import 'package:dotted_border/dotted_border.dart';
 import '../../models/project_modal.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:deroli_mobile/utils/index.dart';
+import 'package:provider/provider.dart';
 
 class RequestMoney extends StatefulWidget {
   const RequestMoney({super.key, required});
@@ -29,84 +32,85 @@ class _RequestMoneyState extends State<RequestMoney> {
   String? selectedCategoryLabel;
   String? selectedCategoryDescription;
 
-  // Helper to get full project ID from masked ID
-  Future<String?> _getFullProjectId(String maskedId) async {
-    if (maskedIdToProjectId.containsKey(maskedId)) {
-      return maskedIdToProjectId[maskedId];
-    }
+  // Convert projects from controller to OptionItem list
+  List<OptionItem> _projectsToOptionItems(List<Project> projects) {
+    maskedIdToProjectId.clear(); // Clear previous mappings
 
-    // Fetch projects and build the map
-    try {
-      final response = await http.post(
-        Uri.parse(ApiUrls.getProjects),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({
-          "organization_id": "bb947d14-a06d-11f0-8de9-0242ac120002",
-          "user_id": "039eba798dd24601abca5a3260d4a67e",
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
-        List<Project> projects = (responseData['projects'] as List? ?? [])
-            .map((project) => Project.fromJson(project))
-            .toList();
-
-        // Build map of masked IDs to full project IDs
-        for (var project in projects) {
-          String projectId = project.projectId;
-          String masked;
-          if (projectId.length > 8) {
-            String lastPart = projectId.substring(projectId.length - 8);
-            masked = '********$lastPart';
-          } else {
-            masked = projectId;
-          }
-          maskedIdToProjectId[masked] = projectId;
-        }
-
-        return maskedIdToProjectId[maskedId];
+    return projects.map((project) {
+      // Create label with masked project_id
+      String projectId = project.projectId;
+      String maskedId;
+      if (projectId.length > 8) {
+        String lastPart = projectId.substring(projectId.length - 8);
+        maskedId = '********$lastPart';
+      } else {
+        maskedId = projectId;
       }
-    } catch (e) {
-      print("Error fetching projects: $e");
-    }
-    return null;
+
+      // Store mapping
+      maskedIdToProjectId[maskedId] = projectId;
+
+      // Create description with categories names
+      List<String> descriptionParts = [];
+      if (project.categories.isNotEmpty) {
+        String categoriesList = project.categories
+            .map((c) => c.name)
+            .take(3)
+            .join(', ');
+        if (project.categories.length > 3) {
+          categoriesList += '...';
+        }
+        descriptionParts.add(categoriesList);
+      }
+      String description = descriptionParts.join(' | ');
+
+      return OptionItem(label: description, description: maskedId);
+    }).toList();
+  }
+
+  // Helper to get full project ID from masked ID
+  String? _getFullProjectId(String maskedId) {
+    return maskedIdToProjectId[maskedId];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      backgroundColor: Color(0xFFF9F9F9),
+      appBar: HeaderAppBar(
+        title: "Request Money",
+        isCentered: true,
+        titleFontFamily: 'Fredoka',
+        titleFontSize: 16,
+        titleFontWeight: FontWeight.w600,
         backgroundColor: Color(0xFFF9F9F9),
-        centerTitle: true,
-        title: PageTitle(text: "Request Money"),
-        leading: IconButton(
-          onPressed: () {
-            context.pop();
-          },
-          icon: Icon(Icons.arrow_back),
-        ),
+        leading: BackArrow(context: context),
       ),
 
       body: Column(
         children: [
-          InputTake(
-            iconAsset: 'assets/icons/folder.png',
-            title: "From - Project",
-            label: "Select a project",
-            // Use fetchOptions to pull data from server when clicked
-            fetchOptions: () async {
-              return await getProjects();
-            },
-            onSelectionChanged: (label, description) async {
-              // Label contains the masked project ID (e.g., "********48940f38")
-              // Get the full project ID
-              String? fullProjectId = await _getFullProjectId(label);
-              setState(() {
-                selectedProjectId = fullProjectId;
-                selectedProjectLabel = label; // Masked project ID
-                selectedProjectDescription = description; // Categories
-              });
+          Consumer<ProjectsController>(
+            builder: (context, projectsController, child) {
+              return InputTake(
+                iconAsset: 'assets/icons/folder.png',
+                title: "From - Project",
+                label: "Select a project",
+                // Use projects from controller
+                fetchOptions: () async {
+                  final projects = projectsController.getProjects;
+                  return _projectsToOptionItems(projects);
+                },
+                onSelectionChanged: (label, description) {
+                  // Label contains the masked project ID (e.g., "********48940f38")
+                  // Get the full project ID
+                  String? fullProjectId = _getFullProjectId(label);
+                  setState(() {
+                    selectedProjectId = fullProjectId;
+                    selectedProjectLabel = label; // Masked project ID
+                    selectedProjectDescription = description; // Categories
+                  });
+                },
+              );
             },
           ),
 
@@ -126,18 +130,30 @@ class _RequestMoneyState extends State<RequestMoney> {
             },
           ),
 
-          InputTake(
-            icon: Icons.attach_money,
-            title: "Category",
-            label: "Select category and sub-category",
-            fetchOptions: () async {
-              return await getCategories(projectId: selectedProjectId);
-            },
-            onSelectionChanged: (label, description) {
-              setState(() {
-                selectedCategoryLabel = label; // Category name
-                selectedCategoryDescription = description; // Budget info
-              });
+          Consumer<ProjectsController>(
+            builder: (context, projectsController, child) {
+              return InputTake(
+                icon: Icons.attach_money,
+                title: "Category",
+                label:
+                    selectedCategoryLabel ?? "Select category and sub-category",
+                descrp: selectedCategoryDescription ?? "",
+                onTap: () {
+                  bottomModal(
+                    context: context,
+                    child: CategoryModal(
+                      projectId: selectedProjectId,
+                      onCategorySelected: (categoryName, description) {
+                        setState(() {
+                          selectedCategoryLabel = categoryName;
+                          selectedCategoryDescription = description;
+                        });
+                      },
+                    ),
+                    blurColor: const Color.fromRGBO(212, 212, 212, 0.51),
+                  );
+                },
+              );
             },
           ),
 

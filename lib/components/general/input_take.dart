@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:deroli_mobile/utils/index.dart';
 export 'input_take.dart';
 
 class OptionItem {
@@ -20,6 +21,7 @@ class InputTake extends StatefulWidget {
     this.options = const [],
     this.fetchOptions,
     this.onSelectionChanged,
+    this.onTap,
   });
   final String placeholder;
   final String descrp;
@@ -30,187 +32,25 @@ class InputTake extends StatefulWidget {
   final List<OptionItem> options;
   final Future<List<OptionItem>> Function()? fetchOptions;
   final void Function(String label, String description)? onSelectionChanged;
+  final VoidCallback? onTap;
 
   @override
   State<InputTake> createState() => _InputTakeState();
 }
 
 class _InputTakeState extends State<InputTake> {
-  late String _currentLabel;
-  late String _currentDescrp;
-
   @override
-  void initState() {
-    super.initState();
-    _currentLabel = widget.label;
-    _currentDescrp = widget.descrp;
+  void didUpdateWidget(InputTake oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Update state when widget properties change
   }
 
   /// Check if user has made a selection (label changed from initial)
+  /// Selection is made when description is provided or label doesn't start with "Select"
   bool get _hasSelected =>
-      _currentLabel != widget.label || _currentDescrp != widget.descrp;
-
-  void _showOptionsModal() async {
-    // If using hardcoded options, check if empty
-    if (widget.fetchOptions == null && widget.options.isEmpty) {
-      return;
-    }
-
-    // Initialize modal state
-    bool isLoading = widget.fetchOptions != null;
-    List<OptionItem> modalOptions = widget.fetchOptions == null
-        ? widget.options
-        : [];
-    bool hasFetched = false;
-
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext modalContext) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setModalState) {
-            // Load options when modal opens if fetchOptions is provided (only once)
-            if (widget.fetchOptions != null && isLoading && !hasFetched) {
-              hasFetched = true;
-              widget.fetchOptions!()
-                  .then((options) {
-                    if (mounted) {
-                      setModalState(() {
-                        modalOptions = options;
-                        isLoading = false;
-                      });
-                    }
-                  })
-                  .catchError((e) {
-                    if (mounted) {
-                      setModalState(() {
-                        isLoading = false;
-                      });
-                      // ScaffoldMessenger.of(context).showSnackBar(
-                      //   SnackBar(
-                      //     content: Text(
-                      //       'Failed to load options: ${e.toString()}',
-                      //     ),
-                      //     backgroundColor: Colors.red,
-                      //   ),
-                      // );
-                    }
-                  });
-            }
-
-            return Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Handle bar
-                  Container(
-                    margin: EdgeInsets.only(top: 12),
-                    width: 40,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                  // Title
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Text(
-                      widget.title,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  // Options list
-                  if (isLoading)
-                    Padding(
-                      padding: const EdgeInsets.all(40.0),
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: Color(0xFF312684),
-                        ),
-                      ),
-                    )
-                  else if (modalOptions.isEmpty)
-                    Padding(
-                      padding: const EdgeInsets.all(40.0),
-                      child: Center(child: Text('No options available')),
-                    )
-                  else
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: modalOptions.length,
-                      itemBuilder: (context, index) {
-                        final option = modalOptions[index];
-                        return InkWell(
-                          onTap: () {
-                            setState(() {
-                              _currentLabel = option.label;
-                              _currentDescrp = option.description;
-                            });
-                            // Call callback if provided
-                            widget.onSelectionChanged?.call(
-                              option.label,
-                              option.description,
-                            );
-                            Navigator.pop(context);
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 16,
-                            ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        option.label,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      if (option.description.isNotEmpty) ...[
-                                        SizedBox(height: 4),
-                                        Text(
-                                          option.description,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Colors.black54,
-                                          ),
-                                        ),
-                                      ],
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  SizedBox(height: 20),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
+      widget.descrp.isNotEmpty ||
+      (widget.label.isNotEmpty &&
+          !widget.label.toLowerCase().startsWith('select'));
 
   @override
   Widget build(BuildContext context) {
@@ -220,18 +60,24 @@ class _InputTakeState extends State<InputTake> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Title
-          Text(widget.title, style: const TextStyle(fontSize: 12)),
-          const SizedBox(height: 8),
+          Text(
+            widget.title,
+            style: Styles.normalText(context).copyWith(fontSize: 13),
+          ),
+          SizedBox(height: Layout.getHeight(context, 8)),
 
           // Input Row
           InkWell(
-            onTap: (widget.options.isNotEmpty || widget.fetchOptions != null)
-                ? _showOptionsModal
-                : null,
+            onTap: widget.onTap ?? () {},
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
+              padding: EdgeInsets.symmetric(
+                horizontal: Layout.getWidth(context, 10),
+                vertical: Layout.getHeight(context, 14),
+              ),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(
+                  Layout.getHeight(context, 30),
+                ),
                 color: Colors.white,
               ),
               child: Row(
@@ -252,32 +98,34 @@ class _InputTakeState extends State<InputTake> {
                             height: 15,
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        SizedBox(width: Layout.getWidth(context, 8)),
                       ],
 
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            _currentLabel,
+                            widget.label,
                             style: TextStyle(
                               color: _hasSelected
                                   ? Colors.black
                                   : Color(0xFFB7B7B7),
-                              fontSize: 13,
+                              fontSize: Layout.getHeight(context, 13),
                               fontWeight: _hasSelected
                                   ? FontWeight.w500
                                   : FontWeight.normal,
                             ),
                           ),
-                          if (_currentDescrp.isNotEmpty)
+                          if (widget.descrp.isNotEmpty)
                             Text(
-                              _currentDescrp,
+                              widget.descrp,
                               style: TextStyle(
                                 color: _hasSelected
                                     ? Colors.black54
                                     : Colors.black26,
-                                fontSize: _hasSelected ? 12 : 10,
+                                fontSize: _hasSelected
+                                    ? Layout.getHeight(context, 12)
+                                    : Layout.getHeight(context, 10),
                               ),
                             ),
                         ],
@@ -285,11 +133,13 @@ class _InputTakeState extends State<InputTake> {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
+                    padding: EdgeInsets.only(
+                      right: Layout.getWidth(context, 8),
+                    ),
                     child: Image.asset(
                       'assets/icons/ARC.png',
-                      width: 25,
-                      height: 25,
+                      width: Layout.getWidth(context, 25),
+                      height: Layout.getHeight(context, 25),
                     ),
                   ), //  stays at row end
                 ],

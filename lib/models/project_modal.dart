@@ -17,21 +17,21 @@ class Project {
   final String user;
 
   Project({
-    required this.projectId,
-    required this.payments,
-    required this.categories,
-    required this.projectTeam,
+    this.projectId = '',
+    this.payments = const [],
+    this.categories = const [],
+    this.projectTeam = const [],
     this.client,
-    required this.name,
-    required this.registered,
-    required this.updated,
-    required this.active,
-    required this.projectCode,
-    required this.projectBudget,
-    required this.projectAllocation,
-    required this.projectType,
-    required this.organization,
-    required this.user,
+    this.name = '',
+    this.registered = '',
+    this.updated = '',
+    this.active = true,
+    this.projectCode = '',
+    this.projectBudget = '',
+    this.projectAllocation = '',
+    this.projectType = '',
+    this.organization = '',
+    this.user = '',
   });
 
   Map<String, dynamic> toJson() {
@@ -366,19 +366,19 @@ class Vendor {
   final String organization;
 
   Vendor({
-    required this.vendorId,
+    this.vendorId = '',
     this.paymentAccount,
-    required this.name,
-    required this.email,
-    required this.phone,
-    required this.region,
-    required this.street,
-    required this.address,
-    required this.active,
-    required this.tinNumber,
-    required this.vrnNumber,
-    required this.vatNumber,
-    required this.organization,
+    this.name = '',
+    this.email = '',
+    this.phone = '',
+    this.region = '',
+    this.street = '',
+    this.address = '',
+    this.active = true,
+    this.tinNumber = '',
+    this.vrnNumber = '',
+    this.vatNumber = '',
+    this.organization = '',
   });
 
   Map<String, dynamic> toJson() {
@@ -525,13 +525,13 @@ class Category {
   final String project;
 
   Category({
-    required this.categoryId,
-    required this.subProjects,
-    required this.name,
-    required this.allocatedBudget,
-    required this.registered,
-    required this.balanceBudget,
-    required this.project,
+    this.categoryId = '',
+    this.subProjects = const [],
+    this.name = '',
+    this.allocatedBudget = '',
+    this.registered = '',
+    this.balanceBudget = '',
+    this.project = '',
   });
 
   Map<String, dynamic> toJson() {
