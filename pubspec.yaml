@@ -17,6 +17,8 @@ dependencies:
   flutter_screenutil: ^5.9.3
   auto_size_text: ^3.0.0
   gap: ^3.0.1
+  provider: ^6.1.5+1
+  drops: ^0.0.5
 
 dev_dependencies:
   flutter_test:

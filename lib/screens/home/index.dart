@@ -1,10 +1,13 @@
 import 'package:deroli_mobile/components/general/app_bar.dart';
+import 'package:deroli_mobile/controller/index.dart';
+import 'package:deroli_mobile/services/get_project.dart';
 import 'package:deroli_mobile/screens/home/card.dart';
 import 'package:deroli_mobile/screens/home/quick_actions.dart';
 import 'package:deroli_mobile/screens/home/recent_activities.dart';
 import 'package:deroli_mobile/screens/home/projects.dart';
 import 'package:deroli_mobile/utils/layout.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Activities extends StatefulWidget {
   const Activities({super.key});
@@ -14,6 +17,26 @@ class Activities extends StatefulWidget {
 }
 
 class _ActivitiesState extends State<Activities> {
+  @override
+  void initState() {
+    //call the expenseApi in the init state
+    final projectsController = Provider.of<ProjectsController>(
+      context,
+      listen: false,
+    );
+
+    //call the expenseFunction
+
+    // call debt function
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (projectsController.getProjects.isEmpty) {
+        getProjects(context: context, projectsController: projectsController);
+      }
+    });
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
