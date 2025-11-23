@@ -1,4 +1,4 @@
-import 'package:deroli_mobile/components/general/dashed-border.dart';
+import 'package:deroli_mobile/components/general/dashed_border.dart';
 import 'package:flutter/material.dart';
 export 'requested_Notification.dart';
 

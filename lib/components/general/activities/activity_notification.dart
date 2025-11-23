@@ -1,3 +1,4 @@
+import 'package:deroli_mobile/utils/index.dart';
 import 'package:flutter/material.dart';
 export 'activity_notification.dart';
 
@@ -12,31 +13,55 @@ class _ActivityNotificationState extends State<ActivityNotification> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 12.0),
+      padding: EdgeInsets.only(top: Layout.getHeight(context, 15)),
       child: Column(
         mainAxisSize: MainAxisSize.max,
 
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 13.0),
+            padding: EdgeInsets.symmetric(
+              horizontal: Layout.getWidth(context, 13),
+            ),
             child: Row(
               children: [
-                Image.asset('assets/icons/Not_doc.png', width: 35, height: 35),
+                SizedBox(
+                  width: Layout.getWidth(context, 35),
+                  height: Layout.getHeight(context, 35),
+                  child: IconButton(
+                    color: Colors.white,
+                    onPressed: () {},
+                    icon: Image.asset('assets/icons/Not_doc.png', width: 15),
+                    iconSize: Layout.getHeight(context, 3),
+                    style: IconButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        side: BorderSide(color: Color(0xFFEAE7FF), width: 1),
+                      ),
+                    ),
+                  ),
+                ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: Container(
-                    width: 280,
+                  padding: EdgeInsets.only(left: Layout.getWidth(context, 10)),
+                  child: SizedBox(
+                    width: Layout.getWidth(context, 280),
                     child: Column(
-                      spacing: 1,
+                      spacing: Layout.getHeight(context, 1),
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               "Invoice INV-000071",
-                              style: TextStyle(fontSize: 12),
+                              style: TextStyle(
+                                fontSize: Layout.getHeight(context, 12),
+                              ),
                             ),
-                            Text("Nov 7, 2025", style: TextStyle(fontSize: 12)),
+                            Text(
+                              "Nov 7, 2025",
+                              style: TextStyle(
+                                fontSize: Layout.getHeight(context, 12),
+                              ),
+                            ),
                           ],
                         ),
                         Row(
@@ -46,23 +71,27 @@ class _ActivityNotificationState extends State<ActivityNotification> {
                               TextSpan(
                                 children: [
                                   WidgetSpan(
-                                    child: const Text(
+                                    child: Text(
                                       "TZS",
                                       style: TextStyle(
-                                        fontSize: 12,
+                                        fontSize: Layout.getHeight(context, 12),
                                         color: Colors.black38,
                                       ),
                                     ),
                                     baseline: TextBaseline.alphabetic,
                                     alignment: PlaceholderAlignment.middle,
                                   ),
-                                  const WidgetSpan(child: SizedBox(width: 8)),
-                                  const TextSpan(
+                                  WidgetSpan(
+                                    child: SizedBox(
+                                      width: Layout.getWidth(context, 8),
+                                    ),
+                                  ),
+                                  TextSpan(
                                     text: "200,000",
                                     style: TextStyle(
                                       fontFamily: 'FredokaBold',
                                       // fontWeight: FontWeight.w600,
-                                      fontSize: 12,
+                                      fontSize: Layout.getHeight(context, 12),
                                     ),
                                   ),
                                 ],
@@ -72,7 +101,7 @@ class _ActivityNotificationState extends State<ActivityNotification> {
                             Text(
                               "21:00",
                               style: TextStyle(
-                                fontSize: 12,
+                                fontSize: Layout.getHeight(context, 12),
                                 color: Colors.black26,
                               ),
                             ),
@@ -85,7 +114,7 @@ class _ActivityNotificationState extends State<ActivityNotification> {
                             Text(
                               "Overdue",
                               style: TextStyle(
-                                fontSize: 12,
+                                fontSize: Layout.getHeight(context, 12),
                                 color: Colors.redAccent,
                               ),
                             ),

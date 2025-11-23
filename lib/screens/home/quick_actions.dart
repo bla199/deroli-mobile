@@ -1,3 +1,4 @@
+import 'package:deroli_mobile/utils/index.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -12,16 +13,19 @@ class _QuickActionsState extends State<QuickActions> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 40.0),
+      padding: EdgeInsets.only(top: Layout.getHeight(context, 50)),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30.0),
+        padding: EdgeInsets.symmetric(horizontal: Layout.getWidth(context, 30)),
         child: SizedBox(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Quick Actions", style: TextStyle(fontSize: 14)),
+              Text(
+                "Quick Actions",
+                style: TextStyle(fontSize: Layout.getHeight(context, 14)),
+              ),
               Padding(
-                padding: const EdgeInsets.only(top: 10.0),
+                padding: EdgeInsets.only(top: Layout.getHeight(context, 10)),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -29,9 +33,11 @@ class _QuickActionsState extends State<QuickActions> {
                   ),
 
                   child: Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: EdgeInsets.all(Layout.getHeight(context, 10)),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: Layout.getWidth(context, 20),
+                      ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -42,16 +48,25 @@ class _QuickActionsState extends State<QuickActions> {
                                 onPressed: () {},
                                 icon: Image.asset(
                                   'assets/icons/Upload.png',
-                                  width: 40,
+                                  width: 20,
                                 ),
                                 iconSize: 10,
                                 style: IconButton.styleFrom(
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
+                                    side: BorderSide(
+                                      color: Color(0xFFEAE7FF),
+                                      width: 1,
+                                    ),
                                   ),
                                 ),
                               ),
-                              Text("Retire", style: TextStyle(fontSize: 12)),
+                              Text(
+                                "Retire",
+                                style: TextStyle(
+                                  fontSize: Layout.getHeight(context, 12),
+                                ),
+                              ),
                             ],
                           ),
 
@@ -64,16 +79,25 @@ class _QuickActionsState extends State<QuickActions> {
                                 },
                                 icon: Image.asset(
                                   'assets/icons/Paper.png',
-                                  width: 40,
+                                  width: 20,
                                 ),
                                 iconSize: 10,
                                 style: IconButton.styleFrom(
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
+                                    side: BorderSide(
+                                      color: Color(0xFFEAE7FF),
+                                      width: 1,
+                                    ),
                                   ),
                                 ),
                               ),
-                              Text("Invoice", style: TextStyle(fontSize: 12)),
+                              Text(
+                                "Invoice",
+                                style: TextStyle(
+                                  fontSize: Layout.getHeight(context, 12),
+                                ),
+                              ),
                             ],
                           ),
                           Column(
@@ -84,15 +108,24 @@ class _QuickActionsState extends State<QuickActions> {
                                 },
                                 icon: Image.asset(
                                   'assets/icons/Send_1.png',
-                                  width: 40,
+                                  width: 20,
                                 ),
                                 style: IconButton.styleFrom(
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
+                                    side: BorderSide(
+                                      color: Color(0xFFEAE7FF),
+                                      width: 1,
+                                    ),
                                   ),
                                 ),
                               ),
-                              Text("Requested", style: TextStyle(fontSize: 12)),
+                              Text(
+                                "Requested",
+                                style: TextStyle(
+                                  fontSize: Layout.getHeight(context, 12),
+                                ),
+                              ),
                             ],
                           ),
                         ],

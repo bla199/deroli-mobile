@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
-export 'dashed-border.dart';
+import 'package:deroli_mobile/utils/index.dart';
+export 'dashed_border.dart';
 
 class DashedBorder extends StatelessWidget {
   const DashedBorder({super.key, required this.color});
@@ -8,11 +9,14 @@ class DashedBorder extends StatelessWidget {
   final Color color;
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
+        padding: EdgeInsets.symmetric(
+          horizontal: Layout.getWidth(context, 8),
+          vertical: Layout.getHeight(context, 0),
+        ),
         child: DottedBorder(
-          dashPattern: [2, 3],
+          dashPattern: [3, 4],
           customPath: (size) {
             // Draw only the bottom border
             return Path()
@@ -20,6 +24,7 @@ class DashedBorder extends StatelessWidget {
               ..lineTo(size.width, size.height);
           },
           color: Color(0xFFE7E7E7),
+          strokeWidth: 0.8,
           child: Row(),
         ),
       ),

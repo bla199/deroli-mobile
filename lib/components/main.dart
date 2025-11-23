@@ -5,5 +5,5 @@ export 'request/from-to-for.dart';
 export 'general/border.dart';
 export 'request/NumberKeyboard.dart';
 export 'receipt/background.dart';
-export 'general/dashed-border.dart';
+export 'general/dashed_border.dart';
 export 'requested/requested_notification.dart';
