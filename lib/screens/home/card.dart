@@ -1,6 +1,9 @@
 import 'package:deroli_mobile/utils/index.dart';
+import 'package:deroli_mobile/controller/index.dart';
+import 'package:deroli_mobile/models/project_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class HomeCard extends StatefulWidget {
   const HomeCard({super.key});
@@ -10,6 +13,41 @@ class HomeCard extends StatefulWidget {
 }
 
 class _HomeCardState extends State<HomeCard> {
+  String _getTotalInitiatedAmount(ProjectsController projectsController) {
+    // Get projects based on selection
+    List<Project> projectsToUse;
+    if (projectsController.selectedProjectId == null) {
+      // All projects
+      projectsToUse = projectsController.getProjects;
+    } else {
+      // Selected project only
+      final selectedProject = projectsController.selectedProject;
+      projectsToUse = selectedProject != null ? [selectedProject] : [];
+    }
+
+    // Get all payments from selected projects
+    final allPayments = projectsToUse
+        .where((project) => project.payments.isNotEmpty)
+        .expand((project) => project.payments)
+        .toList();
+
+    // Filter payments with status "Initiated" and sum their amounts
+    double totalAmount = 0.0;
+    for (var payment in allPayments) {
+      if (payment.status.toLowerCase() == 'initiated') {
+        try {
+          final amount = double.tryParse(payment.amount) ?? 0.0;
+          totalAmount += amount;
+        } catch (e) {
+          // Skip invalid amounts
+        }
+      }
+    }
+
+    // Format the number with commas
+    return Constants.commaValue(totalAmount);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -59,32 +97,40 @@ class _HomeCardState extends State<HomeCard> {
                     ),
                     SizedBox(height: Layout.getHeight(context, 12)),
                     // Align "TZS" above the baseline of the amount
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          WidgetSpan(
-                            child: Text(
-                              "TZS",
-                              style: TextStyle(
-                                fontSize: Layout.getHeight(context, 12),
-                              ),
-                            ),
-                            alignment: PlaceholderAlignment.aboveBaseline,
-                            baseline: TextBaseline.alphabetic,
-                          ),
-                          WidgetSpan(
-                            child: SizedBox(width: Layout.getWidth(context, 8)),
-                          ),
+                    Consumer<ProjectsController>(
+                      builder: (context, projectsController, child) {
+                        return Text.rich(
                           TextSpan(
-                            text: "200,000",
-                            style: TextStyle(
-                              fontFamily: 'Fredoka',
-                              fontWeight: FontWeight.bold,
-                              fontSize: Layout.getHeight(context, 18),
-                            ),
+                            children: [
+                              WidgetSpan(
+                                child: Text(
+                                  "TZS",
+                                  style: TextStyle(
+                                    fontSize: Layout.getHeight(context, 12),
+                                  ),
+                                ),
+                                alignment: PlaceholderAlignment.aboveBaseline,
+                                baseline: TextBaseline.alphabetic,
+                              ),
+                              WidgetSpan(
+                                child: SizedBox(
+                                  width: Layout.getWidth(context, 8),
+                                ),
+                              ),
+                              TextSpan(
+                                text: _getTotalInitiatedAmount(
+                                  projectsController,
+                                ),
+                                style: TextStyle(
+                                  fontFamily: 'Fredoka',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: Layout.getHeight(context, 18),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
 
                     Padding(

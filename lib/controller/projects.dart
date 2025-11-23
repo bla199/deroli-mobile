@@ -6,10 +6,24 @@ class ProjectsController extends ChangeNotifier {
 
   late List<Project> _projects = [];
   late bool _getProjectsLoading = false;
+  String? _selectedProjectId; // null means "All Projects"
 
   // getter
   List<Project> get getProjects => _projects;
   bool get getProjectsLoading => _getProjectsLoading;
+  String? get selectedProjectId => _selectedProjectId;
+  
+  // Get selected project or null for "All Projects"
+  Project? get selectedProject {
+    if (_selectedProjectId == null) return null;
+    try {
+      return _projects.firstWhere(
+        (project) => project.projectId == _selectedProjectId,
+      );
+    } catch (e) {
+      return null;
+    }
+  }
 
   // setter
   void setProjects(List<Project> projects) {
@@ -19,6 +33,11 @@ class ProjectsController extends ChangeNotifier {
 
   void setGetProjectsLoading(bool loading) {
     _getProjectsLoading = loading;
+    notifyListeners();
+  }
+
+  void setSelectedProject(String? projectId) {
+    _selectedProjectId = projectId;
     notifyListeners();
   }
 }
