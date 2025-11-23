@@ -1,18 +1,97 @@
 import 'package:deroli_mobile/components/general/dashed-border.dart';
 import 'package:deroli_mobile/components/main.dart';
+import 'package:deroli_mobile/network/models/requests_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class FullRequestDetails extends StatefulWidget {
-  const FullRequestDetails({super.key});
+  final Payment? payment;
+
+  const FullRequestDetails({super.key, this.payment});
 
   @override
   State<FullRequestDetails> createState() => _FullRequestDetailsState();
 }
 
 class _FullRequestDetailsState extends State<FullRequestDetails> {
+  String _formatAmount(String? amount) {
+    if (amount == null || amount.isEmpty) return '0';
+    try {
+      double value = double.parse(amount);
+      return value
+          .toStringAsFixed(value == value.toInt() ? 0 : 2)
+          .replaceAllMapped(
+            RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+            (Match m) => '${m[1]},',
+          );
+    } catch (e) {
+      return amount;
+    }
+  }
+
+  Color _getAvatarColor(String name) {
+    String firstLetter = name.isNotEmpty ? name[0].toUpperCase() : 'A';
+    int hash = firstLetter.codeUnitAt(0);
+    return Color(0xFF000000 + (hash % 0xFFFFFF)).withOpacity(0.1);
+  }
+
+  String _getFirstLetter(String name) {
+    return name.isNotEmpty ? name[0].toUpperCase() : 'A';
+  }
+
+  String _getStatusText() {
+    if (widget.payment == null) return 'Pending approval';
+    final status = (widget.payment!.status ?? '').toLowerCase();
+    switch (status) {
+      case 'pending':
+        return 'Pending approval';
+      case 'approved':
+        return 'Approved';
+      case 'declined':
+        return 'Declined';
+      default:
+        return 'Initialized';
+    }
+  }
+
+  Color _getStatusColor() {
+    if (widget.payment == null) return Color(0xFFE3B644);
+    return widget.payment!.getStatusColor();
+  }
+
+  Color _getStatusBackgroundColor() {
+    if (widget.payment == null) return Color(0xFFFFF9E9);
+    final status = (widget.payment!.status ?? '').toLowerCase();
+    switch (status) {
+      case 'pending':
+        return Color(0xFFFFF9E9);
+      case 'approved':
+        return Color(0xFFE8F5E9);
+      case 'declined':
+        return Color(0xFFFFEBEE);
+      default:
+        return Color(0xFFFFF9E9);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final payment = widget.payment;
+
+    if (payment == null) {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color(0xFFFFFF),
+          leading: IconButton(
+            onPressed: () {
+              context.goNamed("requested");
+            },
+            icon: Icon(Icons.arrow_back),
+          ),
+        ),
+        body: Center(child: Text('No payment details available')),
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFFFFFF),
@@ -112,7 +191,7 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                     ),
                                     children: [
                                       TextSpan(
-                                        text: "300,098",
+                                        text: _formatAmount(payment.amount),
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.w900,
@@ -153,7 +232,7 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                 ),
 
                                 Text(
-                                  'Today, 17:28',
+                                  payment.getFormattedDateTime(),
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.black,
@@ -176,7 +255,7 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                 ),
 
                                 Text(
-                                  'CFO, Prosper Deroli',
+                                  '${payment.user.role.isNotEmpty ? payment.user.role[0].toUpperCase() + payment.user.role.substring(1) : ''}, ${payment.user.fullName}',
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.black,
@@ -203,7 +282,7 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(20),
                                     ),
-                                    color: Color(0xFFFFF9E9),
+                                    color: _getStatusBackgroundColor(),
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
@@ -211,10 +290,10 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                       vertical: 2,
                                     ),
                                     child: Text(
-                                      'Pending approval',
+                                      _getStatusText(),
                                       style: TextStyle(
                                         fontSize: 12,
-                                        color: Color(0xFFE3B644),
+                                        color: _getStatusColor(),
                                         // fontWeight: FontWeight.w000,
                                       ),
                                     ),
@@ -323,11 +402,12 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                   children: [
                                     Image.asset(
                                       'assets/icons/circle_duotone.png',
-                                      width: 35,
-                                      height: 35,
+                                      width: 40,
+                                      height: 40,
                                     ),
+                                    SizedBox(width: 2),
                                     Text(
-                                      'Fen Marketing Agency',
+                                      payment.vendor.name,
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: Colors.black,
@@ -353,7 +433,12 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                 ),
 
                                 Text(
-                                  'Bank Transfer',
+                                  payment
+                                          .vendor
+                                          .paymentAccount
+                                          ?.provider
+                                          ?.name ??
+                                      'N/A',
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.black,
@@ -382,7 +467,11 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                     ),
                                   ),
                                   child: Text(
-                                    '0146362662',
+                                    payment
+                                            .vendor
+                                            .paymentAccount
+                                            ?.accountNumber ??
+                                        'N/A',
                                     style: TextStyle(
                                       fontSize: 14,
 
@@ -412,7 +501,8 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                     ),
                                   ),
                                   child: Text(
-                                    'Fen Company Limited',
+                                    payment.vendor.paymentAccount?.name ??
+                                        payment.vendor.name,
                                     style: TextStyle(
                                       fontSize: 14,
 
@@ -519,7 +609,7 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                   ),
                                 ),
                                 Text(
-                                  'Transport',
+                                  payment.category.name ?? 'N/A',
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.black,
@@ -543,7 +633,7 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                 ),
 
                                 Text(
-                                  'Admin Transport fees',
+                                  payment.category.name ?? 'N/A',
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.black,
@@ -572,7 +662,7 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                     ),
                                   ),
                                   child: Text(
-                                    'Fuel fees for proc and dessy',
+                                    payment.category.name ?? 'N/A',
                                     style: TextStyle(
                                       fontSize: 14,
 

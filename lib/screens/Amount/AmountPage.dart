@@ -72,13 +72,13 @@ class _AmountPageState extends State<AmountPage> {
                   child: Column(
                     children: [
                       FromToFor(
-                        title: widget.projectDescription.isNotEmpty
-                            ? widget.projectDescription
-                            : "Select a project",
-                        directions: "From",
-                        details: widget.projectLabel.isNotEmpty
+                        title: widget.projectLabel.isNotEmpty
                             ? "Project ${widget.projectLabel}"
                             : "Project Number",
+                        directions: "From",
+                        details: widget.projectDescription.isNotEmpty
+                            ? widget.projectDescription
+                            : "Select a project",
                       ),
                       SizedBox(height: 10),
                       AppBorder(color: Color(0xFFEFEFEF)),

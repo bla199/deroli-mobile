@@ -5,6 +5,7 @@ import 'package:deroli_mobile/screens/invoices/invoices.dart';
 import 'package:deroli_mobile/screens/receipt/receipt.dart';
 import 'package:deroli_mobile/screens/requested/full_request_details.dart';
 import 'package:deroli_mobile/screens/requested/requested.dart';
+import 'package:deroli_mobile/network/models/requests_modal.dart';
 import 'package:go_router/go_router.dart';
 
 List<RouteBase> routes = [
@@ -24,7 +25,7 @@ List<RouteBase> routes = [
     name: "amount",
     path: "/amount",
     builder: (context, state) {
-      final extra = state.extra as Map<String, String>?;
+      final extra = state.extra as Map<String, dynamic>?;
       return AmountPage(
         projectLabel: extra?['projectLabel'] ?? '',
         projectDescription: extra?['projectDescription'] ?? '',
@@ -40,7 +41,7 @@ List<RouteBase> routes = [
     name: "receipt",
     path: "/receipt",
     builder: (context, state) {
-      final extra = state.extra as Map<String, String>?;
+      final extra = state.extra as Map<String, dynamic>?;
       return Receipt(
         projectLabel: extra?['projectLabel'] ?? '',
         projectDescription: extra?['projectDescription'] ?? '',
@@ -68,6 +69,9 @@ List<RouteBase> routes = [
   GoRoute(
     name: "full_request_details",
     path: "/full_request_details",
-    builder: (context, state) => const FullRequestDetails(),
+    builder: (context, state) {
+      final payment = state.extra as Payment?;
+      return FullRequestDetails(payment: payment);
+    },
   ),
 ];

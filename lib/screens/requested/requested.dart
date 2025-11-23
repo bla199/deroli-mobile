@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../components/main.dart';
+import '../../components/requested/requested_notification.dart';
+import '../../network/services/getRequested.dart';
+import '../../network/models/requests_modal.dart';
 
 class Requested extends StatefulWidget {
   const Requested({super.key});
@@ -12,6 +15,47 @@ class Requested extends StatefulWidget {
 final SearchTextController = TextEditingController();
 
 class _RequestedState extends State<Requested> {
+  List<Payment> paymentList = [];
+  bool isLoading = true;
+  String searchQuery = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchPayments();
+  }
+
+  Future<void> _fetchPayments() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      List<Payment> data = await getRequested();
+      setState(() {
+        paymentList = data;
+        isLoading = false;
+      });
+    } catch (e) {
+      print("Error fetching payments: $e");
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  List<Payment> get _filteredList {
+    if (searchQuery.isEmpty) return paymentList;
+    return paymentList.where((payment) {
+      return payment.vendor.name.toLowerCase().contains(
+            searchQuery.toLowerCase(),
+          ) ||
+          payment.paymentId.toLowerCase().contains(searchQuery.toLowerCase()) ||
+          (payment.category.name ?? '').toLowerCase().contains(
+            searchQuery.toLowerCase(),
+          );
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,33 +136,39 @@ class _RequestedState extends State<Requested> {
           SizedBox(height: 5),
           AppBorder(color: Color(0xFFEBEBEB)),
 
-          // SizedBox(height: 30),
-          Column(
-            children: [
-              InkWell(
-                onTap: () {
-                  context.goNamed("full_request_details");
-                },
-                child: RequestedNotification(
-                  avatarColor: Color(0xFFF0FFEA),
-                  firstLetter: "F",
-                  state: 'Pending',
-                  stateColor: Color(0xFFE3B644),
-                ),
-              ),
-
-              InkWell(
-                onTap: () {
-                  context.goNamed("full_request_details");
-                },
-                child: RequestedNotification(
-                  avatarColor: Color(0xFFF0FFEA),
-                  firstLetter: "D",
-                  state: 'Declined',
-                  stateColor: Color(0xFFE14345),
-                ),
-              ),
-            ],
+          // Loading or List
+          Expanded(
+            child: isLoading
+                ? Center(child: CircularProgressIndicator())
+                : _filteredList.isEmpty
+                ? Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(40.0),
+                      child: Text(
+                        'No payments found',
+                        style: TextStyle(
+                          color: Color(0xFF9A9A9A),
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: _filteredList.length,
+                    itemBuilder: (context, index) {
+                      final payment = _filteredList[index];
+                      return InkWell(
+                        key: ValueKey(payment.paymentId),
+                        onTap: () {
+                          context.pushNamed(
+                            "full_request_details",
+                            extra: payment,
+                          );
+                        },
+                        child: RequestedNotification(payment: payment),
+                      );
+                    },
+                  ),
           ),
         ],
       ),
@@ -129,6 +179,12 @@ class _RequestedState extends State<Requested> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 0.0),
           child: TextField(
+            controller: SearchTextController,
+            onChanged: (value) {
+              setState(() {
+                searchQuery = value;
+              });
+            },
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.transparent,

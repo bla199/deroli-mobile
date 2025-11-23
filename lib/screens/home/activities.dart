@@ -1,4 +1,6 @@
 import 'package:deroli_mobile/components/main.dart';
+import 'package:deroli_mobile/network/services/getInvoices.dart';
+import 'package:deroli_mobile/network/services/getRequested.dart';
 import 'package:flutter/material.dart';
 import '../../components/general/activities/activity_notification.dart';
 import 'package:go_router/go_router.dart';
@@ -692,6 +694,7 @@ class _ActivitiesState extends State<Activities> {
                                         color: Color(0xFFEAE7FF),
                                         onPressed: () {
                                           context.goNamed("invoice");
+                                          getInvoices();
                                         },
                                         icon: Image.asset(
                                           'assets/icons/Paper.png',
@@ -717,6 +720,7 @@ class _ActivitiesState extends State<Activities> {
                                       IconButton(
                                         onPressed: () {
                                           context.goNamed("requested");
+                                          getRequested();
                                         },
                                         icon: Image.asset(
                                           'assets/icons/Send_1.png',
