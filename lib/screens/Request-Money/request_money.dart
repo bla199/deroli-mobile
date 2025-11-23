@@ -7,7 +7,7 @@ import 'package:dotted_border/dotted_border.dart';
 import '../../models/project_modal.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../../utils/constants/apiUrls.dart';
+import 'package:deroli_mobile/utils/index.dart';
 
 class RequestMoney extends StatefulWidget {
   const RequestMoney({super.key, required});
@@ -38,7 +38,7 @@ class _RequestMoneyState extends State<RequestMoney> {
     // Fetch projects and build the map
     try {
       final response = await http.post(
-        Uri.parse(Constants.getProjects),
+        Uri.parse(ApiUrls.getProjects),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
           "organization_id": "bb947d14-a06d-11f0-8de9-0242ac120002",

@@ -1,6 +1,6 @@
 import 'package:deroli_mobile/screens/Amount/AmountPage.dart';
 import 'package:deroli_mobile/screens/Request-Money/request_money.dart';
-import 'package:deroli_mobile/screens/home/activities.dart';
+import 'package:deroli_mobile/screens/home/index.dart';
 import 'package:deroli_mobile/screens/invoices/invoices.dart';
 import 'package:deroli_mobile/screens/receipt/receipt.dart';
 import 'package:deroli_mobile/screens/requested/full_request_details.dart';

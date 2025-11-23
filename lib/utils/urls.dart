@@ -1,10 +1,12 @@
-/**
- List of API urls
- */
-library;
+/*
+  List of API urls
+*/
 
 class ApiUrls {
-  //for Auth
-  static const String auth = "";
-  static const otpVerify = "";
+  // for auth
+  static const String getProjects = 'project/get-projects/';
+
+  static const String getVendors = 'project/get-vendors/';
+
+  static const String projectPayment = 'project/get-vendors/';
 }

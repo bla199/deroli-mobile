@@ -1,5 +1,6 @@
 import 'package:deroli_mobile/navigation/route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MainApp());
@@ -13,8 +14,18 @@ class MainApp extends StatelessWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        useMaterial3: true,
         fontFamily: 'IBMPlexSans',
-        scaffoldBackgroundColor: Color(0xFFF9F9F9),
+        appBarTheme: const AppBarTheme(
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+            systemNavigationBarColor: Colors.transparent,
+            systemNavigationBarDividerColor: Colors.transparent,
+          ),
+        ),
       ),
       routerConfig: AppRouter().router,
     );

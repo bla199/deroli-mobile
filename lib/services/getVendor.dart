@@ -1,14 +1,14 @@
 import 'package:deroli_mobile/models/vendor_modal.dart';
 import 'package:deroli_mobile/components/general/input_take.dart';
 import 'package:http/http.dart' as http;
-import 'package:deroli_mobile/utils/constants/apiUrls.dart';
+import 'package:deroli_mobile/utils/index.dart';
 import 'dart:convert';
 export 'getVendor.dart';
 
 Future<List<OptionItem>> getVendor() async {
   try {
     final getVendor = await http.post(
-      Uri.parse(Constants.getVendors),
+      Uri.parse(ApiUrls.getVendors),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({
         "organization_id": "bb947d14-a06d-11f0-8de9-0242ac120002",

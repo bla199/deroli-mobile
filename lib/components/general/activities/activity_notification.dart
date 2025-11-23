@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 export 'activity_notification.dart';
-import 'package:dotted_border/dotted_border.dart';
 
 class ActivityNotification extends StatefulWidget {
   const ActivityNotification({super.key});
