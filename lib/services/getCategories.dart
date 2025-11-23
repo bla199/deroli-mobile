@@ -1,7 +1,7 @@
 import 'package:deroli_mobile/components/general/input_take.dart';
 import 'package:deroli_mobile/components/general/input_take.dart';
-import 'package:deroli_mobile/network/models/project_modal.dart';
-import 'package:deroli_mobile/network/utils/constants/apiUrls.dart';
+import 'package:deroli_mobile/models/project_modal.dart';
+import 'package:deroli_mobile/utils/constants/apiUrls.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 export 'getProjects.dart';

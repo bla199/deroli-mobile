@@ -1,6 +1,5 @@
 import 'package:deroli_mobile/components/main.dart';
 import 'package:flutter/material.dart';
-import '../../components/general/activities/activity_notification.dart';
 import 'package:go_router/go_router.dart';
 import 'dart:ui';
 
@@ -553,7 +552,24 @@ class _ActivitiesState extends State<Activities> {
               padding: const EdgeInsets.symmetric(horizontal: 40.0),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.lightBlueAccent,
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/card.png'),
+                    fit: BoxFit.cover,
+                  ),
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color(0xFFE8F4FD), // Soft sky blue
+                      Color(0xFFF0E8FF), // Pale lavender
+                      Color(0xFFFFF0F5), // Pale pink
+                      Color(0xFFFFF8E1), // Gentle yellow
+                      Color(0xFFE0F7FA), // Mint/cyan
+                      Color(0xFFE8F5E9), // Soft green
+                      Color(0xFFF3E5F5), // Light purple
+                    ],
+                    stops: [0.0, 0.2, 0.35, 0.5, 0.65, 0.8, 1.0],
+                  ),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 width: double.infinity,

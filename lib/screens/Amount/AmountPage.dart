@@ -1,4 +1,4 @@
-import 'package:deroli_mobile/network/services/moneyRequest.dart';
+import 'package:deroli_mobile/services/moneyRequest.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../components/main.dart';

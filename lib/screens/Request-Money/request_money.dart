@@ -1,14 +1,13 @@
-import 'package:deroli_mobile/network/services/getCategories.dart';
-import 'package:deroli_mobile/network/services/getVendor.dart';
+import 'package:deroli_mobile/services/getCategories.dart';
+import 'package:deroli_mobile/services/getVendor.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../components/main.dart';
 import 'package:dotted_border/dotted_border.dart';
-import '../../network/services/getProjects.dart';
-import '../../network/models/project_modal.dart';
+import '../../models/project_modal.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../../network/utils/constants/apiUrls.dart';
+import '../../utils/constants/apiUrls.dart';
 
 class RequestMoney extends StatefulWidget {
   const RequestMoney({super.key, required});
@@ -83,7 +82,7 @@ class _RequestMoneyState extends State<RequestMoney> {
         title: PageTitle(text: "Request Money"),
         leading: IconButton(
           onPressed: () {
-            context.go('/activities');
+            context.pop();
           },
           icon: Icon(Icons.arrow_back),
         ),
