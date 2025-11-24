@@ -139,7 +139,9 @@ class _RequestedState extends State<Requested> {
           // Loading or List
           Expanded(
             child: isLoading
-                ? Center(child: CircularProgressIndicator())
+                ? Center(
+                    child: CircularProgressIndicator(color: Color(0xFF312684)),
+                  )
                 : _filteredList.isEmpty
                 ? Center(
                     child: Padding(
