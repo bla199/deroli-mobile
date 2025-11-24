@@ -1,8 +1,9 @@
+import 'package:deroli_mobile/components/invoices/invoice_notification.dart';
+import 'package:deroli_mobile/network/models/Invoice_modal.dart';
+import 'package:deroli_mobile/network/services/getInvoices.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../components/main.dart';
-import '../../network/services/getInvoices.dart';
-import '../../network/models/Invoice_modal.dart';
 
 class Invoices extends StatefulWidget {
   const Invoices({super.key});
@@ -29,9 +30,14 @@ class _InvoicesState extends State<Invoices> {
       isLoading = true;
     });
     try {
-      List<Object> data = await getInvoices();
+      List<Invoice> data = await getInvoices();
+
+      print("INVOICES: ${data.length}");
+      for (var invoice in data) {
+        print("invoice: ${invoice.invoiceNumber}");
+      }
       setState(() {
-        invoiceList = data.cast<Invoice>();
+        invoiceList = data;
         isLoading = false;
       });
     } catch (e) {
@@ -40,18 +46,6 @@ class _InvoicesState extends State<Invoices> {
         isLoading = false;
       });
     }
-  }
-
-  List<Invoice> get _filteredList {
-    if (searchQuery.isEmpty) return invoiceList;
-    return invoiceList.where((invoice) {
-      return invoice.invoiceNumber.toLowerCase().contains(
-            searchQuery.toLowerCase(),
-          ) ||
-          invoice.invoiceCategory.toLowerCase().contains(
-            searchQuery.toLowerCase(),
-          );
-    }).toList();
   }
 
   @override
@@ -134,78 +128,18 @@ class _InvoicesState extends State<Invoices> {
           SizedBox(height: 5),
           AppBorder(color: Color(0xFFEBEBEB)),
 
-          // Loading or List
+          // SizedBox(height: 30),
           Expanded(
             child: isLoading
-                ? Center(child: CircularProgressIndicator())
-                : _filteredList.isEmpty
                 ? Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(40.0),
-                      child: Text(
-                        'No invoices created',
-                        style: TextStyle(
-                          color: Color(0xFF9A9A9A),
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
+                    child: CircularProgressIndicator(color: Color(0xFF312684)),
                   )
+                : invoiceList.isEmpty
+                ? Center(child: Text('No invoices found'))
                 : ListView.builder(
-                    itemCount: _filteredList.length,
+                    itemCount: invoiceList.length,
                     itemBuilder: (context, index) {
-                      final invoice = _filteredList[index];
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Container(
-                          margin: EdgeInsets.only(top: 10),
-                          padding: EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    invoice.invoiceNumber,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  Text(
-                                    'TZS ${invoice.invoiceAmount}',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                invoice.invoiceCategory,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xFF9A9A9A),
-                                ),
-                              ),
-                              SizedBox(height: 4),
-                              Text(
-                                invoice.invoiceDate,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFF9A9A9A),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
+                      return InvoiceNotification(invoice: invoiceList[index]);
                     },
                   ),
           ),
@@ -218,12 +152,6 @@ class _InvoicesState extends State<Invoices> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 0.0),
           child: TextField(
-            controller: SearchTextController,
-            onChanged: (value) {
-              setState(() {
-                searchQuery = value;
-              });
-            },
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.transparent,

@@ -1,12 +1,10 @@
-import 'package:deroli_mobile/components/general/input_take.dart';
 import 'package:deroli_mobile/network/models/Invoice_modal.dart';
-import 'package:deroli_mobile/network/models/project_modal.dart';
 import 'package:deroli_mobile/network/utils/constants/apiUrls.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 export 'getProjects.dart';
 
-Future<List<Object>> getInvoices() async {
+Future<List<Invoice>> getInvoices() async {
   try {
     final getInvoices = await http.post(
       Uri.parse(Constants.getInvoices),
@@ -17,22 +15,35 @@ Future<List<Object>> getInvoices() async {
     );
 
     bool succefull = getInvoices.statusCode == 200;
+    print("STATUS: ${getInvoices.statusCode}");
+    print("Response data: ${getInvoices.body}");
 
     if (succefull) {
-      print("succesfull");
       final responseData = jsonDecode(getInvoices.body);
-      print(responseData);
 
-      List<Invoice> invoices = (responseData['invoices'] as List? ?? [])
-          .map((invoice) => Invoice.fromJson(invoice))
-          .toList();
-
-      return invoices;
+      if (responseData['invoices'] != null) {
+        final invoices = (responseData['invoices'] as List)
+            .map((invoice) => Invoice.fromJson(invoice))
+            .toList();
+        print("Parsed ${invoices.length} invoices");
+        return invoices;
+      } else if (responseData is List) {
+        final invoices = responseData
+            .map((invoice) => Invoice.fromJson(invoice))
+            .toList();
+        print("Parsed ${invoices.length} invoices from list");
+        return invoices;
+      } else {
+        print("No invoices found in response");
+        return [];
+      }
+    } else {
+      print("Request failed with status: ${getInvoices.statusCode}");
+      return [];
     }
-
-    return [];
-  } catch (e) {
-    print("Error: $e");
+  } catch (e, stackTrace) {
+    print("Error in getInvoices: $e");
+    print("Stack trace: $stackTrace");
     return [];
   }
 }
