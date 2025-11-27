@@ -16,7 +16,7 @@ class _HomeCardState extends State<HomeCard> {
   String _getTotalInitiatedAmount(ProjectsController projectsController) {
     // Get projects based on selection
     List<Project> projectsToUse;
-    if (projectsController.selectedProjectId == null) {
+    if (projectsController.selectedProjectId == '') {
       // All projects
       projectsToUse = projectsController.getProjects;
     } else {

@@ -4,7 +4,14 @@ import 'package:deroli_mobile/utils/index.dart';
 export 'dashed_border.dart';
 
 class DashedBorder extends StatelessWidget {
-  const DashedBorder({super.key, required this.color});
+  final List<double> dashPattern;
+  final double strokeWidth;
+  const DashedBorder({
+    super.key,
+    required this.color,
+    this.dashPattern = const [3, 4],
+    this.strokeWidth = 0.8,
+  });
 
   final Color color;
   @override
@@ -16,7 +23,7 @@ class DashedBorder extends StatelessWidget {
           vertical: Layout.getHeight(context, 0),
         ),
         child: DottedBorder(
-          dashPattern: [3, 4],
+          dashPattern: dashPattern,
           customPath: (size) {
             // Draw only the bottom border
             return Path()
@@ -24,7 +31,7 @@ class DashedBorder extends StatelessWidget {
               ..lineTo(size.width, size.height);
           },
           color: Color(0xFFE7E7E7),
-          strokeWidth: 0.8,
+          strokeWidth: strokeWidth,
           child: Row(),
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:deroli_mobile/screens/Amount/AmountPage.dart';
+import 'package:deroli_mobile/screens/request-money/vendors/index.dart';
 import 'package:deroli_mobile/screens/request-money/request_money.dart';
 import 'package:deroli_mobile/screens/home/index.dart';
 import 'package:deroli_mobile/screens/invoices/invoices.dart';
@@ -18,6 +19,12 @@ List<RouteBase> routes = [
     name: "request_money",
     path: "/request_money",
     builder: (context, state) => const RequestMoney(),
+  ),
+
+  GoRoute(
+    name: "vendors",
+    path: "/vendors",
+    builder: (context, state) => const VendorsPage(),
   ),
 
   GoRoute(

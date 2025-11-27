@@ -48,3 +48,13 @@ flutter:
     - family: FredokaMedium
       fonts:
         - asset: assets/fonts/Fredoka-SemiBold.ttf
+
+    - family: Trap
+      fonts:
+        - asset: fonts/trap/Trap-Black.otf
+        - asset: fonts/trap/Trap-Bold.otf
+        - asset: fonts/trap/Trap-ExtraBold.otf
+        - asset: fonts/trap/Trap-Light.otf
+        - asset: fonts/trap/Trap-Medium.otf
+        - asset: fonts/trap/Trap-Regular.otf
+        - asset: fonts/trap/Trap-SemiBold.otf

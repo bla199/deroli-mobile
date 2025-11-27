@@ -6,7 +6,7 @@ import 'package:currency_text_input_formatter/currency_text_input_formatter.dart
 
 class Constants {
   // backend url
-  static const String apiUrl = 'http://192.168.1.25:8000/';
+  static const String apiUrl = 'http://192.168.1.14:8000/';
 
   // current app version
   static const String currentVersion = "1.0.1";

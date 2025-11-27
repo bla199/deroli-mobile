@@ -20,14 +20,19 @@ class RequestMoney extends StatefulWidget {
 class _RequestMoneyState extends State<RequestMoney> {
   @override
   Widget build(BuildContext context) {
+    //
+    final projectsController = Provider.of<ProjectsController>(
+      context,
+      listen: false,
+    );
     return Scaffold(
       backgroundColor: Color(0xFFF9F9F9),
       appBar: HeaderAppBar(
         title: "Request Money",
         isCentered: true,
-        titleFontFamily: 'Fredoka',
-        titleFontSize: 16,
-        titleFontWeight: FontWeight.w600,
+        titleFontFamily: 'Trap',
+        titleFontSize: 15,
+        titleFontWeight: FontWeight.w700,
         backgroundColor: Color(0xFFF9F9F9),
         leading: BackArrow(context: context),
       ),
@@ -60,9 +65,15 @@ class _RequestMoneyState extends State<RequestMoney> {
 
           InputTake(
             title: "Vendor",
-            label: "Select vendor you want to pay",
-            onTap: () {},
-            isSelected: false,
+            label: projectsController.selectedVendor.vendorId == ''
+                ? "Select vendor you want to pay"
+                : projectsController.selectedVendor.name,
+            onTap: () {
+              context.push("/vendors");
+            },
+            isSelected: projectsController.selectedVendor.vendorId != '',
+            descrp:
+                "${projectsController.selectedVendor.paymentAccount?.provider.shortName} | ${projectsController.selectedVendor.paymentAccount?.accountNumber}",
           ),
 
           Consumer<ProjectsController>(

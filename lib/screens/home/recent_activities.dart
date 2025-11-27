@@ -17,7 +17,7 @@ class _RecentActivitiesState extends State<RecentActivities> {
   List<Payment> _getRecentPayments(ProjectsController projectsController) {
     // Get projects based on selection
     List<Project> projectsToUse;
-    if (projectsController.selectedProjectId == null) {
+    if (projectsController.selectedProjectId == "") {
       // All projects
       projectsToUse = projectsController.getProjects;
     } else {
