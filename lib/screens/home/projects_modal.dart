@@ -40,12 +40,13 @@ class _FilterModalState extends State<FilterModal> {
   Widget build(BuildContext context) {
     return Consumer<ProjectsController>(
       builder: (context, projectsController, child) {
+        //
         final projects = projectsController.getProjects;
         final selectedProjectId = projectsController.selectedProjectId;
 
         return Container(
           width: screenSize.width * 0.87,
-          margin: EdgeInsets.only(bottom: Layout.getWidth(context, 80)),
+          margin: EdgeInsets.only(bottom: Layout.getWidth(context, 0)),
           child: Padding(
             padding: EdgeInsets.symmetric(
               vertical: Layout.getHeight(context, 15),
@@ -90,7 +91,7 @@ class _FilterModalState extends State<FilterModal> {
                       // "All Projects" option
                       InkWell(
                         onTap: () {
-                          projectsController.setSelectedProject(null);
+                          projectsController.setSelectedProject('');
                           Navigator.of(context).pop();
                         },
                         child: transactionFilter(
@@ -99,7 +100,7 @@ class _FilterModalState extends State<FilterModal> {
                           title: "All Projects",
                           textColor: Colors.black,
                           imagePath: 'assets/icons/Activities.png',
-                          isSelected: selectedProjectId == null,
+                          isSelected: selectedProjectId == '',
                         ),
                       ),
 

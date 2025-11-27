@@ -2,7 +2,7 @@ import 'package:deroli_mobile/components/general/input_take.dart';
 import 'package:http/http.dart' as http;
 import 'package:deroli_mobile/utils/index.dart';
 import 'dart:convert';
-export 'getVendor.dart';
+export 'get_vendors.dart';
 
 Future<List<OptionItem>> projectPayment() async {
   try {

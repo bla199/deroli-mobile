@@ -10,48 +10,28 @@ class OptionItem {
 }
 
 class InputTake extends StatefulWidget {
-  const InputTake({
-    super.key,
-    required this.title,
-    this.label = "",
-    this.icon,
-    this.iconAsset,
-    this.descrp = "",
-    this.placeholder = "",
-    this.options = const [],
-    this.fetchOptions,
-    this.onSelectionChanged,
-    this.onTap,
-  });
   final String placeholder;
   final String descrp;
   final String title;
   final String label;
-  final IconData? icon;
-  final String? iconAsset;
-  final List<OptionItem> options;
-  final Future<List<OptionItem>> Function()? fetchOptions;
-  final void Function(String label, String description)? onSelectionChanged;
-  final VoidCallback? onTap;
+  final VoidCallback onTap;
+  final bool isSelected;
+
+  const InputTake({
+    super.key,
+    required this.title,
+    this.label = "",
+    this.descrp = "",
+    this.placeholder = "",
+    required this.onTap,
+    required this.isSelected,
+  });
 
   @override
   State<InputTake> createState() => _InputTakeState();
 }
 
 class _InputTakeState extends State<InputTake> {
-  @override
-  void didUpdateWidget(InputTake oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    // Update state when widget properties change
-  }
-
-  /// Check if user has made a selection (label changed from initial)
-  /// Selection is made when description is provided or label doesn't start with "Select"
-  bool get _hasSelected =>
-      widget.descrp.isNotEmpty ||
-      (widget.label.isNotEmpty &&
-          !widget.label.toLowerCase().startsWith('select'));
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -68,7 +48,7 @@ class _InputTakeState extends State<InputTake> {
 
           // Input Row
           InkWell(
-            onTap: widget.onTap ?? () {},
+            onTap: widget.onTap,
             child: Container(
               padding: EdgeInsets.symmetric(
                 horizontal: Layout.getWidth(context, 10),
@@ -88,7 +68,7 @@ class _InputTakeState extends State<InputTake> {
                     children: [
                       // Only show icon after user has made a selection
                       // Always use folder.png as the default icon
-                      if (_hasSelected) ...[
+                      if (widget.isSelected) ...[
                         CircleAvatar(
                           backgroundColor: Color(0xFFF4F2FF),
                           maxRadius: 16,
@@ -107,11 +87,11 @@ class _InputTakeState extends State<InputTake> {
                           Text(
                             widget.label,
                             style: TextStyle(
-                              color: _hasSelected
+                              color: widget.isSelected
                                   ? Colors.black
                                   : Color(0xFFB7B7B7),
                               fontSize: Layout.getHeight(context, 13),
-                              fontWeight: _hasSelected
+                              fontWeight: widget.isSelected
                                   ? FontWeight.w500
                                   : FontWeight.normal,
                             ),
@@ -120,10 +100,10 @@ class _InputTakeState extends State<InputTake> {
                             Text(
                               widget.descrp,
                               style: TextStyle(
-                                color: _hasSelected
+                                color: widget.isSelected
                                     ? Colors.black54
                                     : Colors.black26,
-                                fontSize: _hasSelected
+                                fontSize: widget.isSelected
                                     ? Layout.getHeight(context, 12)
                                     : Layout.getHeight(context, 10),
                               ),
