@@ -1,8 +1,10 @@
 import 'package:deroli_mobile/components/general/app_bar.dart';
 import 'package:deroli_mobile/components/general/back_arrow.dart';
 import 'package:deroli_mobile/controller/index.dart';
-import 'package:deroli_mobile/services/moneyRequest.dart';
+import 'package:deroli_mobile/services/money_request.dart';
+import 'package:deroli_mobile/utils/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../components/main.dart';
@@ -148,6 +150,25 @@ class _AmountPageState extends State<AmountPage> {
                     child: TextField(
                       controller: _controller,
                       focusNode: _focusNode,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        _NumberInputFormatter(),
+                      ],
+                      onChanged: (value) {
+                        // Remove commas and parse the numeric value
+                        final numericValue = value.replaceAll(',', '');
+                        if (numericValue.isNotEmpty) {
+                          try {
+                            final amount = double.parse(numericValue);
+                            projectsController.setAmount(amount);
+                          } catch (e) {
+                            // Handle parse error
+                            debugPrint('Error parsing amount: $e');
+                          }
+                        } else {
+                          projectsController.setAmount(0.0);
+                        }
+                      },
                       autofocus: true,
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,
@@ -191,20 +212,33 @@ class _AmountPageState extends State<AmountPage> {
                         const EdgeInsets.symmetric(vertical: 18),
                       ),
                       backgroundColor: MaterialStateProperty.all(
-                        const Color(0xFF312684),
+                        const Color(0xFF312684).withOpacity(
+                          projectsController.amount > 1000 ? 1 : 0.5,
+                        ),
                       ),
                     ),
-                    onPressed: () {
-                      // Get the amount from the text field
-                      String amount = _controller.text.trim();
-                      projectPayment();
+                    onPressed: () async {
+                      // Check if amount is valid
+                      if (projectsController.amount > 1000) {
+                        // Make API request to create payment
+                        final success = await addProjectPayment(
+                          context: context,
+                          projectsController: projectsController,
+                        );
 
-                      // Pass all details to receipt page
-                      context.push("/receipt");
+                        // Navigate to receipt page on success
+                        if (success) {
+                          // ignore: use_build_context_synchronously
+                          context.push("/receipt");
+                        }
+                      }
                     },
-                    child: const Text(
+                    child: Text(
                       "Request Money",
-                      style: TextStyle(fontSize: 12),
+                      style: TextStyle(
+                        fontSize: Layout.getHeight(context, 12),
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 ),
@@ -216,5 +250,81 @@ class _AmountPageState extends State<AmountPage> {
         ),
       ),
     );
+  }
+}
+
+// Custom formatter to add commas to numbers as user types
+class _NumberInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    // Extract only digits from the new value
+    final newText = newValue.text.replaceAll(RegExp(r'[^\d]'), '');
+
+    // If empty, return empty
+    if (newText.isEmpty) {
+      return const TextEditingValue(
+        text: '',
+        selection: TextSelection.collapsed(offset: 0),
+      );
+    }
+
+    // Format with commas
+    final formatted = _formatWithCommas(newText);
+
+    // Calculate the cursor position
+    final oldText = oldValue.text.replaceAll(RegExp(r'[^\d]'), '');
+    final isAdding = newText.length > oldText.length;
+    final isDeleting = newText.length < oldText.length;
+
+    // Count digits before cursor in old formatted text
+    int digitsBeforeCursor = 0;
+    final oldCursorPos = oldValue.selection.baseOffset;
+    for (int i = 0; i < oldCursorPos && i < oldValue.text.length; i++) {
+      if (RegExp(r'\d').hasMatch(oldValue.text[i])) {
+        digitsBeforeCursor++;
+      }
+    }
+
+    // Adjust based on add/delete
+    if (isAdding) {
+      digitsBeforeCursor++;
+    } else if (isDeleting && digitsBeforeCursor > 0) {
+      digitsBeforeCursor--;
+    }
+
+    // Find the cursor position in the formatted string
+    int cursorPosition = formatted.length;
+    int digitCount = 0;
+    for (int i = 0; i < formatted.length; i++) {
+      if (formatted[i] != ',') {
+        digitCount++;
+        if (digitCount == digitsBeforeCursor) {
+          cursorPosition = i + 1;
+          break;
+        }
+      }
+    }
+
+    return TextEditingValue(
+      text: formatted,
+      selection: TextSelection.collapsed(offset: cursorPosition),
+    );
+  }
+
+  String _formatWithCommas(String value) {
+    if (value.isEmpty) return '';
+
+    // Add commas every 3 digits from right to left
+    final buffer = StringBuffer();
+    for (int i = 0; i < value.length; i++) {
+      if (i > 0 && (value.length - i) % 3 == 0) {
+        buffer.write(',');
+      }
+      buffer.write(value[i]);
+    }
+    return buffer.toString();
   }
 }

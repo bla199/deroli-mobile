@@ -46,16 +46,7 @@ List<RouteBase> routes = [
     name: "receipt",
     path: "/receipt",
     builder: (context, state) {
-      final extra = state.extra as Map<String, String>?;
-      return Receipt(
-        projectLabel: extra?['projectLabel'] ?? '',
-        projectDescription: extra?['projectDescription'] ?? '',
-        vendorLabel: extra?['vendorLabel'] ?? '',
-        vendorDescription: extra?['vendorDescription'] ?? '',
-        categoryLabel: extra?['categoryLabel'] ?? '',
-        categoryDescription: extra?['categoryDescription'] ?? '',
-        amount: extra?['amount'] ?? '0',
-      );
+      return Receipt();
     },
   ),
 

@@ -22,6 +22,7 @@ class ProjectsController extends ChangeNotifier {
   late SubProject _selectedPaymentSubProject = SubProject();
   late String _invoiceUrl = '';
   late bool _isUploadingInvoice = false;
+  late double _amount = 0.0;
 
   // getter
   List<Project> get getProjects => _projects;
@@ -40,7 +41,7 @@ class ProjectsController extends ChangeNotifier {
   SubProject get selectedPaymentSubProject => _selectedPaymentSubProject;
   String get invoiceUrl => _invoiceUrl;
   bool get isUploadingInvoice => _isUploadingInvoice;
-
+  double get amount => _amount;
   // Get selected project or null for "All Projects"
   Project? get selectedProject {
     if (_selectedProjectId == '') return null;
@@ -122,6 +123,11 @@ class ProjectsController extends ChangeNotifier {
 
   void setIsUploadingInvoice(bool loading) {
     _isUploadingInvoice = loading;
+    notifyListeners();
+  }
+
+  void setAmount(double amount) {
+    _amount = amount;
     notifyListeners();
   }
 }

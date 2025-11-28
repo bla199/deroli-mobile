@@ -1,28 +1,14 @@
 import 'package:deroli_mobile/components/general/app_bar.dart';
+import 'package:deroli_mobile/controller/index.dart';
+import 'package:deroli_mobile/utils/index.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import '../../components/main.dart';
 
 class Receipt extends StatefulWidget {
-  final String projectLabel;
-  final String projectDescription;
-  final String vendorLabel;
-  final String vendorDescription;
-  final String categoryLabel;
-  final String categoryDescription;
-  final String amount;
-
-  const Receipt({
-    super.key,
-    this.projectLabel = '',
-    this.projectDescription = '',
-    this.vendorLabel = '',
-    this.vendorDescription = '',
-    this.categoryLabel = '',
-    this.categoryDescription = '',
-    this.amount = '0',
-  });
+  const Receipt({super.key});
 
   @override
   State<Receipt> createState() => _ReceiptState();
@@ -68,6 +54,7 @@ class _ReceiptState extends State<Receipt> {
 
   @override
   Widget build(BuildContext context) {
+    final projectsController = Provider.of<ProjectsController>(context);
     return Scaffold(
       backgroundColor: Color(0xFFF9F9F9),
       appBar: HeaderAppBar(
@@ -128,10 +115,13 @@ class _ReceiptState extends State<Receipt> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     SizedBox(
-                                      height: 250,
-                                      width: 250,
-                                      child: Image.asset(
-                                        'assets/icons/source.gif',
+                                      height: Layout.getHeight(context, 250),
+                                      width: Layout.getWidth(context, 250),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(12),
+                                        child: Image.asset(
+                                          'assets/icons/source.gif',
+                                        ),
                                       ),
                                     ),
                                     SizedBox(height: 10),
@@ -157,7 +147,7 @@ class _ReceiptState extends State<Receipt> {
                                                     children: [
                                                       TextSpan(
                                                         text:
-                                                            "proc@deroli.co.tz ",
+                                                            "admin@deroliagency.com ",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                           fontWeight:
@@ -205,12 +195,10 @@ class _ReceiptState extends State<Receipt> {
                                                           TextSpan(
                                                             children: [
                                                               TextSpan(
-                                                                text:
-                                                                    widget
-                                                                        .amount
-                                                                        .isNotEmpty
-                                                                    ? "${widget.amount} "
-                                                                    : "0 ",
+                                                                text: Constants.commaValueWithTZS(
+                                                                  projectsController
+                                                                      .amount,
+                                                                ),
                                                                 style: TextStyle(
                                                                   fontFamily:
                                                                       'Fredoka',
@@ -251,7 +239,9 @@ class _ReceiptState extends State<Receipt> {
                                                       ),
                                                     ),
                                                     Text(
-                                                      widget.projectLabel,
+                                                      projectsController
+                                                          .selectedPaymentProject
+                                                          .name,
                                                       style: TextStyle(
                                                         fontSize: 12,
                                                       ),
@@ -271,11 +261,12 @@ class _ReceiptState extends State<Receipt> {
                                                       ),
                                                     ),
                                                     Text(
-                                                      widget
-                                                              .categoryLabel
-                                                              .isNotEmpty
-                                                          ? widget.categoryLabel
-                                                          : "Category",
+                                                      projectsController
+                                                          .selectedPaymentCategory
+                                                          .name,
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
@@ -292,11 +283,12 @@ class _ReceiptState extends State<Receipt> {
                                                       ),
                                                     ),
                                                     Text(
-                                                      widget
-                                                              .vendorLabel
-                                                              .isNotEmpty
-                                                          ? widget.vendorLabel
-                                                          : "Vendor",
+                                                      projectsController
+                                                          .selectedPaymentVendor
+                                                          .name,
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
