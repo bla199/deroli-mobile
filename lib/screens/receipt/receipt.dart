@@ -1,5 +1,4 @@
 import 'package:deroli_mobile/components/general/app_bar.dart';
-import 'package:deroli_mobile/components/general/back_arrow.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

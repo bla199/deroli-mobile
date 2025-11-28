@@ -5,10 +5,13 @@ import 'package:deroli_mobile/components/general/toast.dart';
 import 'package:deroli_mobile/controller/index.dart';
 import 'package:deroli_mobile/components/general/input_take.dart';
 import 'package:deroli_mobile/screens/request-money/select_modal.dart';
+import 'package:deroli_mobile/screens/request-money/upload_modal.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:provider/provider.dart';
+import 'package:deroli_mobile/utils/index.dart';
 
 class RequestMoney extends StatefulWidget {
   const RequestMoney({super.key, required});
@@ -18,10 +21,23 @@ class RequestMoney extends StatefulWidget {
 }
 
 class _RequestMoneyState extends State<RequestMoney> {
+  late Size screenSize;
+
+  @override
+  void didChangeDependencies() {
+    screenSize = Layout.getSize(context);
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     //
     final projectsController = Provider.of<ProjectsController>(context);
+
+    late bool isSelected =
+        projectsController.selectedPaymentProject.projectId != '' &&
+        projectsController.selectedVendor.vendorId != '' &&
+        projectsController.selectedPaymentCategory.categoryId != '';
     return Scaffold(
       backgroundColor: Color(0xFFF9F9F9),
       appBar: HeaderAppBar(
@@ -98,66 +114,123 @@ class _RequestMoneyState extends State<RequestMoney> {
                 projectsController.selectedPaymentCategory.categoryId != '',
           ),
 
-          Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: Column(
-              children: [
-                Row(children: [Text("Payment Purpose")]),
-                SizedBox(height: 8),
-                GestureDetector(
-                  child: DottedBorder(
-                    borderType: BorderType.RRect,
-                    radius: Radius.circular(8),
-                    color: Colors.black26,
-                    dashPattern: [4, 2],
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Color(0xFFF1F1F1),
-                        borderRadius: BorderRadius.all(Radius.circular(7)),
-                      ),
+          Consumer<ProjectsController>(
+            builder: (context, projectsController, child) {
+              final hasInvoice = projectsController.invoiceUrl.isNotEmpty;
+              final isUploading = projectsController.isUploadingInvoice;
 
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 100.0,
-                          vertical: 10,
-                        ),
-                        child: Column(
-                          children: [
-                            Image.asset(
-                              'assets/icons/image.png',
-                              width: 45,
-                              height: 45,
+              return Padding(
+                padding: const EdgeInsets.all(30.0),
+                child: Column(
+                  children: [
+                    Row(children: [Text("Payment Purpose")]),
+                    SizedBox(height: 8),
+                    GestureDetector(
+                      onTap: isUploading
+                          ? null
+                          : () => bottomModal(
+                              child: UploadModal(),
+                              context: context,
+                              blurColor: const Color.fromRGBO(
+                                189,
+                                202,
+                                247,
+                                0.80,
+                              ),
                             ),
-                            Text(
-                              "Add an image of pdf file",
-                              style: TextStyle(color: Color(0xFF6D6D6D)),
+                      child: DottedBorder(
+                        borderType: BorderType.RRect,
+                        radius: Radius.circular(8),
+                        color: Colors.black26,
+                        dashPattern: [4, 2],
+                        child: Container(
+                          width: screenSize.width * 1,
+                          height: screenSize.height * 0.12,
+                          decoration: BoxDecoration(
+                            color: hasInvoice
+                                ? Color(0xFFF1F1F1)
+                                : Color(0xFFF1F1F1),
+                            borderRadius: BorderRadius.all(Radius.circular(7)),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              // horizontal: 100.0,
+                              vertical: screenSize.height * 0.025,
                             ),
-                          ],
+                            child: Column(
+                              children: [
+                                if (isUploading)
+                                  CupertinoActivityIndicator()
+                                else if (hasInvoice)
+                                  Image.asset(
+                                    'assets/icons/invoice.png',
+                                    width: 30,
+                                    height: 30,
+                                    color: Color(0xFF6D6D6D),
+                                  )
+                                else
+                                  Image.asset(
+                                    'assets/icons/image.png',
+                                    width: 45,
+                                    height: 45,
+                                  ),
+                                SizedBox(height: 8),
+                                Text(
+                                  hasInvoice
+                                      ? "Invoice uploaded"
+                                      : isUploading
+                                      ? "Uploading..."
+                                      : "Add an image or pdf file",
+                                  style: TextStyle(
+                                    color: hasInvoice
+                                        ? Colors.green
+                                        : Color(0xFF6D6D6D),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
+              );
+            },
           ),
         ],
       ),
 
       //
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 60),
+        padding: EdgeInsets.symmetric(
+          horizontal: Layout.getWidth(context, 20),
+          vertical: Layout.getHeight(context, 40),
+        ),
         child: FilledButton(
           onPressed: () {
-            context.push("/amount");
+            // check if project, vendor, category, and invoice are selected
+            if (isSelected) {
+              context.push("/amount");
+            }
           },
           style: FilledButton.styleFrom(
-            backgroundColor: Color(0xFF312684),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            backgroundColor: Color(
+              0xFF312684,
+            ).withOpacity(isSelected ? 1 : 0.5),
+            padding: EdgeInsets.symmetric(
+              horizontal: Layout.getWidth(context, 16),
+              vertical: Layout.getHeight(context, 12),
+            ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: const Text("Next"),
+            padding: EdgeInsets.all(Layout.getHeight(context, 4)),
+            child: Text(
+              "Next",
+              style: Styles.normalText(
+                context,
+              ).copyWith(color: Colors.white, fontWeight: FontWeight.w700),
+            ),
           ),
         ),
       ),

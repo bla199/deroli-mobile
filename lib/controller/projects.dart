@@ -20,6 +20,8 @@ class ProjectsController extends ChangeNotifier {
   late Vendor _selectedPaymentVendor = Vendor();
   late Category _selectedPaymentCategory = Category();
   late SubProject _selectedPaymentSubProject = SubProject();
+  late String _invoiceUrl = '';
+  late bool _isUploadingInvoice = false;
 
   // getter
   List<Project> get getProjects => _projects;
@@ -36,6 +38,8 @@ class ProjectsController extends ChangeNotifier {
   Vendor get selectedPaymentVendor => _selectedPaymentVendor;
   Category get selectedPaymentCategory => _selectedPaymentCategory;
   SubProject get selectedPaymentSubProject => _selectedPaymentSubProject;
+  String get invoiceUrl => _invoiceUrl;
+  bool get isUploadingInvoice => _isUploadingInvoice;
 
   // Get selected project or null for "All Projects"
   Project? get selectedProject {
@@ -108,6 +112,16 @@ class ProjectsController extends ChangeNotifier {
 
   void setGetVendorsLoading(bool loading) {
     _getVendorsLoading = loading;
+    notifyListeners();
+  }
+
+  void setInvoiceUrl(String url) {
+    _invoiceUrl = url;
+    notifyListeners();
+  }
+
+  void setIsUploadingInvoice(bool loading) {
+    _isUploadingInvoice = loading;
     notifyListeners();
   }
 }

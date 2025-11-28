@@ -9,4 +9,6 @@ class ApiUrls {
   static const String getVendors = 'project/get-vendors';
 
   static const String projectPayment = 'project/get-vendors';
+
+  static const String uploadInvoice = 'project/upload-invoice';
 }
