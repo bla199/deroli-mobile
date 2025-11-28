@@ -92,7 +92,7 @@ class _InvoicesState extends State<Invoices> {
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () {
-                        context.pushNamed("full_retire_request_details");
+                        context.pushNamed("full_invoice_details");
                       },
                       child: const InvoiceNotification(),
                     );
