@@ -8,40 +8,11 @@ class InvoiceResponse {
   }
 
   factory InvoiceResponse.fromJson(Map<String, dynamic> json) {
-    try {
-      final invoicesList = json['invoices'];
-      if (invoicesList == null) {
-        print("WARNING: 'invoices' key is null in response");
-        return InvoiceResponse(invoices: []);
-      }
-
-      if (invoicesList is! List) {
-        print(
-          "WARNING: 'invoices' is not a List, it's ${invoicesList.runtimeType}",
-        );
-        return InvoiceResponse(invoices: []);
-      }
-
-      final invoices = invoicesList
-          .map<Invoice?>((invoice) {
-            try {
-              return Invoice.fromJson(invoice as Map<String, dynamic>);
-            } catch (e) {
-              print("Error parsing invoice: $e");
-              print("Invoice data: $invoice");
-              return null;
-            }
-          })
-          .whereType<Invoice>()
-          .toList();
-
-      print("Successfully parsed ${invoices.length} invoices");
-      return InvoiceResponse(invoices: invoices);
-    } catch (e, stackTrace) {
-      print("Error in InvoiceResponse.fromJson: $e");
-      print("Stack trace: $stackTrace");
-      return InvoiceResponse(invoices: []);
-    }
+    return InvoiceResponse(
+      invoices: (json['invoices'] as List? ?? [])
+          .map((invoice) => Invoice.fromJson(invoice))
+          .toList(),
+    );
   }
 }
 
@@ -89,37 +60,6 @@ class Invoice {
       dueDate: json['due_date']?.toString() ?? '',
     );
   }
-
-  // Helper methods
-  double getTotalAmount() {
-    return items.fold(0.0, (sum, item) => sum + item.total);
-  }
-
-  String getFormattedIssueDate() {
-    if (issueDate.isEmpty) return 'Today';
-    try {
-      DateTime dateTime = DateTime.parse(issueDate);
-      DateTime now = DateTime.now();
-      if (dateTime.year == now.year &&
-          dateTime.month == now.month &&
-          dateTime.day == now.day) {
-        return 'Today';
-      }
-      return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
-    } catch (e) {
-      return issueDate;
-    }
-  }
-
-  String getFormattedDueDate() {
-    if (dueDate.isEmpty) return 'N/A';
-    try {
-      DateTime dateTime = DateTime.parse(dueDate);
-      return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
-    } catch (e) {
-      return dueDate;
-    }
-  }
 }
 
 class InvoiceItem {
@@ -155,10 +95,8 @@ class InvoiceItem {
       itemId: json['item_id']?.toString() ?? '',
       name: json['name']?.toString() ?? '',
       quantity: json['quantity'] ?? 0,
-      unitPrice: double.parse(json['unit_price'].toString()),
-
-      total: double.parse(json['total'].toString()),
-
+      unitPrice: (json['unit_price'] ?? 0.0).toDouble(),
+      total: (json['total'] ?? 0.0).toDouble(),
       invoice: json['invoice']?.toString() ?? '',
     );
   }

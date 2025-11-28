@@ -1,6 +1,5 @@
-import 'package:deroli_mobile/components/invoices/invoice_notification.dart';
-import 'package:deroli_mobile/network/models/Invoice_modal.dart';
-import 'package:deroli_mobile/network/services/getInvoices.dart';
+import 'package:deroli_mobile/components/invoice/invoice_notification.dart';
+import 'package:deroli_mobile/components/invoice/invoice_notification_filter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../components/main.dart';
@@ -12,41 +11,8 @@ class Invoices extends StatefulWidget {
   State<Invoices> createState() => _InvoicesState();
 }
 
-final SearchTextController = TextEditingController();
-
 class _InvoicesState extends State<Invoices> {
-  List<Invoice> invoiceList = [];
-  bool isLoading = true;
-  String searchQuery = '';
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchInvoices();
-  }
-
-  Future<void> _fetchInvoices() async {
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      List<Invoice> data = await getInvoices();
-
-      print("INVOICES: ${data.length}");
-      for (var invoice in data) {
-        print("invoice: ${invoice.invoiceNumber}");
-      }
-      setState(() {
-        invoiceList = data;
-        isLoading = false;
-      });
-    } catch (e) {
-      print("Error fetching invoices: $e");
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
+  final SearchTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -54,31 +20,24 @@ class _InvoicesState extends State<Invoices> {
       appBar: AppBar(
         backgroundColor: Colors.white10,
         leading: Container(
-          padding: EdgeInsets.only(left: 0),
-          width: 20,
-          height: 20,
+          margin: const EdgeInsets.only(left: 8),
           decoration: BoxDecoration(
-            color: Color(0xFFFFFFFF),
-
-            borderRadius: BorderRadius.all(Radius.circular(30)),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(30),
           ),
           child: IconButton(
-            onPressed: () {
-              context.goNamed("activities");
-            },
-            icon: Icon(Icons.arrow_back),
+            onPressed: () => context.goNamed("activities"),
+            icon: const Icon(Icons.arrow_back),
           ),
         ),
-
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 25.0),
             child: Container(
-              width: 30,
-              height: 30,
+              width: 35,
+              height: 35,
               decoration: BoxDecoration(
-                // color: Color(0xFFFFFFFF),
-                borderRadius: BorderRadius.all(Radius.circular(30)),
+                borderRadius: BorderRadius.circular(30),
               ),
               child: Image.asset(
                 'assets/icons/Sort.png',
@@ -93,80 +52,96 @@ class _InvoicesState extends State<Invoices> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 20.0, top: 8),
-            child: Column(
+            padding: const EdgeInsets.only(left: 20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Text(
-                      'Invoices',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                  ],
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Today',
-                        style: TextStyle(
-                          color: Color(0xFF9A9A9A),
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
-                  ),
+                Text(
+                  'Invoices',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900),
                 ),
               ],
             ),
           ),
-          SizedBox(height: 5),
-          AppBorder(color: Color(0xFFEBEBEB)),
 
-          // SizedBox(height: 30),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: const InvoiceFilter(),
+          ),
+
+          // -------------------- SCROLLABLE CONTENT --------------------
           Expanded(
-            child: isLoading
-                ? Center(
-                    child: CircularProgressIndicator(color: Color(0xFF312684)),
-                  )
-                : invoiceList.isEmpty
-                ? Center(child: Text('No invoices found'))
-                : ListView.builder(
-                    itemCount: invoiceList.length,
-                    itemBuilder: (context, index) {
-                      return InvoiceNotification(invoice: invoiceList[index]);
-                    },
-                  ),
+            child: ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              children: [
+                const SizedBox(height: 10),
+
+                // TODAY LABEL
+                const Text(
+                  'Today',
+                  style: TextStyle(color: Color(0xFF9A9A9A), fontSize: 16),
+                ),
+
+                const SizedBox(height: 15),
+
+                // TODAY LIST
+                ListView.builder(
+                  itemCount: 2,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {
+                        context.pushNamed("full_retire_request_details");
+                      },
+                      child: const InvoiceNotification(),
+                    );
+                  },
+                ),
+
+                const SizedBox(height: 25),
+
+                // YESTERDAY LABEL
+                const Text(
+                  'Yesterday',
+                  style: TextStyle(color: Color(0xFF9A9A9A), fontSize: 16),
+                ),
+                const SizedBox(height: 10),
+
+                // YESTERDAY SINGLE ITEM
+                const InvoiceNotification(),
+
+                const SizedBox(height: 30),
+              ],
+            ),
           ),
         ],
       ),
 
       bottomNavigationBar: BottomAppBar(
-        color: Color(0xFFFFFFFF).withOpacity(0.1),
+        color: Colors.white.withOpacity(0.1),
         height: 70,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 0.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: TextField(
+            controller: SearchTextController,
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.transparent,
-              hint: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                child: Row(children: [Icon(Icons.search), Text('Search')]),
+              hint: Row(
+                children: const [
+                  Icon(Icons.search, size: 20),
+                  SizedBox(width: 10),
+                  Text('Search'),
+                ],
               ),
-
-              focusedBorder: null,
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(30)),
-                borderSide: BorderSide(
-                  color: Colors.white, // <-- normal border color
-                  width: 1.2,
-                ),
+                borderRadius: BorderRadius.circular(30),
+                borderSide: const BorderSide(color: Colors.white, width: 1.2),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: const BorderSide(color: Colors.white, width: 1.5),
               ),
             ),
           ),

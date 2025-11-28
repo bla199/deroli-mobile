@@ -667,7 +667,9 @@ class _ActivitiesState extends State<Activities> {
                                     children: [
                                       IconButton(
                                         color: Color(0xFFEAE7FF),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          context.goNamed("retire");
+                                        },
                                         icon: Image.asset(
                                           'assets/icons/Upload.png',
                                           width: 40,
