@@ -19,6 +19,7 @@ class ProjectsController extends ChangeNotifier {
   late Project _selectedPaymentProject = Project();
   late Vendor _selectedPaymentVendor = Vendor();
   late Category _selectedPaymentCategory = Category();
+  late SubProject _selectedPaymentSubProject = SubProject();
 
   // getter
   List<Project> get getProjects => _projects;
@@ -34,6 +35,7 @@ class ProjectsController extends ChangeNotifier {
   Project get selectedPaymentProject => _selectedPaymentProject;
   Vendor get selectedPaymentVendor => _selectedPaymentVendor;
   Category get selectedPaymentCategory => _selectedPaymentCategory;
+  SubProject get selectedPaymentSubProject => _selectedPaymentSubProject;
 
   // Get selected project or null for "All Projects"
   Project? get selectedProject {
@@ -96,6 +98,11 @@ class ProjectsController extends ChangeNotifier {
 
   void setSelectedPaymentCategory(Category category) {
     _selectedPaymentCategory = category;
+    notifyListeners();
+  }
+
+  void setSelectedPaymentSubProject(SubProject subProject) {
+    _selectedPaymentSubProject = subProject;
     notifyListeners();
   }
 

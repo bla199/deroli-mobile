@@ -132,6 +132,9 @@ class _SelectModalState extends State<SelectModal> {
                               projectsController.setSelectedPaymentCategory(
                                 Category(),
                               );
+                              projectsController.setSelectedPaymentSubProject(
+                                SubProject(),
+                              );
                               context.pop();
                             },
                             child: transactionFilter(

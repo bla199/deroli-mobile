@@ -564,11 +564,39 @@ class Category {
 // SubProject model
 class SubProject {
   // Add sub-project fields when needed
-  SubProject();
+  final String subProjectId;
+  final String name;
+  final String allocatedBudget;
+  final String registered;
+  final String balanceBudget;
+  final String category;
 
-  Map<String, dynamic> toJson() => {};
+  SubProject({
+    this.subProjectId = '',
+    this.name = '',
+    this.allocatedBudget = '',
+    this.registered = '',
+    this.balanceBudget = '',
+    this.category = '',
+  });
 
-  factory SubProject.fromJson(Map<String, dynamic> json) => SubProject();
+  Map<String, dynamic> toJson() => {
+    'sub_project_id': subProjectId,
+    'name': name,
+    'allocated_budget': allocatedBudget,
+    'registered': registered,
+    'balance_budget': balanceBudget,
+    'category': category,
+  };
+
+  factory SubProject.fromJson(Map<String, dynamic> json) => SubProject(
+    subProjectId: json['sub_project_id']?.toString() ?? '',
+    name: json['name']?.toString() ?? '',
+    allocatedBudget: json['allocated_budget']?.toString() ?? '',
+    registered: json['registered']?.toString() ?? '',
+    balanceBudget: json['balance_budget']?.toString() ?? '',
+    category: json['category']?.toString() ?? '',
+  );
 }
 
 // Task model

@@ -21,10 +21,7 @@ class _RequestMoneyState extends State<RequestMoney> {
   @override
   Widget build(BuildContext context) {
     //
-    final projectsController = Provider.of<ProjectsController>(
-      context,
-      listen: false,
-    );
+    final projectsController = Provider.of<ProjectsController>(context);
     return Scaffold(
       backgroundColor: Color(0xFFF9F9F9),
       appBar: HeaderAppBar(
@@ -72,40 +69,33 @@ class _RequestMoneyState extends State<RequestMoney> {
               context.push("/vendors");
             },
             isSelected: projectsController.selectedVendor.vendorId != '',
-            descrp:
-                "${projectsController.selectedVendor.paymentAccount?.provider.shortName} | ${projectsController.selectedVendor.paymentAccount?.accountNumber}",
+            descrp: projectsController.selectedVendor.vendorId == ''
+                ? ""
+                : "${projectsController.selectedVendor.paymentAccount?.provider.shortName} | ${projectsController.selectedVendor.paymentAccount?.accountNumber}",
           ),
 
-          Consumer<ProjectsController>(
-            builder: (context, projectsController, child) {
-              var inputTake = InputTake(
-                title: "Category",
-                label:
-                    projectsController.selectedPaymentCategory.categoryId == ''
-                    ? "Select category and sub-category"
-                    : projectsController.selectedPaymentCategory.name,
-                // descrp: projectsController.selectedPaymentCategory.categoryId == '' ? "" : "${projectsController.selectedPaymentCategory.name}",
-                onTap: () {
-                  if (projectsController.selectedPaymentProject.projectId ==
-                      '') {
-                    toastFunct(
-                      context: context,
-                      message: "Please select a project first",
-                      isSuccess: false,
-                    );
-                    return;
-                  }
-                  bottomModal(
-                    context: context,
-                    child: SelectModal(type: 'category'),
-                    blurColor: const Color.fromRGBO(212, 212, 212, 0.51),
-                  );
-                },
-                isSelected:
-                    projectsController.selectedPaymentCategory.categoryId != '',
-              );
-              return inputTake;
+          InputTake(
+            title: "Category",
+            label: projectsController.selectedPaymentCategory.categoryId == ''
+                ? "Select category and sub-category"
+                : projectsController.selectedPaymentCategory.name,
+            descrp:
+                projectsController.selectedPaymentSubProject.subProjectId == ''
+                ? ""
+                : projectsController.selectedPaymentSubProject.name,
+            onTap: () {
+              if (projectsController.selectedPaymentProject.projectId == '') {
+                toastFunct(
+                  context: context,
+                  message: "Please select a project first",
+                  isSuccess: false,
+                );
+                return;
+              }
+              context.push("/category");
             },
+            isSelected:
+                projectsController.selectedPaymentCategory.categoryId != '',
           ),
 
           Padding(

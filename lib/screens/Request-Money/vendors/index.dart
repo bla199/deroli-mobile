@@ -74,6 +74,7 @@ class _VendorsPageState extends State<VendorsPage> {
           final sortedLetters = groupedVendors.keys.toList()..sort();
 
           return ListView(
+            physics: const ClampingScrollPhysics(),
             children: [
               // gap
               Gap(Layout.getHeight(context, 15)),
