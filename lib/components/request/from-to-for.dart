@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 export 'from-to-for.dart';
 
 class FromToFor extends StatelessWidget {
@@ -84,6 +85,9 @@ class FromToFor extends StatelessWidget {
                       ),
                     ),
                     InkWell(
+                      onTap: () {
+                        context.pop();
+                      },
                       child: Padding(
                         padding: const EdgeInsets.only(right: 10.0),
                         child: Container(

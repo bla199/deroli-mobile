@@ -1,25 +1,14 @@
+import 'package:deroli_mobile/components/general/app_bar.dart';
+import 'package:deroli_mobile/components/general/back_arrow.dart';
+import 'package:deroli_mobile/controller/index.dart';
 import 'package:deroli_mobile/services/moneyRequest.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import '../../components/main.dart';
 
 class AmountPage extends StatefulWidget {
-  final String projectLabel;
-  final String projectDescription;
-  final String vendorLabel;
-  final String vendorDescription;
-  final String categoryLabel;
-  final String categoryDescription;
-
-  const AmountPage({
-    super.key,
-    this.projectLabel = '',
-    this.projectDescription = '',
-    this.vendorLabel = '',
-    this.vendorDescription = '',
-    this.categoryLabel = '',
-    this.categoryDescription = '',
-  });
+  const AmountPage({super.key});
 
   @override
   State<AmountPage> createState() => _AmountPageState();
@@ -38,18 +27,22 @@ class _AmountPageState extends State<AmountPage> {
 
   @override
   Widget build(BuildContext context) {
+    //
+    final projectsController = Provider.of<ProjectsController>(context);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFF9F9F9),
-        leading: IconButton(
-          onPressed: () {
-            context.go("/request_money");
-          },
-          icon: const Icon(Icons.arrow_back),
-        ),
-        centerTitle: true,
-        title: const PageTitle(text: "Request Money"),
+      //
+      backgroundColor: Color(0xFFF9F9F9),
+      appBar: HeaderAppBar(
+        title: "Request Money",
+        isCentered: true,
+        titleFontFamily: 'Trap',
+        titleFontSize: 15,
+        titleFontWeight: FontWeight.w700,
+        backgroundColor: Color(0xFFF9F9F9),
+        leading: BackArrow(context: context),
       ),
+
+      //
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: GestureDetector(
@@ -72,24 +65,40 @@ class _AmountPageState extends State<AmountPage> {
                   child: Column(
                     children: [
                       FromToFor(
-                        title: widget.projectDescription.isNotEmpty
-                            ? widget.projectDescription
+                        title:
+                            projectsController
+                                .selectedPaymentProject
+                                .projectId
+                                .isNotEmpty
+                            ? projectsController.selectedPaymentProject.name
                             : "Select a project",
                         directions: "From",
-                        details: widget.projectLabel.isNotEmpty
-                            ? "Project ${widget.projectLabel}"
+                        details:
+                            projectsController
+                                .selectedPaymentProject
+                                .projectId
+                                .isNotEmpty
+                            ? "Project number - ****${projectsController.selectedPaymentProject.projectId.substring(projectsController.selectedPaymentProject.projectId.length - 6).toUpperCase()}"
                             : "Project Number",
                       ),
                       SizedBox(height: 10),
                       AppBorder(color: Color(0xFFEFEFEF)),
                       SizedBox(height: 10),
                       FromToFor(
-                        title: widget.vendorLabel.isNotEmpty
-                            ? widget.vendorLabel
+                        title:
+                            projectsController
+                                .selectedVendor
+                                .vendorId
+                                .isNotEmpty
+                            ? projectsController.selectedVendor.name
                             : "Select a vendor",
                         directions: "To",
-                        details: widget.vendorDescription.isNotEmpty
-                            ? widget.vendorDescription
+                        details:
+                            projectsController
+                                .selectedVendor
+                                .vendorId
+                                .isNotEmpty
+                            ? "${projectsController.selectedVendor.paymentAccount?.provider.shortName} | ${projectsController.selectedVendor.paymentAccount?.accountNumber}"
                             : "Vendor details",
                       ),
                     ],
@@ -106,12 +115,20 @@ class _AmountPageState extends State<AmountPage> {
                   ),
                   padding: const EdgeInsets.all(15),
                   child: FromToFor(
-                    title: widget.categoryLabel.isNotEmpty
-                        ? widget.categoryLabel
+                    title:
+                        projectsController
+                            .selectedPaymentCategory
+                            .categoryId
+                            .isNotEmpty
+                        ? projectsController.selectedPaymentCategory.name
                         : "Select a category",
                     directions: "For",
-                    details: widget.categoryDescription.isNotEmpty
-                        ? widget.categoryDescription
+                    details:
+                        projectsController
+                            .selectedPaymentCategory
+                            .categoryId
+                            .isNotEmpty
+                        ? projectsController.selectedPaymentSubProject.name
                         : "Category details",
                   ),
                 ),
@@ -183,18 +200,7 @@ class _AmountPageState extends State<AmountPage> {
                       projectPayment();
 
                       // Pass all details to receipt page
-                      context.push(
-                        "/receipt",
-                        extra: {
-                          'projectLabel': widget.projectLabel,
-                          'projectDescription': widget.projectDescription,
-                          'vendorLabel': widget.vendorLabel,
-                          'vendorDescription': widget.vendorDescription,
-                          'categoryLabel': widget.categoryLabel,
-                          'categoryDescription': widget.categoryDescription,
-                          'amount': amount,
-                        },
-                      );
+                      context.push("/receipt");
                     },
                     child: const Text(
                       "Request Money",

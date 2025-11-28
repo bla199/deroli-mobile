@@ -1,3 +1,5 @@
+import 'package:deroli_mobile/components/general/app_bar.dart';
+import 'package:deroli_mobile/components/general/back_arrow.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -68,7 +70,15 @@ class _ReceiptState extends State<Receipt> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.white),
+      backgroundColor: Color(0xFFF9F9F9),
+      appBar: HeaderAppBar(
+        isCentered: true,
+        titleFontFamily: 'Trap',
+        titleFontSize: 15,
+        titleFontWeight: FontWeight.w700,
+        backgroundColor: Color(0xFFF9F9F9),
+        leading: SizedBox(),
+      ),
       body: Column(
         children: [
           Padding(
@@ -122,7 +132,7 @@ class _ReceiptState extends State<Receipt> {
                                       height: 250,
                                       width: 250,
                                       child: Image.asset(
-                                        'assets/images/image1.png',
+                                        'assets/icons/source.gif',
                                       ),
                                     ),
                                     SizedBox(height: 10),

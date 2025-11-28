@@ -1,4 +1,4 @@
-import 'package:deroli_mobile/screens/Amount/AmountPage.dart';
+import 'package:deroli_mobile/screens/amount/index.dart';
 import 'package:deroli_mobile/screens/request-money/category/index.dart';
 import 'package:deroli_mobile/screens/request-money/vendors/index.dart';
 import 'package:deroli_mobile/screens/request-money/index.dart';
@@ -38,15 +38,7 @@ List<RouteBase> routes = [
     name: "amount",
     path: "/amount",
     builder: (context, state) {
-      final extra = state.extra as Map<String, String>?;
-      return AmountPage(
-        projectLabel: extra?['projectLabel'] ?? '',
-        projectDescription: extra?['projectDescription'] ?? '',
-        vendorLabel: extra?['vendorLabel'] ?? '',
-        vendorDescription: extra?['vendorDescription'] ?? '',
-        categoryLabel: extra?['categoryLabel'] ?? '',
-        categoryDescription: extra?['categoryDescription'] ?? '',
-      );
+      return AmountPage();
     },
   ),
 
