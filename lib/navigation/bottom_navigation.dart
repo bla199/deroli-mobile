@@ -2,6 +2,7 @@
 This is bottom navigation in the app
 */
 
+import 'package:deroli_mobile/navigation/liquid_bar.dart';
 import 'package:deroli_mobile/screens/home/index.dart';
 import 'package:deroli_mobile/controller/index.dart';
 import 'package:deroli_mobile/utils/index.dart';
@@ -30,81 +31,71 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
     return Scaffold(
       //
-      body: Center(child: _widgetOptions[manager.selectedIndex]),
-
-      // bottom navigation
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 10,
-        backgroundColor: Colors.white,
-        currentIndex: manager.selectedIndex,
-        type: BottomNavigationBarType.fixed,
-        onTap: (value) {
-          manager.setSelectedIndex(value);
-        },
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-
-        // styles
-        selectedItemColor: Colors.black,
-        unselectedItemColor: const Color(0xFF838383),
-        unselectedLabelStyle: Styles.normalText(context).copyWith(
-          fontSize: Layout.getHeight(context, 11),
-          fontWeight: FontWeight.w500,
-        ),
-        selectedLabelStyle: Styles.normalText(context).copyWith(
-          fontSize: Layout.getHeight(context, 11),
-          fontWeight: FontWeight.w600,
-        ),
-
-        // items
-        // items
-        items: [
-          // home item
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              "assets/icons/home.png",
-              width: Layout.getHeight(context, 17),
-              color: Styles.greyColor,
-            ),
-            label: "Home",
-            activeIcon: Image.asset(
-              "assets/icons/home.png",
-              width: Layout.getHeight(context, 17),
-              color: Colors.black,
-            ),
-          ),
-
-          // transactions itwm
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              "assets/icons/transactions.png",
-              width: Layout.getHeight(context, 17),
-              color: Styles.greyColor,
-            ),
-            label: "Transactions",
-            activeIcon: Image.asset(
-              "assets/icons/transactions.png",
-              width: Layout.getHeight(context, 17),
-              color: Colors.black,
-            ),
-          ),
-
-          // report item
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              "assets/icons/Person.png",
-              width: Layout.getHeight(context, 19),
-              color: Styles.greyColor,
-            ),
-            label: "Profile",
-            activeIcon: Image.asset(
-              "assets/icons/Person.png",
-              width: Layout.getHeight(context, 19),
-              color: Colors.black,
-            ),
-          ),
+      body: Stack(
+        children: [
+          Positioned.fill(child: _widgetOptions[manager.selectedIndex]),
 
           //
+          SafeArea(
+            bottom: false,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: LiquidGlassBottomBar(
+                fake: false,
+                tabs: [
+                  LiquidGlassBottomBarTab(
+                    icon: Image.asset(
+                      "assets/icons/home.png",
+                      width: Layout.getHeight(context, 24),
+                      color: Styles.greyColor,
+                    ),
+                    label: "Home",
+                    selectedIcon: Image.asset(
+                      "assets/icons/home.png",
+                      width: Layout.getHeight(context, 24),
+                      color: Color(0xFF312684),
+                    ),
+                    textColor: Styles.greyColor,
+                    selectedTextColor: Color(0xFF312684),
+                  ),
+                  LiquidGlassBottomBarTab(
+                    icon: Image.asset(
+                      "assets/icons/transactions.png",
+                      width: Layout.getHeight(context, 24),
+                      color: Styles.greyColor,
+                    ),
+                    label: "Transactions",
+                    selectedIcon: Image.asset(
+                      "assets/icons/transactions.png",
+                      width: Layout.getHeight(context, 24),
+                      color: Color(0xFF312684),
+                    ),
+                    textColor: Styles.greyColor,
+                    selectedTextColor: Color(0xFF312684),
+                  ),
+                  LiquidGlassBottomBarTab(
+                    icon: Image.asset(
+                      "assets/icons/Person.png",
+                      width: Layout.getHeight(context, 24),
+                      color: Styles.greyColor,
+                    ),
+                    label: "Profile",
+                    selectedIcon: Image.asset(
+                      "assets/icons/Person.png",
+                      width: Layout.getHeight(context, 24),
+                      color: Color(0xFF312684),
+                    ),
+                    textColor: Styles.greyColor,
+                    selectedTextColor: Color(0xFF312684),
+                  ),
+                ],
+                selectedIndex: manager.selectedIndex,
+                onTabSelected: (index) {
+                  manager.setSelectedIndex(index);
+                },
+              ),
+            ),
+          ),
         ],
       ),
     );
