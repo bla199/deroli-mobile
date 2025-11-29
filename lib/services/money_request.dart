@@ -1,8 +1,10 @@
+import 'package:deroli_mobile/components/general/modal.dart';
 import 'package:deroli_mobile/components/general/toast.dart';
 import 'package:deroli_mobile/controller/index.dart';
 import 'package:deroli_mobile/network/index.dart';
 import 'package:deroli_mobile/utils/index.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 export 'get_vendors.dart';
 
 Future<bool> addProjectPayment({
@@ -10,6 +12,16 @@ Future<bool> addProjectPayment({
   required ProjectsController projectsController,
 }) async {
   try {
+    // display a loading modal while sending a request
+    bottomModal(
+      child: loadingModal(context),
+      context: context,
+      blurColor: const Color.fromRGBO(173, 191, 255, 0.7),
+      isDismissible: false,
+      isScrollControlled: false,
+      enableDrag: false,
+    );
+
     final project = projectsController.selectedPaymentProject;
     final category = projectsController.selectedPaymentCategory;
     final subCategory = projectsController.selectedPaymentSubProject;
@@ -43,6 +55,10 @@ Future<bool> addProjectPayment({
       endpoint: ApiUrls.addProjectPayment,
     );
 
+    // dismiss the loading modal
+    // ignore: use_build_context_synchronously
+    context.pop();
+
     // Check response
     if (apiRequest['code'] == 200 || apiRequest['code'] == 201) {
       toastFunct(
@@ -53,6 +69,7 @@ Future<bool> addProjectPayment({
             'Payment request created successfully',
         isSuccess: true,
       );
+
       return true;
     } else {
       toastFunct(

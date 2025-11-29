@@ -6,7 +6,7 @@ import 'package:currency_text_input_formatter/currency_text_input_formatter.dart
 
 class Constants {
   // backend url
-  static const String apiUrl = 'http://192.168.1.3:8000/';
+  static const String apiUrl = 'http://192.168.1.5:8000/';
 
   // current app version
   static const String currentVersion = "1.0.1";
@@ -31,5 +31,28 @@ class Constants {
     RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
     ss = ss.replaceAllMapped(reg, (Match match) => '${match[1]},');
     return ss;
+  }
+
+  static String formatPriceInput(String value) {
+    if (value.isEmpty) return '';
+
+    // Remove all non-digit characters except decimal point
+    String cleanValue = value.replaceAll(RegExp(r'[^\d.]'), '');
+
+    // Split by decimal point
+    List<String> parts = cleanValue.split('.');
+    String integerPart = parts[0];
+    String decimalPart = parts.length > 1 ? '.${parts[1]}' : '';
+
+    // Add commas to integer part
+    if (integerPart.isNotEmpty) {
+      RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
+      integerPart = integerPart.replaceAllMapped(
+        reg,
+        (Match match) => '${match[1]},',
+      );
+    }
+
+    return integerPart + decimalPart;
   }
 }

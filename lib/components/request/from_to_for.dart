@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-export 'from-to-for.dart';
+export 'from_to_for.dart';
 
 class FromToFor extends StatelessWidget {
   const FromToFor({
     super.key,
     required this.directions,
     required this.title,
-
+    required this.icon,
     required this.details,
   });
   final String directions;
   final String title;
-
+  final String icon;
   final String details;
 
   @override
@@ -47,12 +47,13 @@ class FromToFor extends StatelessWidget {
                               horizontal: 1.0,
                             ),
                             child: CircleAvatar(
+                              backgroundColor: Color(0xFFF4F2FF),
                               child: Image.asset(
-                                'assets/icons/project.png',
+                                icon,
                                 width: 15,
                                 height: 15,
+                                color: Color(0xFF312684),
                               ),
-                              backgroundColor: Color(0xFFF4F2FF),
                             ),
                           ),
 

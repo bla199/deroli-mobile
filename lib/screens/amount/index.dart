@@ -4,7 +4,6 @@ import 'package:deroli_mobile/controller/index.dart';
 import 'package:deroli_mobile/services/money_request.dart';
 import 'package:deroli_mobile/utils/index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../components/main.dart';
@@ -31,6 +30,10 @@ class _AmountPageState extends State<AmountPage> {
   Widget build(BuildContext context) {
     //
     final projectsController = Provider.of<ProjectsController>(context);
+
+    // set the amount to the controller
+    _controller.text = Constants.commaValue(projectsController.amount);
+
     return Scaffold(
       //
       backgroundColor: Color(0xFFF9F9F9),
@@ -82,6 +85,7 @@ class _AmountPageState extends State<AmountPage> {
                                 .isNotEmpty
                             ? "Project number - ****${projectsController.selectedPaymentProject.projectId.substring(projectsController.selectedPaymentProject.projectId.length - 6).toUpperCase()}"
                             : "Project Number",
+                        icon: 'assets/icons/project.png',
                       ),
                       SizedBox(height: 10),
                       AppBorder(color: Color(0xFFEFEFEF)),
@@ -102,6 +106,7 @@ class _AmountPageState extends State<AmountPage> {
                                 .isNotEmpty
                             ? "${projectsController.selectedVendor.paymentAccount?.provider.shortName} | ${projectsController.selectedVendor.paymentAccount?.accountNumber}"
                             : "Vendor details",
+                        icon: 'assets/icons/Profile.png',
                       ),
                     ],
                   ),
@@ -132,6 +137,7 @@ class _AmountPageState extends State<AmountPage> {
                             .isNotEmpty
                         ? projectsController.selectedPaymentSubProject.name
                         : "Category details",
+                    icon: 'assets/icons/project.png',
                   ),
                 ),
 
@@ -150,32 +156,36 @@ class _AmountPageState extends State<AmountPage> {
                     child: TextField(
                       controller: _controller,
                       focusNode: _focusNode,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        _NumberInputFormatter(),
-                      ],
                       onChanged: (value) {
                         // Remove commas and parse the numeric value
-                        final numericValue = value.replaceAll(',', '');
-                        if (numericValue.isNotEmpty) {
-                          try {
-                            final amount = double.parse(numericValue);
-                            projectsController.setAmount(amount);
-                          } catch (e) {
-                            // Handle parse error
-                            debugPrint('Error parsing amount: $e');
-                          }
-                        } else {
-                          projectsController.setAmount(0.0);
+                        String formattedValue = Constants.formatPriceInput(
+                          value,
+                        );
+                        if (formattedValue != value) {
+                          _controller.value = TextEditingValue(
+                            text: formattedValue,
+                            selection: TextSelection.collapsed(
+                              offset: formattedValue.length,
+                            ),
+                          );
                         }
+
+                        // Remove commas for backend storage
+                        String unFormattedValue = value.replaceAll(',', '');
+
+                        projectsController.setAmount(
+                          double.parse(unFormattedValue),
+                        );
                       },
                       autofocus: true,
-                      keyboardType: TextInputType.number,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.w900,
-                        color: Color(0xFFA4A4A4),
+                        // color: Color(0xFFA4A4A4),
                       ),
                       decoration: InputDecoration(
                         prefix: Transform.translate(
@@ -213,13 +223,13 @@ class _AmountPageState extends State<AmountPage> {
                       ),
                       backgroundColor: MaterialStateProperty.all(
                         const Color(0xFF312684).withOpacity(
-                          projectsController.amount > 1000 ? 1 : 0.5,
+                          projectsController.amount > 999 ? 1 : 0.5,
                         ),
                       ),
                     ),
                     onPressed: () async {
                       // Check if amount is valid
-                      if (projectsController.amount > 1000) {
+                      if (projectsController.amount > 999) {
                         // Make API request to create payment
                         final success = await addProjectPayment(
                           context: context,
@@ -250,81 +260,5 @@ class _AmountPageState extends State<AmountPage> {
         ),
       ),
     );
-  }
-}
-
-// Custom formatter to add commas to numbers as user types
-class _NumberInputFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(
-    TextEditingValue oldValue,
-    TextEditingValue newValue,
-  ) {
-    // Extract only digits from the new value
-    final newText = newValue.text.replaceAll(RegExp(r'[^\d]'), '');
-
-    // If empty, return empty
-    if (newText.isEmpty) {
-      return const TextEditingValue(
-        text: '',
-        selection: TextSelection.collapsed(offset: 0),
-      );
-    }
-
-    // Format with commas
-    final formatted = _formatWithCommas(newText);
-
-    // Calculate the cursor position
-    final oldText = oldValue.text.replaceAll(RegExp(r'[^\d]'), '');
-    final isAdding = newText.length > oldText.length;
-    final isDeleting = newText.length < oldText.length;
-
-    // Count digits before cursor in old formatted text
-    int digitsBeforeCursor = 0;
-    final oldCursorPos = oldValue.selection.baseOffset;
-    for (int i = 0; i < oldCursorPos && i < oldValue.text.length; i++) {
-      if (RegExp(r'\d').hasMatch(oldValue.text[i])) {
-        digitsBeforeCursor++;
-      }
-    }
-
-    // Adjust based on add/delete
-    if (isAdding) {
-      digitsBeforeCursor++;
-    } else if (isDeleting && digitsBeforeCursor > 0) {
-      digitsBeforeCursor--;
-    }
-
-    // Find the cursor position in the formatted string
-    int cursorPosition = formatted.length;
-    int digitCount = 0;
-    for (int i = 0; i < formatted.length; i++) {
-      if (formatted[i] != ',') {
-        digitCount++;
-        if (digitCount == digitsBeforeCursor) {
-          cursorPosition = i + 1;
-          break;
-        }
-      }
-    }
-
-    return TextEditingValue(
-      text: formatted,
-      selection: TextSelection.collapsed(offset: cursorPosition),
-    );
-  }
-
-  String _formatWithCommas(String value) {
-    if (value.isEmpty) return '';
-
-    // Add commas every 3 digits from right to left
-    final buffer = StringBuffer();
-    for (int i = 0; i < value.length; i++) {
-      if (i > 0 && (value.length - i) % 3 == 0) {
-        buffer.write(',');
-      }
-      buffer.write(value[i]);
-    }
-    return buffer.toString();
   }
 }

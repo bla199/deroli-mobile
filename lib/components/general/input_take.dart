@@ -16,6 +16,7 @@ class InputTake extends StatefulWidget {
   final String label;
   final VoidCallback onTap;
   final bool isSelected;
+  final String icon;
 
   const InputTake({
     super.key,
@@ -25,6 +26,7 @@ class InputTake extends StatefulWidget {
     this.placeholder = "",
     required this.onTap,
     required this.isSelected,
+    required this.icon,
   });
 
   @override
@@ -73,9 +75,10 @@ class _InputTakeState extends State<InputTake> {
                           backgroundColor: Color(0xFFF4F2FF),
                           maxRadius: 16,
                           child: Image.asset(
-                            'assets/icons/project.png',
+                            widget.icon,
                             width: 15,
                             height: 15,
+                            color: Color(0xFF312684),
                           ),
                         ),
                         SizedBox(width: Layout.getWidth(context, 8)),

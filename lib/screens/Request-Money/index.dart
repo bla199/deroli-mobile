@@ -72,6 +72,7 @@ class _RequestMoneyState extends State<RequestMoney> {
                 },
                 isSelected:
                     projectsController.selectedPaymentProject.projectId != '',
+                icon: 'assets/icons/project.png',
               );
             },
           ),
@@ -88,6 +89,7 @@ class _RequestMoneyState extends State<RequestMoney> {
             descrp: projectsController.selectedVendor.vendorId == ''
                 ? ""
                 : "${projectsController.selectedVendor.paymentAccount?.provider.shortName} | ${projectsController.selectedVendor.paymentAccount?.accountNumber}",
+            icon: 'assets/icons/Profile.png',
           ),
 
           InputTake(
@@ -112,6 +114,7 @@ class _RequestMoneyState extends State<RequestMoney> {
             },
             isSelected:
                 projectsController.selectedPaymentCategory.categoryId != '',
+            icon: 'assets/icons/project.png',
           ),
 
           Consumer<ProjectsController>(

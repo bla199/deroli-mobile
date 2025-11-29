@@ -284,7 +284,7 @@ class _ReceiptState extends State<Receipt> {
                                                     ),
                                                     Text(
                                                       projectsController
-                                                          .selectedPaymentVendor
+                                                          .selectedVendor
                                                           .name,
                                                       style: TextStyle(
                                                         fontSize: 12,
@@ -396,7 +396,9 @@ class _ReceiptState extends State<Receipt> {
                   backgroundColor: MaterialStateProperty.all(Color(0xFF312684)),
                 ),
                 onPressed: () {
-                  context.go("/activities");
+                  context.pop();
+                  context.pop();
+                  context.pop();
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
