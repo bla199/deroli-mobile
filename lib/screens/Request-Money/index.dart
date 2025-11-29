@@ -120,10 +120,19 @@ class _RequestMoneyState extends State<RequestMoney> {
               final isUploading = projectsController.isUploadingInvoice;
 
               return Padding(
-                padding: const EdgeInsets.all(30.0),
+                padding: EdgeInsets.all(Layout.getHeight(context, 30)),
                 child: Column(
                   children: [
-                    Row(children: [Text("Payment Purpose")]),
+                    Row(
+                      children: [
+                        Text(
+                          "Payment Purpose",
+                          style: Styles.normalText(
+                            context,
+                          ).copyWith(fontSize: 13),
+                        ),
+                      ],
+                    ),
                     SizedBox(height: 8),
                     GestureDetector(
                       onTap: isUploading
@@ -155,7 +164,7 @@ class _RequestMoneyState extends State<RequestMoney> {
                           child: Padding(
                             padding: EdgeInsets.symmetric(
                               // horizontal: 100.0,
-                              vertical: screenSize.height * 0.025,
+                              vertical: screenSize.height * 0.018,
                             ),
                             child: Column(
                               children: [

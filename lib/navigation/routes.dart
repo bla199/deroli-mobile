@@ -1,3 +1,4 @@
+import 'package:deroli_mobile/navigation/bottom_navigation.dart';
 import 'package:deroli_mobile/screens/amount/index.dart';
 import 'package:deroli_mobile/screens/request-money/category/index.dart';
 import 'package:deroli_mobile/screens/request-money/vendors/index.dart';
@@ -10,6 +11,11 @@ import 'package:deroli_mobile/screens/requested/requested.dart';
 import 'package:go_router/go_router.dart';
 
 List<RouteBase> routes = [
+  GoRoute(
+    name: "bottom_navigation",
+    path: "/bottom_navigation",
+    builder: (context, state) => const BottomNavigation(),
+  ),
   GoRoute(
     name: "activities",
     path: "/activities",

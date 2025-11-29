@@ -24,7 +24,7 @@ class AppRouter {
     debugLogDiagnostics: false, // false in production
     // todo: add state manager that the route will listen to
     // refreshListenable: appStateManager,
-    initialLocation: '/activities',
+    initialLocation: '/bottom_navigation',
     navigatorKey: _rootNavigatorKey,
 
     // pages error handle, this page is used when specified url is unvailable

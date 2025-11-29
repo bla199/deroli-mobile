@@ -24,6 +24,10 @@ class ProjectsController extends ChangeNotifier {
   late bool _isUploadingInvoice = false;
   late double _amount = 0.0;
 
+  // selected index
+  late int _selectedIndex = 0;
+  int get selectedIndex => _selectedIndex;
+
   // getter
   List<Project> get getProjects => _projects;
   bool get getProjectsLoading => _getProjectsLoading;
@@ -128,6 +132,11 @@ class ProjectsController extends ChangeNotifier {
 
   void setAmount(double amount) {
     _amount = amount;
+    notifyListeners();
+  }
+
+  void setSelectedIndex(int index) {
+    _selectedIndex = index;
     notifyListeners();
   }
 }
