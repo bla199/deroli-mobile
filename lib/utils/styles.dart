@@ -28,21 +28,21 @@ class Styles {
   }
 
   static TextStyle header(BuildContext context) {
-    return GoogleFonts.fredoka(
+    return GoogleFonts.ibmPlexSans(
       fontSize: Layout.getHeight(context, 25),
       fontWeight: FontWeight.bold,
     );
   }
 
   static TextStyle headerMain(BuildContext context) {
-    return GoogleFonts.fredoka(
+    return GoogleFonts.ibmPlexSans(
       fontSize: Layout.getHeight(context, 15),
       fontWeight: FontWeight.bold,
     );
   }
 
   static TextStyle fainted(BuildContext context) {
-    return GoogleFonts.fredoka(
+    return GoogleFonts.ibmPlexSans(
       fontSize: Layout.getHeight(context, 12),
       fontWeight: FontWeight.w100,
       color: Styles.greyColor,

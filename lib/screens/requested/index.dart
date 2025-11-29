@@ -153,9 +153,9 @@ class _RequestedState extends State<Requested> {
                   children: [
                     Text(
                       'Requested',
-                      style: TextStyle(
+                      style: Styles.header(context).copyWith(
                         fontSize: Layout.getHeight(context, 20),
-                        fontWeight: FontWeight.w900,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],

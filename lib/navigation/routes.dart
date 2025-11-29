@@ -1,17 +1,18 @@
+import 'package:deroli_mobile/models/project_modal.dart';
 import 'package:deroli_mobile/navigation/bottom_navigation.dart';
 import 'package:deroli_mobile/screens/amount/index.dart';
 import 'package:deroli_mobile/screens/invoices/full_invoice_details.dart';
-import 'package:deroli_mobile/screens/request-money/category/index.dart';
 import 'package:deroli_mobile/screens/request-money/vendors/index.dart';
 import 'package:deroli_mobile/screens/request-money/index.dart';
 import 'package:deroli_mobile/screens/home/index.dart';
 import 'package:deroli_mobile/screens/invoices/invoices.dart';
 import 'package:deroli_mobile/screens/receipt/receipt.dart';
+import 'package:deroli_mobile/screens/request_money/category/index.dart';
+import 'package:deroli_mobile/screens/requested/full_request_details.dart';
 import 'package:deroli_mobile/screens/requested/index.dart';
 import 'package:deroli_mobile/screens/retire/full_retire_requested_details.dart';
 import 'package:deroli_mobile/screens/retire/requested_transactions.dart';
 import 'package:deroli_mobile/screens/retire/retired_transactions.dart';
-import 'package:deroli_mobile/screens/retire/unretired_transactions.dart';
 import 'package:go_router/go_router.dart';
 
 List<RouteBase> routes = [
@@ -97,6 +98,9 @@ List<RouteBase> routes = [
   GoRoute(
     name: "full_request_details",
     path: "/full_request_details",
-    builder: (context, state) => const FullRequestDetails(),
+    builder: (context, state) {
+      final payment = state.extra as Payment;
+      return FullRequestDetailsScreen(payment: payment);
+    },
   ),
 ];

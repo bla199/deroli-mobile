@@ -90,7 +90,7 @@ class Payment {
   final Vendor? vendor;
   final User? user;
   final Category category;
-  final dynamic subProject; // Can be null or object
+  final SubProject? subProject; // Can be null or object
   final List<Task> tasks;
   final String amount;
   final String status;
@@ -167,7 +167,9 @@ class Payment {
           ? User.fromJson(json['user'] as Map<String, dynamic>)
           : null,
       category: Category.fromJson(json['category'] as Map<String, dynamic>),
-      subProject: json['sub_project'],
+      subProject: json['sub_project'] != null
+          ? SubProject.fromJson(json['sub_project'] as Map<String, dynamic>)
+          : null,
       tasks: (json['tasks'] as List? ?? [])
           .map((t) => Task.fromJson(t as Map<String, dynamic>))
           .toList(),
