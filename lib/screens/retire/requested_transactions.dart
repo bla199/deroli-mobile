@@ -1,3 +1,4 @@
+import 'package:deroli_mobile/components/retire/retire_requested_Notification.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../components/main.dart';
@@ -5,43 +6,19 @@ import '../../components/requested/requested_notification.dart';
 import '../../network/services/getRequested.dart';
 import '../../models/project_modal.dart';
 
-class Requested extends StatefulWidget {
-  const Requested({super.key});
+class Retire_Requested extends StatefulWidget {
+  const Retire_Requested({super.key});
 
   @override
-  State<Requested> createState() => _RequestedState();
+  State<Retire_Requested> createState() => Retire_RequestedState();
 }
 
 final SearchTextController = TextEditingController();
 
-class _RequestedState extends State<Requested> {
+class Retire_RequestedState extends State<Retire_Requested> {
   List<Payment> paymentList = [];
   bool isLoading = true;
   String searchQuery = '';
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchPayments();
-  }
-
-  Future<void> _fetchPayments() async {
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      List<Payment> data = await getRequested();
-      setState(() {
-        paymentList = data;
-        isLoading = false;
-      });
-    } catch (e) {
-      print("Error fetching payments: $e");
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
 
   List<Payment> get _filteredList {
     if (searchQuery.isEmpty) return paymentList;
@@ -98,80 +75,81 @@ class _RequestedState extends State<Requested> {
         ],
       ),
 
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 20.0, top: 8),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      'Requested',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                  ],
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: Row(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 0.0, top: 8),
+              child: Column(
+                children: [
+                  Row(
                     children: [
                       Text(
-                        'Today',
+                        'Requested',
                         style: TextStyle(
-                          color: Color(0xFF9A9A9A),
-                          fontSize: 16,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w900,
                         ),
                       ),
                     ],
                   ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 5),
 
-          // Loading or List
-          Expanded(
-            child: isLoading
-                ? Center(
-                    child: CircularProgressIndicator(color: Color(0xFF312684)),
-                  )
-                : _filteredList.isEmpty
-                ? Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(40.0),
-                      child: Text(
-                        'No payments found',
-                        style: TextStyle(
-                          color: Color(0xFF9A9A9A),
-                          fontSize: 16,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Today',
+                          style: TextStyle(
+                            color: Color(0xFF9A9A9A),
+                            fontSize: 16,
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  )
-                : ListView.builder(
-                    itemCount: _filteredList.length,
-                    itemBuilder: (context, index) {
-                      final payment = _filteredList[index];
-                      return InkWell(
-                        key: ValueKey(payment.paymentId),
-                        onTap: () {
-                          context.pushNamed(
-                            "full_request_details",
-                            extra: payment,
-                          );
-                        },
-                        child: RequestedNotification(payment: payment),
-                      );
-                    },
                   ),
-          ),
-        ],
+                ],
+              ),
+            ),
+            SizedBox(height: 10),
+
+            // Loading or List
+            Padding(
+              padding: const EdgeInsets.all(.0),
+              child: ListView.builder(
+                itemCount: 2,
+                padding: EdgeInsets.only(bottom: 20.0),
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      context.pushNamed("full_retire_request_details");
+                    },
+                    child: RetireRequestedNotification(),
+                  );
+                },
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: Row(
+                children: [
+                  Text(
+                    'Yesterday',
+                    style: TextStyle(color: Color(0xFF9A9A9A), fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(height: 10),
+
+            RetireRequestedNotification(),
+          ],
+        ),
       ),
 
       bottomNavigationBar: BottomAppBar(

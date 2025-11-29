@@ -1,113 +1,46 @@
 import 'package:deroli_mobile/components/main.dart';
+import 'package:deroli_mobile/components/retire/customButtomRetiredTransaction.dart';
 import 'package:deroli_mobile/models/project_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:deroli_mobile/components/retire/customBottom_navbar.dart';
 
-class FullRequestDetails extends StatefulWidget {
-  final Payment? payment;
+// This rewrite hardcodes all details to match the retire request notification sample
 
-  const FullRequestDetails({super.key, this.payment});
+class RetiredTransactions extends StatefulWidget {
+  const RetiredTransactions({super.key});
 
   @override
-  State<FullRequestDetails> createState() => _FullRequestDetailsState();
+  State<RetiredTransactions> createState() => _RetiredTransactionsState();
 }
 
-class _FullRequestDetailsState extends State<FullRequestDetails> {
-  String _formatAmount(String? amount) {
-    if (amount == null || amount.isEmpty) return '0';
-    try {
-      double value = double.parse(amount);
-      return value
-          .toStringAsFixed(value == value.toInt() ? 0 : 2)
-          .replaceAllMapped(
-            RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-            (Match m) => '${m[1]},',
-          );
-    } catch (e) {
-      return amount;
-    }
-  }
-
-  Color _getAvatarColor(String name) {
-    String firstLetter = name.isNotEmpty ? name[0].toUpperCase() : 'A';
-    int hash = firstLetter.codeUnitAt(0);
-    return Color(0xFF000000 + (hash % 0xFFFFFF)).withOpacity(0.1);
-  }
-
-  String _getFirstLetter(String name) {
-    return name.isNotEmpty ? name[0].toUpperCase() : 'A';
-  }
-
-  String _getStatusText() {
-    if (widget.payment == null) return 'Pending approval';
-    final status = (widget.payment!.status ?? '').toLowerCase();
-    switch (status) {
-      case 'pending':
-        return 'Pending approval';
-      case 'approved':
-        return 'Approved';
-      case 'declined':
-        return 'Declined';
-      default:
-        return 'Initialized';
-    }
-  }
-
-  Color _getStatusColor() {
-    if (widget.payment == null) return Color(0xFFE3B644);
-    return widget.payment!.paymentStatus?.toLowerCase() == 'pending'
-        ? Color(0xFFE3B644)
-        : widget.payment!.paymentStatus?.toLowerCase() == 'approved'
-        ? Color(0xFF4CAF50)
-        : Color(0xFFE14345);
-  }
-
-  Color _getStatusBackgroundColor() {
-    if (widget.payment == null) return Color(0xFFFFF9E9);
-    final status = (widget.payment!.status ?? '').toLowerCase();
-    switch (status) {
-      case 'pending':
-        return Color(0xFFFFF9E9);
-      case 'approved':
-        return Color(0xFFE8F5E9);
-      case 'declined':
-        return Color(0xFFFFEBEE);
-      default:
-        return Color(0xFFFFF9E9);
-    }
-  }
-
+class _RetiredTransactionsState extends State<RetiredTransactions> {
   @override
   Widget build(BuildContext context) {
-    final payment = widget.payment;
+    // Use retireRequestedNotification from retire_requested_notification.dart
+    // Hardcoded data for Payment To section details
+    // You can change these as needed or make them dynamic later
 
-    if (payment == null) {
-      return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color(0xFFFFFF),
-          leading: IconButton(
-            onPressed: () {
-              context.goNamed("requested");
-            },
-            icon: Icon(Icons.arrow_back),
-          ),
-        ),
-        body: Center(child: Text('No payment details available')),
-      );
-    }
+    final String hardcodedVendorName = 'ABC Supplies';
+    final String hardcodedPaymentMethod = 'Bank Transfer';
+    final String hardcodedAccountNumber = '1234567890';
+    final String hardcodedAccountName = 'ABC Supplies Ltd';
+    final String hardcodedSubCategory = 'Office Supplies';
+    final String hardcodedDescription = 'Purchase of office stationeries';
+
+    String hardcodedCategory = 'Office Supplies';
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFFFFFF),
         leading: IconButton(
           onPressed: () {
-            context.goNamed("requested");
+            context.goNamed("retire");
           },
           icon: Icon(Icons.arrow_back),
         ),
         actions: [Image.asset('assets/icons/Chat.png', width: 30, height: 30)],
         actionsPadding: EdgeInsets.only(right: 30),
       ),
-
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4.0),
         child: SingleChildScrollView(
@@ -118,7 +51,7 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0, bottom: 30),
                     child: Text(
-                      'Request',
+                      'Transactions',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w900,
@@ -127,7 +60,6 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                   ),
                 ],
               ),
-
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Container(
@@ -158,7 +90,6 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                           Radius.circular(20),
                                         ),
                                       ),
-
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Image.asset(
@@ -182,7 +113,6 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                   ],
                                 ),
                               ),
-
                               Padding(
                                 padding: const EdgeInsets.only(right: 20.0),
                                 child: Text.rich(
@@ -194,7 +124,7 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                     ),
                                     children: [
                                       TextSpan(
-                                        text: _formatAmount(payment.amount),
+                                        text: 'TZS 100,000',
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.w900,
@@ -233,18 +163,15 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                     fontWeight: FontWeight.w300,
                                   ),
                                 ),
-
                                 Text(
-                                  payment.paymentDate,
+                                  "Today: 17:28",
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.black,
-                                    // fontWeight: FontWeight.w000,
                                   ),
                                 ),
                               ],
                             ),
-
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -256,18 +183,15 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                     fontWeight: FontWeight.w300,
                                   ),
                                 ),
-
                                 Text(
-                                  '${payment.user?.role.isNotEmpty ?? false ? payment.user?.role[0].toUpperCase() ?? '' + payment.user!.role.substring(1) ?? '' : ''}, ${payment.user?.firstName ?? ''} ${payment.user?.lastName ?? ''}',
+                                  "CFO, Prosper Deroli",
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.black,
-                                    // fontWeight: FontWeight.w000,
                                   ),
                                 ),
                               ],
                             ),
-
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -279,13 +203,11 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                     fontWeight: FontWeight.w300,
                                   ),
                                 ),
-
                                 Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(20),
                                     ),
-                                    color: _getStatusBackgroundColor(),
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
@@ -293,12 +215,8 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                       vertical: 2,
                                     ),
                                     child: Text(
-                                      _getStatusText(),
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: _getStatusColor(),
-                                        // fontWeight: FontWeight.w000,
-                                      ),
+                                      "",
+                                      style: TextStyle(fontSize: 12),
                                     ),
                                   ),
                                 ),
@@ -311,9 +229,7 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                   ),
                 ),
               ),
-
               SizedBox(height: 50),
-
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Container(
@@ -344,7 +260,6 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                           Radius.circular(20),
                                         ),
                                       ),
-
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Image.asset(
@@ -368,7 +283,6 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                   ],
                                 ),
                               ),
-
                               Padding(
                                 padding: const EdgeInsets.only(right: 20.0),
                               ),
@@ -376,10 +290,8 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                           ),
                         ],
                       ),
-
                       AppBorder(color: Color(0xFFEBEBEB)),
                       SizedBox(height: 10),
-
                       Padding(
                         padding: const EdgeInsets.only(
                           left: 20.0,
@@ -400,7 +312,6 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                     fontWeight: FontWeight.w300,
                                   ),
                                 ),
-
                                 Row(
                                   children: [
                                     Image.asset(
@@ -410,47 +321,36 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                     ),
                                     SizedBox(width: 2),
                                     Text(
-                                      payment.vendor?.name ?? '',
+                                      hardcodedVendorName,
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: Colors.black,
-                                        // fontWeight: FontWeight.w000,
                                       ),
                                     ),
                                   ],
                                 ),
                               ],
                             ),
-
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   'Payment method',
-
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Color(0xFF787878),
                                     fontWeight: FontWeight.w300,
                                   ),
                                 ),
-
                                 Text(
-                                  payment
-                                          .vendor
-                                          ?.paymentAccount
-                                          ?.provider
-                                          .name ??
-                                      'N/A',
+                                  hardcodedPaymentMethod,
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.black,
-                                    // fontWeight: FontWeight.w000,
                                   ),
                                 ),
                               ],
                             ),
-
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -462,7 +362,6 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                     fontWeight: FontWeight.w300,
                                   ),
                                 ),
-
                                 Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.all(
@@ -470,21 +369,12 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                     ),
                                   ),
                                   child: Text(
-                                    payment
-                                            .vendor
-                                            ?.paymentAccount
-                                            ?.accountNumber ??
-                                        'N/A',
-                                    style: TextStyle(
-                                      fontSize: 14,
-
-                                      // fontWeight: FontWeight.w000,
-                                    ),
+                                    hardcodedAccountNumber,
+                                    style: TextStyle(fontSize: 14),
                                   ),
                                 ),
                               ],
                             ),
-
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -496,7 +386,6 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                     fontWeight: FontWeight.w300,
                                   ),
                                 ),
-
                                 Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.all(
@@ -504,14 +393,8 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                     ),
                                   ),
                                   child: Text(
-                                    payment.vendor?.paymentAccount?.name ??
-                                        payment.vendor?.name ??
-                                        '',
-                                    style: TextStyle(
-                                      fontSize: 14,
-
-                                      // fontWeight: FontWeight.w000,
-                                    ),
+                                    hardcodedAccountName,
+                                    style: TextStyle(fontSize: 14),
                                   ),
                                 ),
                               ],
@@ -523,9 +406,7 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                   ),
                 ),
               ),
-
               SizedBox(height: 50),
-
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Container(
@@ -556,7 +437,6 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                           Radius.circular(20),
                                         ),
                                       ),
-
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Image.asset(
@@ -580,7 +460,6 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                   ],
                                 ),
                               ),
-
                               Padding(
                                 padding: const EdgeInsets.only(right: 20.0),
                               ),
@@ -588,10 +467,8 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                           ),
                         ],
                       ),
-
                       AppBorder(color: Color(0xFFEBEBEB)),
                       SizedBox(height: 10),
-
                       Padding(
                         padding: const EdgeInsets.only(
                           left: 20.0,
@@ -613,40 +490,34 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                   ),
                                 ),
                                 Text(
-                                  payment.category.name ?? 'N/A',
+                                  hardcodedCategory,
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.black,
-                                    // fontWeight: FontWeight.w000,
                                   ),
                                 ),
                               ],
                             ),
-
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   'Sub-category',
-
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Color(0xFF787878),
                                     fontWeight: FontWeight.w300,
                                   ),
                                 ),
-
                                 Text(
-                                  payment.category.name ?? 'N/A',
+                                  hardcodedSubCategory,
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.black,
-                                    // fontWeight: FontWeight.w000,
                                   ),
                                 ),
                               ],
                             ),
-
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -658,7 +529,6 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                     fontWeight: FontWeight.w300,
                                   ),
                                 ),
-
                                 Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.all(
@@ -666,12 +536,8 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                     ),
                                   ),
                                   child: Text(
-                                    payment.category.name ?? 'N/A',
-                                    style: TextStyle(
-                                      fontSize: 14,
-
-                                      // fontWeight: FontWeight.w000,
-                                    ),
+                                    hardcodedDescription,
+                                    style: TextStyle(fontSize: 14),
                                   ),
                                 ),
                               ],
@@ -683,13 +549,9 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                   ),
                 ),
               ),
-
               SizedBox(height: 50),
-
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-
-                //whole
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -718,7 +580,6 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                           Radius.circular(20),
                                         ),
                                       ),
-
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Image.asset(
@@ -742,7 +603,6 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                   ],
                                 ),
                               ),
-
                               Padding(
                                 padding: const EdgeInsets.only(right: 20.0),
                                 child: Column(
@@ -759,10 +619,8 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                           ),
                         ],
                       ),
-
                       AppBorder(color: Color(0xFFEBEBEB)),
                       SizedBox(height: 10),
-
                       Padding(
                         padding: const EdgeInsets.only(
                           left: 20.0,
@@ -800,7 +658,6 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: Color(0xFFFF7072),
-                                        // fontWeight: FontWeight.w000,
                                       ),
                                     ),
                                   ),
@@ -810,17 +667,19 @@ class _FullRequestDetailsState extends State<FullRequestDetails> {
                           ],
                         ),
                       ),
-
-                      // Padding(padding: EdgeInsetsGeometry.only(bottom: 20)),
                     ],
                   ),
                 ),
               ),
-
               SizedBox(height: 100),
             ],
           ),
         ),
+      ),
+
+      bottomNavigationBar: CustomRetiredTransactionBottomNavBar(
+        selectedIndex: 0,
+        onTap: (index) {},
       ),
     );
   }
