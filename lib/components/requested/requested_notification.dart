@@ -1,5 +1,8 @@
 import 'package:deroli_mobile/components/main.dart';
+import 'package:deroli_mobile/components/general/general.dart';
+import 'package:intl/intl.dart';
 import 'package:deroli_mobile/models/project_modal.dart';
+import 'package:deroli_mobile/utils/index.dart';
 import 'package:flutter/material.dart';
 export 'requested_Notification.dart';
 
@@ -54,14 +57,14 @@ class _RequestedNotificationState extends State<RequestedNotification> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       // color: Colors.blue,
       child: Padding(
-        padding: const EdgeInsets.only(left: 20.0),
+        padding: EdgeInsets.only(left: Layout.getWidth(context, 20)),
         child: Column(
           children: [
-            SizedBox(height: 20),
+            SizedBox(height: Layout.getHeight(context, 20)),
             Row(
               // mainAxisSize: MainAxisSize.max,
               children: [
@@ -71,14 +74,16 @@ class _RequestedNotificationState extends State<RequestedNotification> {
                     widget.firstLetter ?? _getFirstLetter(),
                     style: TextStyle(
                       fontWeight: FontWeight.w900,
-                      fontSize: 20,
+                      fontSize: Layout.getHeight(context, 18),
                       color: Colors.black,
                     ),
                   ),
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: Layout.getWidth(context, 20),
+                    ),
                     child: Column(
                       spacing: 6,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,7 +96,7 @@ class _RequestedNotificationState extends State<RequestedNotification> {
                               TextSpan(
                                 text: "REQ: ",
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: Layout.getHeight(context, 13),
                                   color: Color(0xFF000000),
                                 ),
                                 children: [
@@ -101,7 +106,7 @@ class _RequestedNotificationState extends State<RequestedNotification> {
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w800,
-                                      fontSize: 14,
+                                      fontSize: Layout.getHeight(context, 13),
                                     ),
                                   ),
                                 ],
@@ -109,9 +114,9 @@ class _RequestedNotificationState extends State<RequestedNotification> {
                             ),
 
                             Text(
-                              widget.payment.paymentTime.isEmpty
-                                  ? DateTime.now().toString().substring(11, 16)
-                                  : widget.payment.paymentTime,
+                              DateFormat('HH:mm a').format(
+                                DateTime.parse(widget.payment.paymentDate),
+                              ),
                               style: TextStyle(color: Color(0xFF9A9A9A)),
                             ),
                           ],
@@ -124,7 +129,7 @@ class _RequestedNotificationState extends State<RequestedNotification> {
                               TextSpan(
                                 text: "Vendor: ",
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: Layout.getHeight(context, 13),
                                   color: Color(0xFF9A9A9A),
                                 ),
                                 children: [
@@ -133,7 +138,7 @@ class _RequestedNotificationState extends State<RequestedNotification> {
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 14,
+                                      fontSize: Layout.getHeight(context, 13),
                                     ),
                                   ),
                                 ],
@@ -143,7 +148,7 @@ class _RequestedNotificationState extends State<RequestedNotification> {
                               TextSpan(
                                 text: "TZS ",
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: Layout.getHeight(context, 13),
                                   color: Color(0xFF9A9A9A),
                                 ),
                                 children: [
@@ -152,7 +157,7 @@ class _RequestedNotificationState extends State<RequestedNotification> {
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w800,
-                                      fontSize: 14,
+                                      fontSize: Layout.getHeight(context, 13),
                                     ),
                                   ),
                                 ],
@@ -168,13 +173,11 @@ class _RequestedNotificationState extends State<RequestedNotification> {
                             Column(
                               children: [
                                 Text(
-                                  widget.state ??
-                                      widget.payment.paymentStatus ??
-                                      'Pending',
+                                  widget.payment.status,
                                   style: TextStyle(
-                                    // color:
-                                    //     widget.stateColor ??
-                                    //     widget.payment.getStatusColor(),
+                                    color: getStatusColor(
+                                      widget.payment.status,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -187,7 +190,7 @@ class _RequestedNotificationState extends State<RequestedNotification> {
                 ),
               ],
             ),
-            SizedBox(height: 10),
+            SizedBox(height: Layout.getHeight(context, 10)),
             DashedBorder(color: Color(0xFFDEDEDE)),
           ],
         ),
