@@ -1,22 +1,15 @@
 import 'package:deroli_mobile/components/main.dart';
+import 'package:deroli_mobile/utils/index.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:deroli_mobile/models/project_modal.dart';
+import 'package:intl/intl.dart';
 export 'retire_requested_Notification.dart';
 
 class RetireRequestedNotification extends StatefulWidget {
-  const RetireRequestedNotification({
-    super.key,
+  const RetireRequestedNotification({super.key, required this.payment});
 
-    this.avatarColor,
-    this.firstLetter,
-    this.state,
-    this.stateColor,
-  });
-
-  final Color? avatarColor;
-  final String? firstLetter;
-  final String? state;
-  final Color? stateColor;
+  final Payment payment;
   @override
   State<RetireRequestedNotification> createState() =>
       _RetireRequestedNotificationState();
@@ -67,16 +60,20 @@ class _RetireRequestedNotificationState
                                     TextSpan(
                                       text: "REQ: ",
                                       style: TextStyle(
-                                        fontSize: 14,
+                                        fontSize: Layout.getHeight(context, 13),
                                         color: Color(0xFF000000),
                                       ),
                                       children: [
                                         TextSpan(
-                                          text: " 134832",
+                                          text:
+                                              "${widget.payment.paymentId.toUpperCase().substring(0, widget.payment.paymentId.length > 6 ? 6 : widget.payment.paymentId.length)} ",
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.w800,
-                                            fontSize: 14,
+                                            fontSize: Layout.getHeight(
+                                              context,
+                                              13,
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -84,7 +81,11 @@ class _RetireRequestedNotificationState
                                   ),
 
                                   Text(
-                                    DateTime.now().toString().substring(11, 16),
+                                    DateFormat('HH:mm a').format(
+                                      DateTime.parse(
+                                        widget.payment.paymentDate,
+                                      ),
+                                    ),
 
                                     style: TextStyle(color: Color(0xFF9A9A9A)),
                                   ),
@@ -98,16 +99,19 @@ class _RetireRequestedNotificationState
                                   Text(
                                     "Vendor",
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: Layout.getHeight(context, 13),
                                       color: Color(0xFF9A9A9A),
                                     ),
                                   ),
                                   Column(
                                     children: [
                                       Text(
-                                        "Fen Marketing",
+                                        widget.payment.vendor?.name ?? '',
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: Layout.getHeight(
+                                            context,
+                                            13,
+                                          ),
                                           color: Colors.black,
                                         ),
                                       ),
@@ -123,16 +127,19 @@ class _RetireRequestedNotificationState
                                   Text(
                                     "Payment For",
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: Layout.getHeight(context, 13),
                                       color: Color(0xFF9A9A9A),
                                     ),
                                   ),
                                   Column(
                                     children: [
                                       Text(
-                                        "Transport",
+                                        widget.payment.category.name,
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: Layout.getHeight(
+                                            context,
+                                            13,
+                                          ),
                                           color: Colors.black,
                                         ),
                                       ),
@@ -147,16 +154,19 @@ class _RetireRequestedNotificationState
                                   Text(
                                     "Amount",
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: Layout.getHeight(context, 13),
                                       color: Color(0xFF9A9A9A),
                                     ),
                                   ),
                                   Column(
                                     children: [
                                       Text(
-                                        "TZS 100,000",
+                                        "TZS ${Constants.commaValue(double.tryParse(widget.payment.amount) ?? 0.0)}",
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: Layout.getHeight(
+                                            context,
+                                            13,
+                                          ),
                                           color: Colors.black,
                                         ),
                                       ),
@@ -172,7 +182,7 @@ class _RetireRequestedNotificationState
                                   Text(
                                     "Status",
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: Layout.getHeight(context, 13),
                                       color: Color(0xFF9A9A9A),
                                     ),
                                   ),
@@ -181,9 +191,12 @@ class _RetireRequestedNotificationState
                                       Row(
                                         children: [
                                           Text(
-                                            "Successful",
+                                            widget.payment.status,
                                             style: TextStyle(
-                                              fontSize: 14,
+                                              fontSize: Layout.getHeight(
+                                                context,
+                                                13,
+                                              ),
                                               color: Color(0xFF1E971A),
                                             ),
                                           ),
@@ -197,7 +210,10 @@ class _RetireRequestedNotificationState
                                           Text(
                                             "Unretired",
                                             style: TextStyle(
-                                              fontSize: 14,
+                                              fontSize: Layout.getHeight(
+                                                context,
+                                                13,
+                                              ),
                                               color: Color(0xFFFF7072),
                                             ),
                                           ),

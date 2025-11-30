@@ -45,7 +45,9 @@ class _QuickActionsState extends State<QuickActions> {
                             children: [
                               IconButton(
                                 color: Color(0xFFEAE7FF),
-                                onPressed: () {},
+                                onPressed: () {
+                                  context.pushNamed("retire");
+                                },
                                 icon: Image.asset(
                                   'assets/icons/Upload.png',
                                   width: 20,
@@ -75,7 +77,7 @@ class _QuickActionsState extends State<QuickActions> {
                               IconButton(
                                 color: Color(0xFFEAE7FF),
                                 onPressed: () {
-                                  context.goNamed("invoice");
+                                  context.pushNamed("invoice");
                                 },
                                 icon: Image.asset(
                                   'assets/icons/Paper.png',

@@ -1,5 +1,6 @@
 import 'package:deroli_mobile/components/general/app_bar.dart';
 import 'package:deroli_mobile/components/main.dart';
+import 'package:deroli_mobile/components/retire/customButtomRetiredTransaction.dart';
 import 'package:deroli_mobile/models/project_modal.dart';
 import 'package:deroli_mobile/utils/index.dart';
 import 'package:intl/intl.dart';
@@ -452,10 +453,13 @@ class _FullRequestDetailsScreenState extends State<FullRequestDetailsScreen> {
 
                                 Row(
                                   children: [
-                                    Image.asset(
-                                      'assets/icons/circle_duotone.png',
-                                      width: Layout.getWidth(context, 40),
-                                      height: Layout.getHeight(context, 40),
+                                    Transform.rotate(
+                                      angle: 0.8,
+                                      child: Image.asset(
+                                        'assets/icons/circle_duotone.png',
+                                        width: Layout.getWidth(context, 20),
+                                        height: Layout.getHeight(context, 20),
+                                      ),
                                     ),
                                     SizedBox(width: 2),
                                     Text(
@@ -913,6 +917,11 @@ class _FullRequestDetailsScreenState extends State<FullRequestDetailsScreen> {
             ],
           ),
         ),
+      ),
+
+      bottomNavigationBar: CustomRetiredTransactionBottomNavBar(
+        selectedIndex: 0,
+        onTap: (index) {},
       ),
     );
   }

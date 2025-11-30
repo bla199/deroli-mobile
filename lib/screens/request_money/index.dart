@@ -4,8 +4,8 @@ import 'package:deroli_mobile/components/general/modal.dart';
 import 'package:deroli_mobile/components/general/toast.dart';
 import 'package:deroli_mobile/controller/index.dart';
 import 'package:deroli_mobile/components/general/input_take.dart';
-import 'package:deroli_mobile/screens/request-money/select_modal.dart';
-import 'package:deroli_mobile/screens/request-money/upload_modal.dart';
+import 'package:deroli_mobile/screens/request_money/select_modal.dart';
+import 'package:deroli_mobile/screens/request_money/upload_modal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:deroli_mobile/utils/index.dart';
 
 class RequestMoney extends StatefulWidget {
-  const RequestMoney({super.key, required});
+  const RequestMoney({super.key});
 
   @override
   State<RequestMoney> createState() => _RequestMoneyState();
