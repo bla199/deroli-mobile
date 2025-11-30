@@ -10,9 +10,7 @@ import 'package:deroli_mobile/screens/receipt/receipt.dart';
 import 'package:deroli_mobile/screens/request_money/category/index.dart';
 import 'package:deroli_mobile/screens/requested/full_request_details.dart';
 import 'package:deroli_mobile/screens/requested/index.dart';
-import 'package:deroli_mobile/screens/retire/full_retire_requested_details.dart';
 import 'package:deroli_mobile/screens/retire/index.dart';
-import 'package:deroli_mobile/screens/retire/retired_transactions.dart';
 import 'package:go_router/go_router.dart';
 
 List<RouteBase> routes = [
@@ -76,20 +74,6 @@ List<RouteBase> routes = [
     name: "retire",
     path: "/retire",
     builder: (context, state) => const Retire(),
-  ),
-
-  GoRoute(
-    name: "retired_transactions",
-    path: "/retired_transactions",
-    builder: (context, state) => const RetiredTransactions(),
-  ),
-  GoRoute(
-    name: "full_retire_request_details",
-    path: "/full_retire_request_details",
-    builder: (context, state) {
-      final payment = state.extra as Payment?;
-      return FullRetireRequestDetails(payment: payment);
-    },
   ),
 
   GoRoute(

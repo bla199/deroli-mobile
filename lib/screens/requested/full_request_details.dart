@@ -1,6 +1,6 @@
 import 'package:deroli_mobile/components/general/app_bar.dart';
 import 'package:deroli_mobile/components/main.dart';
-import 'package:deroli_mobile/components/retire/customButtomRetiredTransaction.dart';
+import 'package:deroli_mobile/components/retire/custom_buttom_retired_transaction.dart';
 import 'package:deroli_mobile/models/project_modal.dart';
 import 'package:deroli_mobile/utils/index.dart';
 import 'package:intl/intl.dart';
