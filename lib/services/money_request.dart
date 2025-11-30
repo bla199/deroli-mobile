@@ -1,7 +1,9 @@
 import 'package:deroli_mobile/components/general/modal.dart';
 import 'package:deroli_mobile/components/general/toast.dart';
 import 'package:deroli_mobile/controller/index.dart';
+import 'package:deroli_mobile/models/project_modal.dart';
 import 'package:deroli_mobile/network/index.dart';
+import 'package:deroli_mobile/services/get_project.dart';
 import 'package:deroli_mobile/utils/index.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -91,5 +93,82 @@ Future<bool> addProjectPayment({
       isSuccess: false,
     );
     return false;
+  }
+}
+
+Future approvePayment({
+  required BuildContext context,
+  required Payment payment,
+  required ProjectsController projectsController,
+}) async {
+  try {
+    // loading modal
+    bottomModal(
+      child: loadingModal(context),
+      context: context,
+      blurColor: const Color.fromRGBO(173, 191, 255, 0.7),
+      isDismissible: false,
+      isScrollControlled: false,
+      enableDrag: false,
+    );
+
+    final requestData = {
+      "payments": [payment.toJson()],
+      "user_id": "039eba798dd24601abca5a3260d4a67e",
+      "organization_id": "bb947d14-a06d-11f0-8de9-0242ac120002",
+    };
+    final apiRequest = await serverRequest(
+      requestData: requestData,
+      endpoint: ApiUrls.approvePayment,
+    );
+
+    // on success wait for 3 seconds and pull project list
+    if (apiRequest['code'] == 200) {
+      // dismiss the loading modal
+      // ignore: use_build_context_synchronously
+      context.pop();
+      // ignore: use_build_context_synchronously
+      context.pop();
+
+      toastFunct(
+        // ignore: use_build_context_synchronously
+        context: context,
+        message:
+            apiRequest['response']['message'] ??
+            "Payment approved successfully",
+        isSuccess: true,
+      );
+
+      // delay for 3 seconds
+      Future.delayed(const Duration(seconds: 3)).then((value) {
+        // pull project list
+        // ignore: use_build_context_synchronously
+        getProjects(context: context, projectsController: projectsController);
+      });
+    } else {
+      // dismiss the loading modal
+      // ignore: use_build_context_synchronously
+      context.pop();
+
+      toastFunct(
+        // ignore: use_build_context_synchronously
+        context: context,
+        message:
+            apiRequest['response']['message'] ?? "Failed to approve payment",
+        isSuccess: false,
+      );
+    }
+  } catch (e) {
+    // dismiss the loading modal
+    // ignore: use_build_context_synchronously
+    context.pop();
+
+    debugPrint("Error approving payment: $e");
+    toastFunct(
+      // ignore: use_build_context_synchronously
+      context: context,
+      message: "There was an issue approving the payment",
+      isSuccess: false,
+    );
   }
 }

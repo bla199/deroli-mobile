@@ -1,8 +1,11 @@
+import 'package:deroli_mobile/controller/index.dart';
 import 'package:deroli_mobile/models/project_modal.dart';
+import 'package:deroli_mobile/services/money_request.dart';
 import 'package:deroli_mobile/utils/index.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   final Payment payment;
@@ -11,6 +14,8 @@ class CustomBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final projectsController = Provider.of<ProjectsController>(context);
+
     return Container(
       padding: EdgeInsets.only(
         bottom: Layout.getHeight(context, 40),
@@ -51,17 +56,20 @@ class CustomBottomNavBar extends StatelessWidget {
                   onPressed: () {},
                   child: Row(
                     spacing: Layout.getWidth(context, 10),
-                    mainAxisSize: MainAxisSize.min,
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
-                        payment.retireReceipt != null
+                        payment.retireReceipt == null ||
+                                payment.retireReceipt!.isEmpty
                             ? 'assets/icons/download_up.png'
                             : 'assets/icons/download.png',
                         width: Layout.getWidth(context, 24),
                         color: Color(0xFF000000),
                       ),
                       Text(
-                        payment.retireReceipt != null
+                        payment.retireReceipt == null ||
+                                payment.retireReceipt!.isEmpty
                             ? "Retire transaction"
                             : "Download retire",
                         style: TextStyle(
@@ -95,7 +103,15 @@ class CustomBottomNavBar extends StatelessWidget {
                 minimumSize: WidgetStatePropertyAll(Size.zero),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
-              onPressed: () {},
+              onPressed: () {
+                if (payment.status == "Initiated") {
+                  approvePayment(
+                    context: context,
+                    payment: payment,
+                    projectsController: projectsController,
+                  );
+                }
+              },
               child: Row(
                 spacing: Layout.getWidth(context, 10),
                 mainAxisSize: MainAxisSize.min,

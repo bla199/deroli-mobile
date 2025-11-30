@@ -15,4 +15,6 @@ class ApiUrls {
   static const String addProjectPayment = 'project/add-project-payment';
 
   static const String getRequested = 'project/get-tasks';
+
+  static const String approvePayment = 'project/approve-task';
 }
