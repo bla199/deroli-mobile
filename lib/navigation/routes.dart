@@ -8,7 +8,7 @@ import 'package:deroli_mobile/screens/home/index.dart';
 import 'package:deroli_mobile/screens/invoices/invoices.dart';
 import 'package:deroli_mobile/screens/receipt/receipt.dart';
 import 'package:deroli_mobile/screens/request_money/category/index.dart';
-import 'package:deroli_mobile/screens/requested/full_request_details.dart';
+import 'package:deroli_mobile/screens/requested/single_transaction/index.dart';
 import 'package:deroli_mobile/screens/requested/index.dart';
 import 'package:deroli_mobile/screens/retire/index.dart';
 import 'package:go_router/go_router.dart';
